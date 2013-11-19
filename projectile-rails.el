@@ -6,6 +6,96 @@
   :prefix "ruby-"
   :group 'projectile)
 
+(defcustom projectile-rails-controller-keywords
+  '("logger" "polymorphic_path" "polymorphic_url" "mail" "render" "attachments"
+    "default" "helper" "helper_attr" "helper_method" "layout" "url_for"
+    "serialize" "exempt_from_layout" "filter_parameter_logging" "hide_action"
+    "cache_sweeper" "protect_from_forgery" "caches_page" "cache_page"
+    "caches_action" "expire_page" "expire_action" "rescue_from" "params"
+    "request" "response" "session" "flash" "head" "redirect_to"
+    "render_to_string" "respond_with" "before_filter" "append_before_filter"
+    "prepend_before_filter" "after_filter" "append_after_filter"
+    "prepend_after_filter" "around_filter" "append_around_filter"
+    "prepend_around_filter" "skip_before_filter" "skip_after_filter" "skip_filter")
+  "List of keywords to highlight for controllers"
+  :group 'projectile-rails
+  :type '(repeat string))
+
+(defcustom projectile-rails-migration-keywords
+  '("create_table" "change_table" "drop_table" "rename_table" "add_column"
+    "rename_column" "change_column" "change_column_default" "remove_column"
+    "add_index" "remove_index" "rename_index" "execute")
+  "List of keywords to highlight for migrations"
+  :group 'projectile-rails
+  :type '(repeat string))
+
+(defcustom projectile-rails-model-keywords
+  '("default_scope" "named_scope" "scope" "serialize" "belongs_to" "has_one"
+    "has_many" "has_and_belongs_to_many" "composed_of" "accepts_nested_attributes_for"
+    "before_create" "before_destroy" "before_save" "before_update" "before_validation"
+    "before_validation_on_create" "before_validation_on_update" "after_create"
+    "after_destroy" "after_save" "after_update" "after_validation"
+    "after_validation_on_create" "after_validation_on_update" "around_create"
+    "around_destroy" "around_save" "around_update" "after_commit" "after_find"
+    "after_initialize" "after_rollback" "after_touch" "attr_accessible"
+    "attr_protected" "attr_readonly" "validates" "validate" "validate_on_create"
+    "validate_on_update" "validates_acceptance_of" "validates_associated"
+    "validates_confirmation_of" "validates_each" "validates_exclusion_of"
+    "validates_format_of" "validates_inclusion_of" "validates_length_of"
+    "validates_numericality_of" "validates_presence_of" "validates_size_of"
+    "validates_existence_of" "validates_uniqueness_of" "validates_with")
+  "List of keywords to highlight for models"
+  :group 'projectile-rails
+  :type '(repeat string))
+
+(defcustom projectile-rails-view-keywords
+  '("action_name" "atom_feed" "audio_path" "audio_tag" "auto_discovery_link_tag"
+    "button_tag" "button_to" "button_to_function" "cache" "capture" "cdata_section"
+    "check_box" "check_box_tag" "collection_select" "concat" "content_for"
+    "content_tag" "content_tag_for" "controller" "controller_name"
+    "controller_path" "convert_to_model" "cookies" "csrf_meta_tag" "csrf_meta_tags"
+    "current_cycle" "cycle" "date_select" "datetime_select" "debug"
+    "distance_of_time_in_words" "distance_of_time_in_words_to_now" "div_for"
+    "dom_class" "dom_id" "email_field" "email_field_tag" "escape_javascript"
+    "escape_once" "excerpt" "favicon_link_tag" "field_set_tag" "fields_for"
+    "file_field" "file_field_tag" "flash" "form_for" "form_tag"
+    "grouped_collection_select" "grouped_options_for_select" "headers"
+    "hidden_field" "hidden_field_tag" "highlight" "image_alt" "image_path"
+    "image_submit_tag" "image_tag" "j" "javascript_cdata_section"
+    "javascript_include_tag" "javascript_path" "javascript_tag" "l" "label"
+    "label_tag" "link_to" "link_to_function" "link_to_if" "link_to_unless"
+    "link_to_unless_current" "localize" "logger" "mail_to" "number_field"
+    "number_field_tag" "number_to_currency" "number_to_human" "number_to_human_size"
+    "number_to_percentage" "number_to_phone" "number_with_delimiter"
+    "number_with_precision" "option_groups_from_collection_for_select"
+    "options_for_select" "options_from_collection_for_select" "params"
+    "password_field" "password_field_tag" "path_to_audio" "path_to_image"
+    "path_to_javascript" "path_to_stylesheet" "path_to_video" "phone_field"
+    "phone_field_tag" "pluralize" "provide" "radio_button" "radio_button_tag"
+    "range_field" "range_field_tag" "raw" "render" "request"
+    "request_forgery_protection_token" "reset_cycle" "response" "safe_concat"
+    "safe_join" "sanitize" "sanitize_css" "search_field" "search_field_tag"
+    "select" "select_date" "select_datetime" "select_day" "select_hour"
+    "select_minute" "select_month" "select_second" "select_tag" "select_time"
+    "select_year" "session" "simple_format" "strip_links" "strip_tags"
+    "stylesheet_link_tag" "stylesheet_path" "submit_tag" "t" "tag" "telephone_field"
+    "telephone_field_tag" "text_area" "text_area_tag" "text_field" "text_field_tag"
+    "time_ago_in_words" "time_select" "time_tag" "time_zone_options_for_select"
+    "time_zone_select" "translate" "truncate" "url_field" "url_field_tag"
+    "url_for" "url_options" "video_path" "video_tag" "word_wrap")
+  "List of keywords to highlight for views"
+  :group 'projectile-rails
+  :type '(repeat string))
+
+(defcustom projectile-rails-active-support-keywords
+  '("alias_attribute" "with_options" "delegate")
+  "List of keywords to highlight for all `projectile-rails-mode' buffers"
+  :group 'projectile-rails
+  :type '(repeat string))
+
+(defcustom projectile-rails-font-lock-face-name 'font-lock-keyword-face
+  "Face to be used for higlighting rails the keywords")
+
 (defcustom projectile-rails-views-re
   "\\.\\(?:html\\|erb\\|haml\\|js\\|slim\\|json\\|coffee\\|css\\)$"
   "Regexp for filtering for view files"
@@ -17,6 +107,25 @@
 
 (defvar projectile-rails-mode-map (make-sparse-keymap)
   "Keymap for `projectile-rails-mode'.")
+
+(defun projectile-rails--highlight-keywords (keywords)
+  "Highlight the passed KEYWORDS in current buffer."
+  (font-lock-add-keywords
+   nil
+   (list (list
+          (concat "\\(^\\|[^_:.@$]\\|\\.\\.\\)\\b"
+                  (regexp-opt keywords t)
+                  ruby-keyword-end-re)
+          (list 2 projectile-rails-font-lock-face-name)))))
+
+(defun projectile-rails-apply-keywords-for-file-type ()
+  "Apply extra font lock keywords specific to models, controllers etc."
+  (loop for (re keywords) in `(("_controller\\.rb$"   ,projectile-rails-controller-keywords)
+                               ("app/models/.+\\.rb$" ,projectile-rails-model-keywords)
+                               ("db/migrate/.+\\.rb$" ,projectile-rails-migration-keywords))
+        do (when (string-match-p re (buffer-file-name))
+             (projectile-rails--highlight-keywords
+	      (append keywords projectile-rails-active-support-keywords)))))
 
 (defun projectile-rails-dir-files (dir re)
   (let ((length (length dir)))
@@ -89,6 +198,8 @@
       (projectile-project-root)
     nil))
 
+(add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
+
 (define-minor-mode projectile-rails-mode
   "Rails mode based on projectile"
   :init-value nil
@@ -98,14 +209,15 @@
 (defadvice projectile-on (after projectile-rails-turn-on activate)
   "Run `projectile-rails-mode' if this is a rails project."
   (when (projectile-rails-root)
-    (projectile-rails-mode)))
+    (projectile-rails-mode)
+    (run-hooks 'projectile-rails-mode-hook)))
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode for projectile-rails output of rails generate."
   (set (make-local-variable 'compilation-error-regexp-alist)
        (cons 'projectile-rails-generate compilation-error-regexp-alist))
   (set (make-local-variable 'compilation-error-regexp-alist-alist)
-       (cons '(projectile-rails-generate arm/errors-regex 1 2)
+       (cons '(projectile-rails-generate projectile-rails-errors-regex 1 2)
              compilation-error-regexp-alist-alist)))
 
 (provide 'projectile-rails)

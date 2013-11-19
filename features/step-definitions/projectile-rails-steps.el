@@ -6,7 +6,11 @@
       (lambda (filename) (find-file (concat projectile-rails-root-path "/" filename))))
 
 (When "^I turn on projectile-mode"
-      (lambda () (projectile-on)))
+      (lambda ()
+	(projectile-on)))
+
+(When "^I turn on ruby-mode"
+      (lambda () (ruby-mode)))
 
 (When "^I run command \"\\(.+\\)\" selecting \"\\(.+\\)\"$"
       (lambda (command argument)
@@ -19,6 +23,9 @@
 	)
       )
 
+(When "^I sleep for \\([0-9]+\\) seconds"
+      (lambda(seconds) (sit-for (string-to-int seconds))))
+
 (Then "^projectile-rails should be turned on"
       (lambda () (should projectile-rails-mode)))
 
@@ -27,5 +34,9 @@
 
 (Then "^I am in file \"\\(.+\\)\""
       (lambda (filename)
-	(print buffer-file-name)
 	(should (string-match-p (s-lex-format "${filename}$") (buffer-file-name)))))
+
+(Then "^I should see \"\\(.+\\)\" font locked"
+      (lambda (keyword)
+	(When (s-lex-format "I go to word \"${keyword}\""))
+	(should (equal (get-text-property (+ (point) 1) 'face) 'font-lock-keyword-face))))
