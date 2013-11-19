@@ -19,9 +19,14 @@
 	(And (s-lex-format "I type \"${command}\""))
 	(When "I press \"RET\"")
 	(And (s-lex-format "I type \"${argument}\""))
-	(And "I execute the action chain")
-	)
-      )
+	(And "I execute the action chain")))
+
+(When "^I run \"\\(.+\\)\""
+      (lambda (command)
+	(When "I start an action chain")
+	(When "I press \"M-x\"")
+	(And (s-lex-format "I type \"${command}\""))
+	(And "I execute the action chain")))
 
 (When "^I sleep for \\([0-9]+\\) seconds"
       (lambda(seconds) (sit-for (string-to-int seconds))))
@@ -42,5 +47,5 @@
 	(should (equal (get-text-property (+ (point) 1) 'face) 'font-lock-keyword-face))))
 
 (Then "^the buffer is auto reverting"
-     (lambda ()
-       (should (and auto-revert-tail-mode (not auto-revert-verbose)))))
+      (lambda ()
+	(should (and auto-revert-tail-mode (not auto-revert-verbose)))))

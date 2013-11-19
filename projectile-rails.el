@@ -1,4 +1,5 @@
 (require 'projectile)
+(require 'inf-ruby)
 (require 'inflections)
 
 (defgroup projectile-rails nil
@@ -100,7 +101,7 @@
   "\\.\\(?:html\\|erb\\|haml\\|js\\|slim\\|json\\|coffee\\|css\\)$"
   "Regexp for filtering for view files"
   :group 'projectile-rails
-  :type '(string))
+  :type 'string)
 
 (defvar projectile-rails-mode-hook nil
   "Hook for `projectile-rails-mode'.")
@@ -123,7 +124,7 @@
   (loop for (re keywords) in `(("_controller\\.rb$"   ,projectile-rails-controller-keywords)
                                ("app/models/.+\\.rb$" ,projectile-rails-model-keywords)
                                ("db/migrate/.+\\.rb$" ,projectile-rails-migration-keywords))
-        do (when (string-match-p re (buffer-file-name))
+        do (when (and (buffer-file-name) (string-match-p re (buffer-file-name)))
              (projectile-rails--highlight-keywords
 	      (append keywords projectile-rails-active-support-keywords)))))
 
@@ -204,6 +205,22 @@
   (if (file-exists-p (projectile-expand-root "config/environment.rb"))
       (projectile-project-root)
     nil))
+
+(defun projectile-rails-console ()
+  (interactive)
+  (projectile-rails-in-root
+   (with-current-buffer (run-ruby
+			 (projectile-rails-if-zeus "zeus console" "bundle exec rails console"))
+     (projectile-rails-mode +1))))
+
+(defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
+  `(if (file-exists-p (projectile-expand-root ".zeus.sock"))
+       ,command-for-zeus
+     ,command-for-bundler))
+
+(defmacro projectile-rails-in-root (body-form)
+  `(let ((default-directory (projectile-rails-root)))
+     ,body-form))
 
 (add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
 
