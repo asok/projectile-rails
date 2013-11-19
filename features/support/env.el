@@ -12,7 +12,7 @@
 (add-to-list 'load-path projectile-rails-root-path)
 
 (defvar projectile-rails-app-path
-  (concat projectile-rails-features-path "/app"))
+  (concat projectile-rails-features-path "/app/"))
 
 (require 'projectile-rails)
 (require 'espuds)
@@ -25,6 +25,9 @@
 (Before
  ;; Before each scenario is run
  (require 'projectile-rails)
+   (loop for name in '(".zeus.sock" "tmp/rake-output") do
+	(when (file-exists-p (concat projectile-rails-app-path name))
+	  (f-delete (concat projectile-rails-app-path name))))
  )
 
 (After

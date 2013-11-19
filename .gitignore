@@ -1,1 +1,5 @@
 .cask
+features/app/tmp/rake-output
+features/app/.zeus.sock
+features/app/db/development.sqlite3
+

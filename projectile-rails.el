@@ -103,6 +103,12 @@
   :group 'projectile-rails
   :type 'string)
 
+(defcustom projectile-rails-errors-regex
+  "\\([0-9A-Za-z@_./\:-]+\\.rb\\):?\\([0-9]+\\)?"
+  "The regex used to find errors with file paths."
+  :group 'projectile-rails
+  :type 'string)
+
 (defvar projectile-rails-mode-hook nil
   "Hook for `projectile-rails-mode'.")
 
@@ -200,6 +206,51 @@
   (setq-local auto-revert-verbose nil)
   (buffer-disable-undo))
 
+(defun projectile-rails-rake-tmp-file ()
+  (projectile-expand-root "tmp/rake-output"))
+
+(defun projectile-rails-rake-tasks ()
+  "Returns a content of tmp file with rake tasks."
+  (if (file-exists-p (projectile-rails-rake-tmp-file))
+      (with-temp-buffer
+        (insert-file-contents (projectile-rails-rake-tmp-file))
+        (buffer-string))
+    (projectile-rails-regenerate-rake)
+    (projectile-rails-rake-tasks)))
+
+;; Shamelessly stolen from ruby-starter-kit.el:
+;; https://github.com/technomancy/emacs-starter-kit/blob/v2/modules/starter-kit-ruby.el
+(defun projectile-rails-pcmpl-rake-tasks ()
+  "Return a list of all the rake tasks defined in the current projects."
+  (--keep it
+	  (--map (if (string-match "rake \\([^ ]+\\)" it) (match-string 1 it))
+		 (split-string (projectile-rails-rake-tasks) "[\n]"))))
+
+(defun projectile-rails-regenerate-rake ()
+  "Generates rakes tasks file in the tmp within rails root directory."
+  (interactive)
+  (if (file-exists-p (projectile-rails-rake-tmp-file)) (delete-file (projectile-rails-rake-tmp-file)))
+  (with-temp-file (projectile-rails-rake-tmp-file)
+    (insert
+     (projectile-rails-in-root
+      (shell-command-to-string
+       (projectile-rails-if-zeus "zeus rake -T" "bundle exec rake -T"))))))
+
+(defun projectile-rails-rake (task)
+  (interactive
+   (list
+    (projectile-completing-read
+     "Rake (default: default): "
+     (projectile-rails-pcmpl-rake-tasks))))
+  (let ((default-directory (projectile-rails-root)))
+    (projectile-rails-in-root
+     (compile
+      (concat
+       (projectile-rails-if-zeus "zeus rake " "bundle exec rake ") (if (= 0 (length task))
+                                                          "default"
+                                                        task))
+      'projectile-rails-compilation-mode))))
+
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
   (if (file-exists-p (projectile-expand-root "config/environment.rb"))
@@ -238,10 +289,10 @@
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode for projectile-rails output of rails generate."
-  (set (make-local-variable 'compilation-error-regexp-alist)
-       (cons 'projectile-rails-generate compilation-error-regexp-alist))
-  (set (make-local-variable 'compilation-error-regexp-alist-alist)
-       (cons '(projectile-rails-generate projectile-rails-errors-regex 1 2)
-             compilation-error-regexp-alist-alist)))
+  (setq-local compilation-error-regexp-alist
+	      (cons 'projectile-rails-generate compilation-error-regexp-alist))
+  (setq-local compilation-error-regexp-alist-alist
+	      (cons '(projectile-rails-generate projectile-rails-errors-regex 1 2)
+		    compilation-error-regexp-alist-alist)))
 
 (provide 'projectile-rails)

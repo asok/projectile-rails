@@ -1,6 +1,6 @@
 (When "^I open the app file \"\\(.+\\)\""
       (lambda (filename)
-	(find-file (concat projectile-rails-app-path "/" filename))))
+	(find-file (concat projectile-rails-app-path filename))))
 
 (When "^I open the file \"\\(.+\\)\""
       (lambda (filename) (find-file (concat projectile-rails-root-path "/" filename))))
@@ -21,6 +21,10 @@
 	(And (s-lex-format "I type \"${argument}\""))
 	(And "I execute the action chain")))
 
+(When "^I force font lock refresh"
+      (lambda()
+	(font-lock-fontify-buffer)))
+
 (When "^I run \"\\(.+\\)\""
       (lambda (command)
 	(When "I start an action chain")
@@ -30,6 +34,22 @@
 
 (When "^I sleep for \\([0-9]+\\) seconds"
       (lambda(seconds) (sit-for (string-to-int seconds))))
+
+(Given "^zeus is running"
+       (lambda ()
+	 (f-touch (concat projectile-rails-app-path ".zeus.sock"))))
+
+(When "I kill compilation buffer"
+      (lambda ()
+	(setq kill-buffer-query-functions
+	      (remq 'process-kill-buffer-query-function
+		    kill-buffer-query-functions))
+	(kill-buffer "*projectile-rails-compilation*")))
+
+(Given "the cache file with projectile-rails task exists"
+       (lambda ()
+	 (with-temp-file (concat projectile-rails-app-path "tmp/rake-output")
+	   (insert "rake projectile-rails #a test task\n"))))
 
 (Then "^projectile-rails should be turned on"
       (lambda () (should projectile-rails-mode)))
