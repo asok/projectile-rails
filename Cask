@@ -7,5 +7,6 @@
 (depends-on "inflections")
 
 (development
+ (depends-on "yasnippet")
  (depends-on "ecukes")
  (depends-on "espuds"))

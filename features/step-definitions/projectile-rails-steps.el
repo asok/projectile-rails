@@ -44,7 +44,8 @@
 	(setq kill-buffer-query-functions
 	      (remq 'process-kill-buffer-query-function
 		    kill-buffer-query-functions))
-	(kill-buffer "*projectile-rails-compilation*")))
+	(when (-contains? (-map 'buffer-name (buffer-list)) "*projectile-rails-compilation*")
+	  (kill-buffer "*projectile-rails-compilation*"))))
 
 (Given "the cache file with projectile-rails task exists"
        (lambda ()

@@ -180,8 +180,9 @@
      (projectile-expand-root 
       (projectile-completing-read
        (concat singular ": ")
-       (--filter (string-match-p (s-lex-format "\\(${singular}\\|${plural}\\)\\(_controller\\)?\\(_spec\\)?\\.rb$") it) 
-		 (projectile-current-project-files)))))))
+       (--filter
+	(string-match-p (s-lex-format "\\(${singular}\\|${plural}\\)\\(_controller\\)?\\(_spec\\)?\\.rb$") it) 
+	(projectile-current-project-files)))))))
 
 (defun projectile-rails-current-resource-name ()
   "Returns a resource name extracted from the name of the currently visiting file"
@@ -263,6 +264,42 @@
    (with-current-buffer (run-ruby
 			 (projectile-rails-if-zeus "zeus console" "bundle exec rails console"))
      (projectile-rails-mode +1))))
+
+(defun projectile-rails-snippet-hook ()
+  (when (and (fboundp 'yas-expand-snippet)
+	     (projectile-rails-root)
+	     (not (file-exists-p (buffer-file-name))))
+    (projectile-rails-expand-file-snippet-maybe)))
+
+(defun projectile-rails-expand-file-snippet-maybe ()
+  (let ((name (buffer-file-name)))
+    (yas-expand-snippet
+     (cond ((string-match "app/controllers/\\(.*\\)\\.rb$" name)
+	    (format
+	     "class %s < ${1:ApplicationController}\n$2\nend"
+	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+	   ((string-match "spec/[^/]+/\\(.*\\)_spec\\.rb$" name)
+	    (format
+	     "require \"spec_helper\"\n\ndescribe %s do\n$1\nend"
+	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+	   ((string-match "app/models/\\(.*\\)\\.rb$" name)
+	    (format
+	     "class %s < ${1:ActiveRecord::Base}\n$2\nend"
+	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+	   ((string-match "lib/\\(.*\\)\\.rb$" name)
+	    (let ((parts (projectile-rails-classify (match-string 1 name))))
+	      (format
+	       (concat
+		(--mapcat (s-lex-format "module ${it}\n") (butlast parts 1))
+		"class %s\n$1\nend"
+		(s-join "" (make-list (- (length parts) 1) "\nend")))
+	       (-last-item parts))))))))
+
+(add-hook 'find-file-hook 'projectile-rails-snippet-hook)
+
+(defun projectile-rails-classify (name)
+  "Accepts a filepath, splits it by '/' character and classifieses each of the element"
+  (--map (replace-regexp-in-string "_" "" (upcase-initials it)) (split-string name "/")))
 
 (defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
   `(if (file-exists-p (projectile-expand-root ".zeus.sock"))

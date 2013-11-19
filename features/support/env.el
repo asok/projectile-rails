@@ -19,11 +19,10 @@
 (require 'ert)
 
 (Setup
- ;; Before anything has run
  )
 
 (Before
- ;; Before each scenario is run
+ (require 'yasnippet)
  (require 'projectile-rails)
    (loop for name in '(".zeus.sock" "tmp/rake-output") do
 	(when (file-exists-p (concat projectile-rails-app-path name))
@@ -31,9 +30,7 @@
  )
 
 (After
- ;; After each scenario is run
  )
 
 (Teardown
- ;; After when everything has been run
  )
