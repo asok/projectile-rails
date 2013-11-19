@@ -133,7 +133,7 @@
 	   (--filter (string-match-p re it)
 		     (projectile-dir-files (projectile-expand-root dir))))))
 
-(defun projectile-rails--resource (prompt dir re)
+(defun projectile-rails-find-file-in-dir (prompt dir re)
   (find-file 
    (projectile-expand-root (concat dir
 				   (projectile-completing-read
@@ -142,27 +142,27 @@
 
 (defun projectile-rails-models ()
   (interactive)
-  (projectile-rails--resource "models: " "app/models/" "\\.rb$"))
+  (projectile-rails-find-file-in-dir "models: " "app/models/" "\\.rb$"))
 
 (defun projectile-rails-controllers ()
   (interactive)
-  (projectile-rails--resource "controller: " "app/controllers/" "\\.rb$"))
+  (projectile-rails-find-file-in-dir "controller: " "app/controllers/" "\\.rb$"))
 
 (defun projectile-rails-views ()
   (interactive)
-  (projectile-rails--resource "views: " "app/views/" projectile-rails-views-re))
+  (projectile-rails-find-file-in-dir "views: " "app/views/" projectile-rails-views-re))
 
 (defun projectile-rails-helpers ()
   (interactive)
-  (projectile-rails--resource "helpers: " "app/helpers/" "\\.rb$"))
+  (projectile-rails-find-file-in-dir "helpers: " "app/helpers/" "\\.rb$"))
 
 (defun projectile-rails-libs ()
   (interactive)
-  (projectile-rails--resource "libs: " "lib/" "\\.rb$"))
+  (projectile-rails-find-file-in-dir "libs: " "lib/" "\\.rb$"))
 
 (defun projectile-rails-specs ()
   (interactive)
-  (projectile-rails--resource "specs: " "spec/" "_spec\\.rb$"))
+  (projectile-rails-find-file-in-dir "specs: " "spec/" "_spec\\.rb$"))
 
 (defun projectile-rails-current-resource ()
   (interactive)
@@ -191,6 +191,13 @@
 			      (throw 'break (match-string 1 file-name))))))
     )
   )
+
+(defun projectile-rails-find-log ()
+  (interactive)
+  (projectile-rails-find-file-in-dir "log: " "log/" "\\.log$")
+  (auto-revert-tail-mode +1)
+  (setq-local auto-revert-verbose nil)
+  (buffer-disable-undo))
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"

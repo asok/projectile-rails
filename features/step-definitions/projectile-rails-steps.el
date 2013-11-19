@@ -40,3 +40,7 @@
       (lambda (keyword)
 	(When (s-lex-format "I go to word \"${keyword}\""))
 	(should (equal (get-text-property (+ (point) 1) 'face) 'font-lock-keyword-face))))
+
+(Then "^the buffer is auto reverting"
+     (lambda ()
+       (should (and auto-revert-tail-mode (not auto-revert-verbose)))))
