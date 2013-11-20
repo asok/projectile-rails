@@ -12,7 +12,7 @@
 (When "^I turn on ruby-mode"
       (lambda () (ruby-mode)))
 
-(When "^I run command \"\\(.+\\)\" selecting \"\\(.+\\)\"$"
+(When "^I run command \"\\(.+\\)\" \\(?:selecting\\|inputting\\) \"\\(.+\\)\"$"
       (lambda (command argument)
 	(When "I start an action chain")
 	(When "I press \"M-x\"")
@@ -38,14 +38,6 @@
 (Given "^zeus is running"
        (lambda ()
 	 (f-touch (concat projectile-rails-app-path ".zeus.sock"))))
-
-(When "I kill compilation buffer"
-      (lambda ()
-	(setq kill-buffer-query-functions
-	      (remq 'process-kill-buffer-query-function
-		    kill-buffer-query-functions))
-	(when (-contains? (-map 'buffer-name (buffer-list)) "*projectile-rails-compilation*")
-	  (kill-buffer "*projectile-rails-compilation*"))))
 
 (Given "the cache file with projectile-rails task exists"
        (lambda ()

@@ -301,6 +301,17 @@
   "Accepts a filepath, splits it by '/' character and classifieses each of the element"
   (--map (replace-regexp-in-string "_" "" (upcase-initials it)) (split-string name "/")))
 
+(defun projectile-rails-generate ()
+  "Runs rails generate command"
+  (interactive)
+  (projectile-rails-in-root
+   (let ((command-prefix (projectile-rails-if-zeus
+                          "zeus generate "
+                          "bundle exec rails generate ")))
+     (compile
+      (concat command-prefix (read-string command-prefix))
+      'projectile-rails-compilation-mode))))
+
 (defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
   `(if (file-exists-p (projectile-expand-root ".zeus.sock"))
        ,command-for-zeus

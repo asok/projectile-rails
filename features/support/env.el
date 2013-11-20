@@ -19,6 +19,9 @@
 (require 'ert)
 
 (Setup
+ (setq kill-buffer-query-functions
+       (remq 'process-kill-buffer-query-function
+	     kill-buffer-query-functions))
  )
 
 (Before
@@ -27,7 +30,9 @@
    (loop for name in '(".zeus.sock" "tmp/rake-output") do
 	(when (file-exists-p (concat projectile-rails-app-path name))
 	  (f-delete (concat projectile-rails-app-path name))))
- )
+   (when (-contains? (-map 'buffer-name (buffer-list)) "*projectile-rails-compilation*")
+     (kill-buffer "*projectile-rails-compilation*"))
+)
 
 (After
  )
