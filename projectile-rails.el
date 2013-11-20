@@ -233,7 +233,7 @@
   (if (file-exists-p (projectile-rails-rake-tmp-file)) (delete-file (projectile-rails-rake-tmp-file)))
   (with-temp-file (projectile-rails-rake-tmp-file)
     (insert
-     (projectile-rails-in-root
+     (projetile-rails-with-root
       (shell-command-to-string
        (projectile-rails-if-zeus "zeus rake -T" "bundle exec rake -T"))))))
 
@@ -244,7 +244,7 @@
      "Rake (default: default): "
      (projectile-rails-pcmpl-rake-tasks))))
   (let ((default-directory (projectile-rails-root)))
-    (projectile-rails-in-root
+    (projetile-rails-with-root
      (compile
       (concat
        (projectile-rails-if-zeus "zeus rake " "bundle exec rake ") (if (= 0 (length task))
@@ -260,7 +260,7 @@
 
 (defun projectile-rails-console ()
   (interactive)
-  (projectile-rails-in-root
+  (projetile-rails-with-root
    (with-current-buffer (run-ruby
 			 (projectile-rails-if-zeus "zeus console" "bundle exec rails console"))
      (projectile-rails-mode +1))))
@@ -304,7 +304,7 @@
 (defun projectile-rails-generate ()
   "Runs rails generate command"
   (interactive)
-  (projectile-rails-in-root
+  (projetile-rails-with-root
    (let ((command-prefix (projectile-rails-if-zeus
                           "zeus generate "
                           "bundle exec rails generate ")))
@@ -317,7 +317,7 @@
        ,command-for-zeus
      ,command-for-bundler))
 
-(defmacro projectile-rails-in-root (body-form)
+(defmacro projetile-rails-with-root (body-form)
   `(let ((default-directory (projectile-rails-root)))
      ,body-form))
 
