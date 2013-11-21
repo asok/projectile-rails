@@ -9,6 +9,10 @@
       (lambda ()
 	(projectile-on)))
 
+(When "^I turn off projectile-rails-mode"
+      (lambda ()
+	(projectile-rails-off)))
+
 (When "^I turn on ruby-mode"
       (lambda () (ruby-mode)))
 

@@ -323,17 +323,22 @@
 
 (add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
 
+(add-hook 'projectile-mode-hook 'projectile-rails-on)
+
 (define-minor-mode projectile-rails-mode
   "Rails mode based on projectile"
   :init-value nil
   :lighter " ProjectileR"
   :keymap projectile-rails-mode-map)
 
-(defadvice projectile-on (after projectile-rails-turn-on activate)
-  "Run `projectile-rails-mode' if this is a rails project."
+(defun projectile-rails-on ()
+  "Enable `projectile-rails-mode' minor mode if this is a rails project."
   (when (projectile-rails-root)
-    (projectile-rails-mode)
-    (run-hooks 'projectile-rails-mode-hook)))
+    (projectile-rails-mode +1)))
+
+(defun projectile-rails-off ()
+  "Disable `projectile-rails-mode' minor mode."
+  (projectile-rails-mode -1))
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode for projectile-rails output of rails generate."

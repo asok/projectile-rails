@@ -1,5 +1,3 @@
-#This feature only passes with the sleeping step.
-#And only when run with --win option
 Feature: Font locking rails specific keywords
   In order to read the rails application source code
   As a user
