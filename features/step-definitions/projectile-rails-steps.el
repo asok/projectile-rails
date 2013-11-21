@@ -29,6 +29,13 @@
       (lambda()
 	(font-lock-fontify-buffer)))
 
+(Given "^I am using a test completion system$"
+      (lambda ()
+	(setq projectile-completion-system
+	      (lambda (prompt choices)
+		(with-current-buffer (get-buffer-create projectile-rails-test-completion-buffer)
+		  (insert (s-join "\n" choices)))))))
+
 (When "^I run \"\\(.+\\)\""
       (lambda (command)
 	(When "I start an action chain")
@@ -66,3 +73,9 @@
 (Then "^the buffer is auto reverting"
       (lambda ()
 	(should (and auto-revert-tail-mode (not auto-revert-verbose)))))
+
+(Then "^the completions should be:"
+      (lambda (text)
+	(with-current-buffer projectile-rails-test-completion-buffer
+	  (Then "I should see:" text)
+	  (should (= (length text) (buffer-size))))))

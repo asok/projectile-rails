@@ -14,6 +14,11 @@
 (defvar projectile-rails-app-path
   (concat projectile-rails-features-path "/app/"))
 
+(defvar projectile-rails-test-completion-buffer "*projectile-rails-test-completion*")
+
+(defun projectile-rails-buffer-exists-p (name)
+ (-contains? (-map 'buffer-name (buffer-list)) name))
+
 (require 'projectile-rails)
 (require 'espuds)
 (require 'ert)
@@ -27,12 +32,16 @@
 (Before
  (require 'yasnippet)
  (require 'projectile-rails)
-   (loop for name in '(".zeus.sock" "tmp/rake-output") do
-	(when (file-exists-p (concat projectile-rails-app-path name))
-	  (f-delete (concat projectile-rails-app-path name))))
-   (when (-contains? (-map 'buffer-name (buffer-list)) "*projectile-rails-compilation*")
-     (kill-buffer "*projectile-rails-compilation*"))
-)
+ (loop for name in '(".zeus.sock" "tmp/rake-output") do
+       (when (file-exists-p (concat projectile-rails-app-path name))
+	 (f-delete (concat projectile-rails-app-path name))))
+ (when (projectile-rails-buffer-exists-p "*projectile-rails-compilation*")
+   (kill-buffer "*projectile-rails-compilation*"))
+ (setq projectile-completion-system 'ido)
+ (when (projectile-rails-buffer-exists-p projectile-rails-test-completion-buffer)
+   (with-current-buffer projectile-rails-test-completion-buffer
+     (Given "the buffer is empty")))
+ )
 
 (After
  )
