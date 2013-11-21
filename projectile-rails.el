@@ -4,7 +4,7 @@
 
 (defgroup projectile-rails nil
   "Rails mode based on projectile"
-  :prefix "ruby-"
+  :prefix "projectile-rails-"
   :group 'projectile)
 
 (defcustom projectile-rails-controller-keywords
@@ -301,6 +301,11 @@
   "Accepts a filepath, splits it by '/' character and classifieses each of the element"
   (--map (replace-regexp-in-string "_" "" (upcase-initials it)) (split-string name "/")))
 
+(defun projectile-rails-declassify (name)
+  "Accepts a string, returns a relative filepath to that class"
+  (let ((names (s-split "::" name)))
+    (s-downcase (s-join "/" (-concat (butlast names) (list (singularize-string (-last-item names))))))))
+
 (defun projectile-rails-generate ()
   "Runs rails generate command"
   (interactive)
@@ -311,6 +316,23 @@
      (compile
       (concat command-prefix (read-string command-prefix))
       'projectile-rails-compilation-mode))))
+
+(defun projectile-rails-ff-at-point ()
+  "Tries to find file at point."
+  (interactive)
+  (let* ((filepath (projectile-rails-declassify
+		    (projectile-rails-sanitize-name
+		     (symbol-name
+		      (symbol-at-point)))))
+	 (model (projectile-expand-root (format "app/models/%s.rb" filepath)))
+	 (lib (projectile-expand-root (format "lib/%s.rb" filepath))))
+      (cond ((file-exists-p model)
+	     (find-file model))
+	    ((file-exists-p lib)
+	     (find-file lib)))))
+
+(defun projectile-rails-sanitize-name (name)
+  (if (s-starts-with? ":" name) (substring name 1) name))
 
 (defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
   `(if (file-exists-p (projectile-expand-root ".zeus.sock"))

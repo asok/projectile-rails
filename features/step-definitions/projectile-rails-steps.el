@@ -79,3 +79,7 @@
 	(with-current-buffer projectile-rails-test-completion-buffer
 	  (Then "I should see:" text)
 	  (should (= (length text) (buffer-size))))))
+
+(And "I exit the snippets"
+     (lambda ()
+       (yas-exit-all-snippets)))

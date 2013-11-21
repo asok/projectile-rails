@@ -16,8 +16,8 @@ Feature: Finding controllers
     When I run "projectile-rails-views"
     Then the completions should be:
     """
-    admin/users/index.html.erb
-    users/index.html.erb
-    groups/new.html.erb
+    admin/users/index.html.haml
+    groups/new.js.erb
     layouts/application.html.erb
+    users/index.html.erb
     """

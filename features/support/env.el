@@ -45,6 +45,7 @@
  )
 
 (After
+ (kill-buffer)
  )
 
 (Teardown
