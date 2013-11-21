@@ -32,6 +32,7 @@
 (Before
  (require 'yasnippet)
  (require 'projectile-rails)
+ (add-hook 'projectile-mode-hook 'projectile-rails-on)
  (loop for name in '(".zeus.sock" "tmp/rake-output") do
        (when (file-exists-p (concat projectile-rails-app-path name))
 	 (f-delete (concat projectile-rails-app-path name))))

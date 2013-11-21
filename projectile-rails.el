@@ -323,14 +323,14 @@
 
 (add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
 
-(add-hook 'projectile-mode-hook 'projectile-rails-on)
-
+;;;###autoload
 (define-minor-mode projectile-rails-mode
   "Rails mode based on projectile"
   :init-value nil
   :lighter " ProjectileR"
   :keymap projectile-rails-mode-map)
 
+;;;###autoload
 (defun projectile-rails-on ()
   "Enable `projectile-rails-mode' minor mode if this is a rails project."
   (when (projectile-rails-root)
