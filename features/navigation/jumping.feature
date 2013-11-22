@@ -26,6 +26,18 @@ Feature: Jumping to file at point
     When I run "projectile-rails-ff-at-point"
     Then I am in file "app/models/user.rb"
 
+  Scenario: Jumping to a lib from a ruby constant in plural form
+    And I exit the snippets
+    And I insert:
+    """
+    def bar
+      Admin::Memberships.object_id
+    end
+    """
+    And I place the cursor between "Admin::M" and "emberships"
+    When I run "projectile-rails-ff-at-point"
+    Then I am in file "lib/admin/memberships.rb"
+
   Scenario: Jumping to a model from a ruby constant
     And I insert:
     """

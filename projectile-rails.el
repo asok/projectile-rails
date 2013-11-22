@@ -302,9 +302,16 @@
   (--map (replace-regexp-in-string "_" "" (upcase-initials it)) (split-string name "/")))
 
 (defun projectile-rails-declassify (name)
-  "Accepts a string, returns a relative filepath to that class"
-  (let ((names (s-split "::" name)))
-    (s-downcase (s-join "/" (-concat (butlast names) (list (singularize-string (-last-item names))))))))
+  "Accepts a string, returns a relative filepath to that class.
+
+If the passed name is not capitalized it will singularize it."
+  (let* ((names (s-split "::" name))
+	 (last (-last-item names)))
+    (s-downcase (s-join "/" (-concat (butlast names)
+				     (list
+				      (if (s-capitalized? last) ;a constant
+					  last
+					(singularize-string last))))))))
 
 (defun projectile-rails-generate ()
   "Runs rails generate command"
