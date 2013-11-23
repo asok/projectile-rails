@@ -17,5 +17,6 @@ Feature: Finding libs
     Then the completions should be:
     """
     admin/logging.rb
+    admin/memberships.rb
     logging.rb
     """

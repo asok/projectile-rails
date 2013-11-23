@@ -109,12 +109,6 @@
   :group 'projectile-rails
   :type 'string)
 
-(defvar projectile-rails-mode-hook nil
-  "Hook for `projectile-rails-mode'.")
-
-(defvar projectile-rails-mode-map (make-sparse-keymap)
-  "Keymap for `projectile-rails-mode'.")
-
 (defun projectile-rails--highlight-keywords (keywords)
   "Highlight the passed KEYWORDS in current buffer."
   (font-lock-add-keywords
@@ -254,9 +248,11 @@
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
-  (if (file-exists-p (projectile-expand-root "config/environment.rb"))
-      (projectile-project-root)
-    nil))
+  (condition-case nil
+                  (if (file-exists-p (projectile-expand-root "config/environment.rb"))
+                    (projectile-project-root)
+                    nil)
+    (error nil)))
 
 (defun projectile-rails-console ()
   (interactive)
@@ -265,13 +261,12 @@
 			 (projectile-rails-if-zeus "zeus console" "bundle exec rails console"))
      (projectile-rails-mode +1))))
 
-(defun projectile-rails-snippet-hook ()
+(defun projectile-rails-expand-snippet-maybe ()
   (when (and (fboundp 'yas-expand-snippet)
-	     (projectile-rails-root)
-	     (not (file-exists-p (buffer-file-name))))
-    (projectile-rails-expand-file-snippet-maybe)))
+  	     (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
+  	(projectile-rails-expand-corresponding-snippet))))
 
-(defun projectile-rails-expand-file-snippet-maybe ()
+(defun projectile-rails-expand-corresponding-snippet ()
   (let ((name (buffer-file-name)))
     (yas-expand-snippet
      (cond ((string-match "app/controllers/\\(.*\\)\\.rb$" name)
@@ -294,8 +289,6 @@
 		"class %s\n$1\nend"
 		(s-join "" (make-list (- (length parts) 1) "\nend")))
 	       (-last-item parts))))))))
-
-(add-hook 'find-file-hook 'projectile-rails-snippet-hook)
 
 (defun projectile-rails-classify (name)
   "Accepts a filepath, splits it by '/' character and classifieses each of the element"
@@ -350,16 +343,12 @@ If the passed name is not capitalized it will singularize it."
   `(let ((default-directory (projectile-rails-root)))
      ,body-form))
 
-(add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
-
 ;;;###autoload
 (define-minor-mode projectile-rails-mode
   "Rails mode based on projectile"
   :init-value nil
-  :lighter " ProjectileR"
-  :keymap projectile-rails-mode-map)
+  :lighter " Rails")
 
-;;;###autoload
 (defun projectile-rails-on ()
   "Enable `projectile-rails-mode' minor mode if this is a rails project."
   (when (projectile-rails-root)
@@ -376,5 +365,8 @@ If the passed name is not capitalized it will singularize it."
   (setq-local compilation-error-regexp-alist-alist
 	      (cons '(projectile-rails-generate projectile-rails-errors-regex 1 2)
 		    compilation-error-regexp-alist-alist)))
+
+(add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
+(add-hook 'projectile-rails-mode-hook 'projectile-rails-expand-snippet-maybe)
 
 (provide 'projectile-rails)

@@ -5,10 +5,10 @@ Feature: Filling new buffer with class definition
 
 Background:
   Given I open the app file "app/models/user.rb"
-  And I turn on projectile-mode
 
 Scenario: Opening new model
   When I open the app file "app/models/foo.rb"
+  And I turn on projectile-mode
   Then I should see:
   """
   class Foo < ActiveRecord::Base
@@ -18,6 +18,7 @@ Scenario: Opening new model
 
 Scenario: Opening new controller
   When I open the app file "app/controllers/foos_controller.rb"
+  And I turn on projectile-mode
   Then I should see:
   """
   class FoosController < ApplicationController
@@ -27,6 +28,7 @@ Scenario: Opening new controller
 
 Scenario: Opening a new namespaced controller
   When I open the app file "app/controllers/admin/foos_controller.rb"
+  And I turn on projectile-mode
   Then I should see:
   """
   class Admin::FoosController < ApplicationController
@@ -36,6 +38,7 @@ Scenario: Opening a new namespaced controller
 
 Scenario: Opening a new lib
   When I open the app file "lib/fooing.rb"
+  And I turn on projectile-mode
   Then I should see:
   """
   class Fooing
@@ -45,6 +48,7 @@ Scenario: Opening a new lib
 
 Scenario: Opening a new namespaced lib
   When I open the app file "lib/admin/fooing.rb"
+  And I turn on projectile-mode
   Then I should see:
   """
   module Admin
