@@ -36,6 +36,10 @@
 		(with-current-buffer (get-buffer-create projectile-rails-test-completion-buffer)
 		  (insert (s-join "\n" choices)))))))
 
+(Given "^I turn on snippet expansion"
+      (lambda ()
+	(setq projectile-rails-expand-snippet t)))
+
 (When "^I run \"\\(.+\\)\""
       (lambda (command)
 	(When "I start an action chain")
@@ -77,9 +81,27 @@
 (Then "^the completions should be:"
       (lambda (text)
 	(with-current-buffer projectile-rails-test-completion-buffer
-	  (Then "I should see:" text)
-	  (should (= (length text) (buffer-size))))))
+	  (Then "I should see:" text))))
 
 (And "I exit the snippets"
      (lambda ()
        (yas-exit-all-snippets)))
+
+(Then "^I am in a dired buffer \"\\(.+\\)\""
+      (lambda (name)
+	(should (string=
+		 (dired-current-directory)
+		 (projectile-expand-root name)))))
+
+(And "I wait for [0-9]+ seconds"
+     (lambda (seconds)
+       (sit-for seconds)))
+
+(And "I print the buffer content"
+     (lambda ()
+       (print (buffer-string))))
+
+(And "I clear the buffer and insert:"
+     (lambda (content)
+       (When "I clear the buffer")
+       (When "I insert:" content)))

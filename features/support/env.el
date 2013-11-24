@@ -38,13 +38,16 @@
 	 (f-delete (concat projectile-rails-app-path name))))
  (when (projectile-rails-buffer-exists-p "*projectile-rails-compilation*")
    (kill-buffer "*projectile-rails-compilation*"))
- (setq projectile-completion-system 'ido)
+ (setq projectile-completion-system 'ido
+       projectile-rails-expand-snippet nil)
  (when (projectile-rails-buffer-exists-p projectile-rails-test-completion-buffer)
    (with-current-buffer projectile-rails-test-completion-buffer
      (Given "the buffer is empty")))
  )
 
 (After
+ (yas-exit-all-snippets)
+ (set-buffer-modified-p nil)
  (kill-buffer)
  )
 

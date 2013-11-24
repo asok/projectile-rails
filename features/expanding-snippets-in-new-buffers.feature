@@ -5,6 +5,7 @@ Feature: Filling new buffer with class definition
 
 Background:
   Given I open the app file "app/models/user.rb"
+  And I turn on snippet expansion
 
 Scenario: Opening new model
   When I open the app file "app/models/foo.rb"

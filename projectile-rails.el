@@ -109,6 +109,9 @@
   :group 'projectile-rails
   :type 'string)
 
+(defcustom projectile-rails-expand-snippet t
+  "If not nil newly created buffers will be pre-filled with class skeleton.")
+
 (defun projectile-rails--highlight-keywords (keywords)
   "Highlight the passed KEYWORDS in current buffer."
   (font-lock-add-keywords
@@ -263,6 +266,7 @@
 
 (defun projectile-rails-expand-snippet-maybe ()
   (when (and (fboundp 'yas-expand-snippet)
+	     projectile-rails-expand-snippet
   	     (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
   	(projectile-rails-expand-corresponding-snippet))))
 
@@ -318,21 +322,89 @@ If the passed name is not capitalized it will singularize it."
       'projectile-rails-compilation-mode))))
 
 (defun projectile-rails-ff-at-point ()
-  "Tries to find file at point."
+  "Tries to find file at point"
+  (interactive)
+  (if (string-match-p "\\_<render\\_>" (projectile-rails-current-line))
+      (projectile-rails-find-template-at-point)
+    (projectile-rails-find-class-at-point)))
+
+(defun projectile-rails-in-controller? ()
+  (string-match "app/controllers/\\(.+\\)_controller\\.rb$" (buffer-file-name)))
+
+(defun projectile-rails-template-name (template)
+  (-first-item (s-split "\\." (-last-item (s-split "/" template)))))
+
+(defun projectile-rails-template-format (template)
+  (let ((at-point-re "\\.\\([^.]+\\)\\.[^.]+$")
+	(at-line-re "formats\\(?:'\"\\|:\\)?\\s-*\\(?:=>\\)?\\s-*\\[[:'\"]\\([a-zA-Z0-9]+\\)['\"]?\\]"))
+    (cond ((string-match at-point-re template)
+	   (match-string 1 template))
+	  ((string-match at-line-re (projectile-rails-current-line))
+	   (match-string 1 (projectile-rails-current-line)))
+	  (t
+	   (string-match at-point-re (buffer-file-name))
+	   (match-string 1 (buffer-file-name))))))
+
+(defun projectile-rails-template-dir (template)
+  (projectile-rails-sanitize-dir-name
+   (cond ((string-match "\\(.+\\)/[^/]+$" template)
+	  (projectile-expand-root
+	   (concat "app/views/" (match-string 1 template))))
+	 ((projectile-rails-in-controller?)
+	  (projectile-expand-root
+	   (concat "app/views/" (match-string 1 (buffer-file-name)))))
+	 (t
+	  default-directory))))
+
+(defun projectile-rails-find-template-at-point ()
+  (interactive)
+  (let* ((template (projectile-rails-name-at-point))
+	 (dir (projectile-rails-template-dir template))
+	 (name (projectile-rails-template-name template))
+	 (format (projectile-rails-template-format template)))
+    (if format
+      (projectile-rails-ff
+       (catch 'break
+	 (loop for processor in '("erb" "haml" "slim") do
+	       (loop for template-or-partial in `(,(s-lex-format "${dir}${name}.${format}.${processor}")
+						  ,(s-lex-format "${dir}_${name}.${format}.${processor}"))
+		     do (when (file-exists-p template-or-partial)
+			  (throw 'break template-or-partial))))))
+      (message "Could not recognize the template's format")
+      (dired dir))))
+
+(defun projectile-rails-ff (path &optional ask)
+  "Calls `find-file' function on PATH when it is not nil and the file exists.
+
+If file does not exist and ASK in not nil it will ask user to proceed."
+  (if (or (and path (file-exists-p path))
+	  (and ask (yes-or-no-p (s-lex-format "File does not exists. Create a new buffer ${path} ?"))))
+      (find-file path)))
+
+(defun projectile-rails-name-at-point ()
+  (projectile-rails-sanitize-name (symbol-name (symbol-at-point))))
+
+(defun projectile-rails-find-class-at-point ()
+  "Tries to find class at point."
   (interactive)
   (let* ((filepath (projectile-rails-declassify
-		    (projectile-rails-sanitize-name
-		     (symbol-name
-		      (symbol-at-point)))))
+		    (projectile-rails-name-at-point)))
 	 (model (projectile-expand-root (format "app/models/%s.rb" filepath)))
 	 (lib (projectile-expand-root (format "lib/%s.rb" filepath))))
-      (cond ((file-exists-p model)
-	     (find-file model))
-	    ((file-exists-p lib)
-	     (find-file lib)))))
+    (or (projectile-rails-ff model) (projectile-rails-ff lib))))
 
 (defun projectile-rails-sanitize-name (name)
-  (if (s-starts-with? ":" name) (substring name 1) name))
+  (cond ((or (s-starts-with? ":" name) (s-starts-with? "/" name))
+	 (substring name 1))
+	((or
+	  (and (s-starts-with? "'" name) (s-ends-with? "'" name))
+	  (and (s-starts-with? "\"" name) (s-ends-with? "\"" name)))
+	 (substring name 1 (1- (length name))))
+	(t
+	 name)))
+
+(defun projectile-rails-sanitize-dir-name (name)
+  (if (s-ends-with? "/" name) name (concat name "/")))
 
 (defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
   `(if (file-exists-p (projectile-expand-root ".zeus.sock"))
@@ -357,6 +429,14 @@ If the passed name is not capitalized it will singularize it."
 (defun projectile-rails-off ()
   "Disable `projectile-rails-mode' minor mode."
   (projectile-rails-mode -1))
+
+;;stolen from rhtml-mode
+(defun projectile-rails-current-line ()
+  (save-excursion
+    (beginning-of-line)
+    (set-mark-command nil)
+    (end-of-line)
+    (buffer-substring-no-properties (mark) (point))))
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode for projectile-rails output of rails generate."

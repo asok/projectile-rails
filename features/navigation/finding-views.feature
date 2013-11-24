@@ -17,7 +17,10 @@ Feature: Finding controllers
     Then the completions should be:
     """
     admin/users/index.html.haml
+    admin/users/new.js.slim
     groups/new.js.erb
     layouts/application.html.erb
+    users/_user.html.erb
     users/index.html.erb
+    users/new.html.erb
     """

@@ -1,14 +1,14 @@
-Feature: Jumping to file at point
-  In order to do find fast things at point
+Feature: Jumping to class at point
+  In order to do find fast classes at point
   As a user
-  I want to be able to run projectile-rails command and jump to the file at point
+  I want to be able to run projectile-rails command and jump to the class at point
 
   Background:
     Given I open the app file "app/controllers/foos_controller.rb"
     And I turn on projectile-mode
 
   Scenario: Jumping to a model from a ruby symbol in singular form
-    And I insert:
+    And I clear the buffer and insert:
     """
     belongs_to :user
     """
@@ -17,8 +17,7 @@ Feature: Jumping to file at point
     Then I am in file "app/models/user.rb"
 
   Scenario: Jumping to a model from a ruby symbol in plural form
-    And I exit the snippets
-    And I insert:
+    And I clear the buffer and insert:
     """
     belongs_to :users
     """
@@ -27,8 +26,7 @@ Feature: Jumping to file at point
     Then I am in file "app/models/user.rb"
 
   Scenario: Jumping to a lib from a ruby constant in plural form
-    And I exit the snippets
-    And I insert:
+    And I clear the buffer and insert:
     """
     def bar
       Admin::Memberships.object_id
@@ -39,7 +37,7 @@ Feature: Jumping to file at point
     Then I am in file "lib/admin/memberships.rb"
 
   Scenario: Jumping to a model from a ruby constant
-    And I insert:
+    And I clear the buffer and insert:
     """
     def bar
       User.count
@@ -50,7 +48,7 @@ Feature: Jumping to file at point
     Then I am in file "app/models/user.rb"
 
   Scenario: Jumping to a model from a namespaced ruby constant
-    And I insert:
+    And I clear the buffer and insert:
     """
     def bar
       Admin::User.count
@@ -61,7 +59,7 @@ Feature: Jumping to file at point
     Then I am in file "app/models/admin/user.rb"
 
   Scenario: Jumping to a lib from a namespaced ruby constant
-    And I insert:
+    And I clear the buffer and insert:
     """
     def bar
       Admin::Logging.object_id
@@ -72,7 +70,7 @@ Feature: Jumping to file at point
     Then I am in file "lib/admin/logging.rb"
     
   Scenario: Not jumping to non-existant model
-    And I insert:
+    And I clear the buffer and insert:
     """
     def bar
       Bar.count
