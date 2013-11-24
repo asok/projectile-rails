@@ -406,6 +406,14 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-sanitize-dir-name (name)
   (if (s-ends-with? "/" name) name (concat name "/")))
 
+;;stolen from rhtml-mode
+(defun projectile-rails-current-line ()
+  (save-excursion
+    (beginning-of-line)
+    (set-mark-command nil)
+    (end-of-line)
+    (buffer-substring-no-properties (mark) (point))))
+
 (defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
   `(if (file-exists-p (projectile-expand-root ".zeus.sock"))
        ,command-for-zeus
@@ -429,14 +437,6 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-off ()
   "Disable `projectile-rails-mode' minor mode."
   (projectile-rails-mode -1))
-
-;;stolen from rhtml-mode
-(defun projectile-rails-current-line ()
-  (save-excursion
-    (beginning-of-line)
-    (set-mark-command nil)
-    (end-of-line)
-    (buffer-substring-no-properties (mark) (point))))
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode for projectile-rails output of rails generate."
