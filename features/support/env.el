@@ -32,14 +32,20 @@
 (Before
  (require 'yasnippet)
  (require 'projectile-rails)
+
  (add-hook 'projectile-mode-hook 'projectile-rails-on)
+
  (loop for name in '(".zeus.sock" "tmp/rake-output") do
        (when (file-exists-p (concat projectile-rails-app-path name))
 	 (f-delete (concat projectile-rails-app-path name))))
- (when (projectile-rails-buffer-exists-p "*projectile-rails-compilation*")
-   (kill-buffer "*projectile-rails-compilation*"))
+
+ (loop for name in '("*projectile-rails-compilation*" "*projectile-rails-generate*") do
+       (when (projectile-rails-buffer-exists-p name)
+	 (kill-buffer name)))
+
  (setq projectile-completion-system 'ido
        projectile-rails-expand-snippet nil)
+
  (when (projectile-rails-buffer-exists-p projectile-rails-test-completion-buffer)
    (with-current-buffer projectile-rails-test-completion-buffer
      (Given "the buffer is empty")))

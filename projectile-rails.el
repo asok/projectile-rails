@@ -103,9 +103,15 @@
   :group 'projectile-rails
   :type 'string)
 
-(defcustom projectile-rails-errors-regex
+(defcustom projectile-rails-errors-re
   "\\([0-9A-Za-z@_./\:-]+\\.rb\\):?\\([0-9]+\\)?"
   "The regex used to find errors with file paths."
+  :group 'projectile-rails
+  :type 'string)
+
+(defcustom projectile-rails-generate-filepath-re
+  "^\\s-+\\(?:create\\|exists\\|conflict\\|skip\\)  \\(.+\\)$"
+  "The regex used to find file paths in `projectile-rails-generate-mode'."
   :group 'projectile-rails
   :type 'string)
 
@@ -325,7 +331,7 @@ If the passed name is not capitalized it will singularize it."
                           "bundle exec rails generate ")))
      (compile
       (concat command-prefix (read-string command-prefix))
-      'projectile-rails-compilation-mode))))
+      'projectile-rails-generate-mode))))
 
 (defun projectile-rails-ff-at-point ()
   "Tries to find file at point"
@@ -399,6 +405,20 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 	 (lib (projectile-expand-root (format "lib/%s.rb" filepath))))
     (or (projectile-rails-ff model) (projectile-rails-ff lib))))
 
+(defun projectile-rails-make-buttons (change-beg change-end length)
+  (save-excursion
+    (goto-char change-beg)
+    (while (search-forward-regexp projectile-rails-generate-filepath-re change-end t)
+      (let ((beg (match-beginning 1))
+	    (end (match-end 1)))
+	(when (file-exists-p (projectile-expand-root (buffer-substring-no-properties beg end)))
+	  (make-button beg end 'action 'projectile-rails-generate-ff 'follow-link t))))
+    )
+  )
+
+(defun projectile-rails-generate-ff (button)
+  (find-file (projectile-expand-root (button-label button))))
+
 (defun projectile-rails-sanitize-name (name)
   (cond ((or (s-starts-with? ":" name) (s-starts-with? "/" name))
 	 (substring name 1))
@@ -445,12 +465,17 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   (projectile-rails-mode -1))
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
-  "Compilation mode for projectile-rails output of rails generate."
+  "Compilation mode used by `projectile-rails'."
   (setq-local compilation-error-regexp-alist
-	      (cons 'projectile-rails-generate compilation-error-regexp-alist))
+  	      (cons 'projectile-rails-generate compilation-error-regexp-alist))
   (setq-local compilation-error-regexp-alist-alist
-	      (cons '(projectile-rails-generate projectile-rails-errors-regex 1 2)
-		    compilation-error-regexp-alist-alist)))
+  	      (cons '(projectile-rails-generate projectile-rails-errors-re 1 2)
+  		    compilation-error-regexp-alist-alist))
+  )
+
+(define-derived-mode projectile-rails-generate-mode projectile-rails-compilation-mode "Projectile Rails Generate"
+  "Mode for output of rails generate."
+  (add-hook 'after-change-functions 'projectile-rails-make-buttons nil t))
 
 (add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
 (add-hook 'projectile-rails-mode-hook 'projectile-rails-expand-snippet-maybe)

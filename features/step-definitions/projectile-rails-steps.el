@@ -95,7 +95,7 @@
 
 (And "I wait for [0-9]+ seconds"
      (lambda (seconds)
-       (sit-for seconds)))
+       (sit-for (string-to-int seconds))))
 
 (And "I print the buffer content"
      (lambda ()
@@ -105,3 +105,7 @@
      (lambda (content)
        (When "I clear the buffer")
        (When "I insert:" content)))
+
+(When "I set read-only to false"
+      (lambda ()
+	(read-only-mode -1)))

@@ -7,7 +7,7 @@ unit-test:
 
 #when run in default order some of the scenarios fail with "OpenStep is not in use or not initialized" error
 integration-test:
-	cask exec ecukes features/!(rake.feature|generate.feature) features/rake.feature features/generate.feature
+	cask exec ecukes features/!(rake.feature|generate.feature) features/generate.feature features/rake.feature
 
 test: unit-test integration-test
 

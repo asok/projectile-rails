@@ -7,5 +7,23 @@ Scenario: Runnning generate migrate
   Given I open the app file "app/models/user.rb"
   And I turn on projectile-mode
   When I run command "projectile-rails-generate" inputting "rspec:install"
-  And I switch to buffer "*projectile-rails-compilation*"
+  And I switch to buffer "*projectile-rails-generate*"
   Then I should see "bundle exec rails generate rspec:install"
+
+Scenario: Using buttons
+  Given I open the app file "app/models/user.rb"
+  And I run "projectile-rails-generate-mode"
+  And I set read-only to false
+  When I clear the buffer and insert:
+  """
+  be rails g rspec:install                                                                                                                                                                              1 ↵
+      create  .rspec
+       exist  spec
+    conflict  spec/spec_helper.rb
+        skip  spec/spec_helper.rb
+  """
+  When I place the cursor between "conflict  spe" and "c"
+  And I press "RET"
+  Then I am in file "spec/spec_helper.rb"
+
+
