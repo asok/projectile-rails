@@ -1,3 +1,40 @@
+;;; projectile-rails.el --- Minor mode for Rails projects based on projectile-mode
+
+;; Copyright (C) 2013 Adam Sokolnicki
+
+;; Author:            Adam Sokolnicki <adam.sokolnicki@gmail.com>
+;; URL:               https://github.com/asok/projectile-rails
+;; Version:           0.1.0
+;; Keywords:          rails, projectile
+;; Package-Requires:  ((projectile "1.0.0-cvs") (inflections "1.1") (inf-ruby "2.2.6"))
+
+;; This file is NOT part of GNU Emacs.
+
+;;; License:
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
+
+;;; Commentary:
+;;
+;; To make it start alongside projectile-mode:
+;;
+;;    (add-hook 'projectile-mode-hook 'projectile-rails-on)
+;;
+;;; Code:
+
 (require 'projectile)
 (require 'inf-ruby)
 (require 'inflections)
@@ -506,3 +543,5 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (add-hook 'projectile-rails-mode-hook 'projectile-rails-expand-snippet-maybe)
 
 (provide 'projectile-rails)
+
+;;; projectile-rails.el ends here
