@@ -517,6 +517,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   :init-value nil
   :lighter " Rails")
 
+;;;###autoload
 (defun projectile-rails-on ()
   "Enable `projectile-rails-mode' minor mode if this is a rails project."
   (when (projectile-rails-root)
