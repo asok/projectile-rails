@@ -118,6 +118,12 @@
 (defcustom projectile-rails-expand-snippet t
   "If not nil newly created buffers will be pre-filled with class skeleton.")
 
+(defcustom projectile-rails-keymap-prefix (kbd "C-c r")
+  "`projectile-rails-mode' keymap prefix."
+  :group 'projectile-rails
+  :type 'string)
+
+
 (defun projectile-rails--highlight-keywords (keywords)
   "Highlight the passed KEYWORDS in current buffer."
   (font-lock-add-keywords
@@ -448,6 +454,25 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defmacro projetile-rails-with-root (body-form)
   `(let ((default-directory (projectile-rails-root)))
      ,body-form))
+
+(defvar projectile-rails-mode-map
+  (let ((map (make-sparse-keymap)))
+    (let ((prefix-map (make-sparse-keymap)))
+      (define-key prefix-map (kbd "m") 'projectile-rails-models)
+      (define-key prefix-map (kbd "c") 'projectile-rails-controllers)
+      (define-key prefix-map (kbd "v") 'projectile-rails-views)
+      (define-key prefix-map (kbd "h") 'projectile-rails-helpers)
+      (define-key prefix-map (kbd "l") 'projectile-rails-libs)
+      (define-key prefix-map (kbd "s") 'projectile-rails-specs)
+      (define-key prefix-map (kbd "o") 'projectile-rails-current-resource)
+      (define-key prefix-map (kbd "r") 'projectile-rails-console)
+      (define-key prefix-map (kbd "e") 'projectile-rails-rake)
+      (define-key prefix-map (kbd "g") 'projectile-rails-generate)
+      (define-key prefix-map (kbd "f") 'projectile-rails-ff-at-point)
+
+      (define-key map projectile-rails-keymap-prefix prefix-map))
+    map)
+  "Keymap for `projectile-rails-mode'.")
 
 ;;;###autoload
 (define-minor-mode projectile-rails-mode

@@ -1,5 +1,5 @@
 Feature: Enabling projectile-rails mode
-  In order to do use the mode
+  In order to use the mode
   As a user
   I want to it be turned on when inside a rails project alongside projectile minor mode
 
