@@ -199,7 +199,13 @@
 
 (defun projectile-rails-find-log ()
   (interactive)
-  (projectile-rails-find-file-in-dir "log: " "log/" "\\.log$")
+  ;;logs tend to not be under scm so do not resort to projectile-dir-files
+  (find-file (projectile-expand-root
+	      (concat
+	       "log/"
+	       (projectile-completing-read
+		"log: "
+		(directory-files (projectile-expand-root "log/") nil "[^.|^..]")))))
   (auto-revert-tail-mode +1)
   (setq-local auto-revert-verbose nil)
   (buffer-disable-undo))
