@@ -93,7 +93,7 @@
 		 (dired-current-directory)
 		 (projectile-expand-root name)))))
 
-(And "I wait for [0-9]+ seconds"
+(And "I wait for \\([0-9]+\\) seconds"
      (lambda (seconds)
        (sit-for (string-to-int seconds))))
 
@@ -109,3 +109,7 @@
 (When "I set read-only to false"
       (lambda ()
 	(read-only-mode -1)))
+
+(Then "I should be at line \\([0-9]+\\)"
+      (lambda (line)
+	(should (= (count-lines 1 (point)) (string-to-int line)))))

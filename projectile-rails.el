@@ -359,11 +359,17 @@
 If the passed name is not capitalized it will singularize it."
   (let* ((names (s-split "::" name))
 	 (last (-last-item names)))
-    (s-downcase (s-join "/" (-concat (butlast names)
-				     (list
-				      (if (s-capitalized? last) ;a constant
-					  last
-					(singularize-string last))))))))
+    (s-downcase
+     (s-join
+      "/"
+      (-map
+       's-snake-case
+       (-concat
+	(-slice names 0 -1)
+	(list
+	 (if (s-capitalized? last) ;a constant
+	     last
+	   (singularize-string last)))))))))
 
 (defun projectile-rails-generate ()
   "Runs rails generate command"
@@ -379,9 +385,19 @@ If the passed name is not capitalized it will singularize it."
 (defun projectile-rails-ff-at-point ()
   "Tries to find file at point"
   (interactive)
-  (if (string-match-p "\\_<render\\_>" (projectile-rails-current-line))
-      (projectile-rails-find-template-at-point)
-    (projectile-rails-find-class-at-point)))
+  (cond ((string-match-p "\\_<render\\_>" (projectile-rails-current-line))
+	 (projectile-rails-find-template-at-point))
+	((string-match "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (projectile-rails-current-line))
+	 (and
+	  (projectile-rails-ff
+	   (projectile-expand-root
+	    (concat
+	     "app/controllers/"
+	     (projectile-rails-declassify (match-string 1 (projectile-rails-current-line)))
+	     ".rb")))));;TODO: jumping to line
+	(t
+	 (projectile-rails-find-class-at-point)))
+    )
 
 (defun projectile-rails-in-controller? ()
   (string-match "app/controllers/\\(.+\\)_controller\\.rb$" (buffer-file-name)))
