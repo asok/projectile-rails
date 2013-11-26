@@ -8,12 +8,12 @@ Feature: Finding libs
     And I turn on projectile-mode
 
   Scenario: Finding libs
-    When I run command "projectile-rails-libs" selecting "logging.rb"
+    When I run command "projectile-rails-find-lib" selecting "logging.rb"
     Then I am in file "lib/logging.rb"
 
   Scenario: Seeing correct libs
     And I am using a test completion system
-    When I run "projectile-rails-libs"
+    When I run "projectile-rails-find-lib"
     Then the completions should be:
     """
     admin/logging.rb

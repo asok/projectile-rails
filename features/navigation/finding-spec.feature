@@ -8,12 +8,12 @@ Feature: Finding specs
     And I turn on projectile-mode
 
   Scenario: Finding specs
-    When I run command "projectile-rails-specs" selecting "models/user_spec.rb"
+    When I run command "projectile-rails-find-spec" selecting "models/user_spec.rb"
     Then I am in file "spec/models/user_spec.rb"
 
   Scenario: Seeing correct specs
     And I am using a test completion system
-    When I run "projectile-rails-specs"
+    When I run "projectile-rails-find-spec"
     Then the completions should be:
     """
     controllers/groups_controller_spec.rb

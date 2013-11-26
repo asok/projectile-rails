@@ -8,12 +8,12 @@ Feature: Finding helpers
     And I turn on projectile-mode
 
   Scenario: Finding helpers
-    When I run command "projectile-rails-helpers" selecting "users_helper.rb"
+    When I run command "projectile-rails-find-helper" selecting "users_helper.rb"
     Then I am in file "app/helpers/users_helper.rb"
 
   Scenario: Seeing correct helpers
     And I am using a test completion system
-    When I run "projectile-rails-helpers"
+    When I run "projectile-rails-find-helper"
     Then the completions should be:
     """
     application_helper.rb

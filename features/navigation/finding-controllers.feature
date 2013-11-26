@@ -8,12 +8,12 @@ Feature: Finding controllers
     And I turn on projectile-mode
 
   Scenario: Switching to a controller
-    When I run command "projectile-rails-controllers" selecting "groups_controller.rb"
+    When I run command "projectile-rails-find-controller" selecting "groups_controller.rb"
     Then I am in file "app/controllers/groups_controller.rb"
 
   Scenario: Seeing correct controllers
     And I am using a test completion system
-    When I run "projectile-rails-controllers"
+    When I run "projectile-rails-find-controller"
     Then the completions should be:
     """
     admin/users_controller.rb

@@ -8,12 +8,12 @@ Feature: Finding models
     And I turn on projectile-mode
 
   Scenario: Switching to a model
-    When I run command "projectile-rails-models" selecting "group.rb"
+    When I run command "projectile-rails-find-model" selecting "group.rb"
     Then I am in file "app/models/group.rb"
 
   Scenario: Seeing correct model
     And I am using a test completion system
-    When I run "projectile-rails-models"
+    When I run "projectile-rails-find-model"
     Then the completions should be:
     """
     admin/user.rb
