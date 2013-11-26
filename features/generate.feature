@@ -18,11 +18,9 @@ Scenario: Running generate rspec:install when zeus is running
 
 Scenario: Using buttons
   Given I open the app file "app/models/user.rb"
-  And I run "projectile-rails-generate-mode"
-  And I set read-only to false
-  When I clear the buffer and insert:
+  And I simulate running "projectile-rails-generate" inputting "rspec:install" with output:
   """
-  be rails g rspec:install                                                                                                                                                                              1 ↵
+  be rails g rspec:install
       create  .rspec
        exist  spec
     conflict  spec/spec_helper.rb

@@ -113,3 +113,12 @@
 (Then "I should be at line \\([0-9]+\\)"
       (lambda (line)
 	(should (= (count-lines 1 (point)) (string-to-int line)))))
+
+(When "I simulate running \"\\(.*\\)\" inputting \"\\(.+\\)\" with output:"
+      (lambda (command arg output)
+	(When (s-lex-format "I run command \"${command}\" inputting \"${arg}\""))
+	(And "I switch to buffer \"*projectile-rails-generate*\"")
+	(And "I set read-only to false")
+	(When "I clear the buffer")
+	(compilation-filter (get-buffer-process (current-buffer)) output)
+	(run-hook-with-args 'compilation-finish-functions (current-buffer) "")))

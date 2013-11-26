@@ -147,7 +147,7 @@
   :type 'string)
 
 (defcustom projectile-rails-generate-filepath-re
-  "^\\s-+\\(?:create\\|exists\\|conflict\\|skip\\)  \\(.+\\)$"
+  "^\\s-+\\(?:create\\|exists\\|conflict\\|skip\\)\\s-+\\(.+\\)$"
   "The regex used to find file paths in `projectile-rails-generate-mode'."
   :group 'projectile-rails
   :type 'string)
@@ -467,10 +467,15 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 	 (lib (projectile-expand-root (format "lib/%s.rb" filepath))))
     (or (projectile-rails-ff model) (projectile-rails-ff lib))))
 
-(defun projectile-rails-make-buttons (change-beg change-end length)
-  (save-excursion
-    (goto-char change-beg)
-    (while (search-forward-regexp projectile-rails-generate-filepath-re change-end t)
+(defun projectile-rails-apply-ansi-color ()
+  (toggle-read-only)
+  (ansi-color-apply-on-region compilation-filter-start (point))
+  (toggle-read-only))
+
+(defun projectile-rails-make-buttons (buffer exit-code)
+  (with-current-buffer buffer
+    (goto-char 0)
+    (while (re-search-forward projectile-rails-generate-filepath-re (max-char) t)
       (let ((beg (match-beginning 1))
 	    (end (match-end 1)))
 	(when (file-exists-p (projectile-expand-root (buffer-substring-no-properties beg end)))
@@ -548,16 +553,11 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode used by `projectile-rails'."
-  (setq-local compilation-error-regexp-alist
-  	      (cons 'projectile-rails-generate compilation-error-regexp-alist))
-  (setq-local compilation-error-regexp-alist-alist
-  	      (cons '(projectile-rails-generate projectile-rails-errors-re 1 2)
-  		    compilation-error-regexp-alist-alist))
-  )
+  (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t))
 
 (define-derived-mode projectile-rails-generate-mode projectile-rails-compilation-mode "Projectile Rails Generate"
   "Mode for output of rails generate."
-  (add-hook 'after-change-functions 'projectile-rails-make-buttons nil t))
+  (add-hook 'compilation-finish-functions 'projectile-rails-make-buttons nil t))
 
 (add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
 (add-hook 'projectile-rails-mode-hook 'projectile-rails-expand-snippet-maybe)
