@@ -388,13 +388,16 @@ If the passed name is not capitalized it will singularize it."
   (cond ((string-match-p "\\_<render\\_>" (projectile-rails-current-line))
 	 (projectile-rails-find-template-at-point))
 	((string-match "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (projectile-rails-current-line))
-	 (and
-	  (projectile-rails-ff
-	   (projectile-expand-root
-	    (concat
-	     "app/controllers/"
-	     (projectile-rails-declassify (match-string 1 (projectile-rails-current-line)))
-	     ".rb")))));;TODO: jumping to line
+	 (projectile-rails-ff
+	  (projectile-expand-root
+	   (concat
+	    "app/controllers/"
+	    (projectile-rails-declassify (match-string 1 (projectile-rails-current-line)))
+	    ".rb"))));;TODO: jumping to line
+	((string-match "Rendered \\([^ ]+\\)" (projectile-rails-current-line))
+	 (projectile-rails-ff
+	  (projectile-expand-root
+	   (concat "app/views/" (match-string 1 (projectile-rails-current-line))))))
 	(t
 	 (projectile-rails-find-class-at-point)))
     )
