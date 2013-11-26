@@ -17,7 +17,11 @@ With Projectile Rails you can:
 
 ## Setup
 
-Probably you should read [Projectile's README](https://github.com/bbatsov/projectile) on setting up the completion system, caching and indexing files.
+### Installation
+
+#### Melpa
+
+Once you have setup [Melpa](http://melpa.milkbox.net/#/getting-started) you can use `package-install` command to install Projectile Rails. The package name is `projectile-rails`.
 
 ### Hooking up with Projectile
 
@@ -26,6 +30,9 @@ To make it start alongside `projectile-mode`:
 ```lisp
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
 ```
+
+Probably you should read Projectile's [README](https://github.com/bbatsov/projectile) on setting up the completion system, caching and indexing files. Although the default settings are quite sensible and you should be ready to go without much tweaking.
+
 
 ## Contribution
 
