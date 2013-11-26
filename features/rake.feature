@@ -1,5 +1,5 @@
 Feature: Using rake
-  In order to to use rake
+  In order to use rake
   As a user
   I want to be able to run a rake tasks from Emacs
   

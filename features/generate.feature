@@ -3,7 +3,7 @@ Feature: Using rails generate command
   As a user
   I want to be able to run rails generate command from Emacs
   
-Scenario: Runnning generate migrate
+Scenario: Runnning generate rspec:install
   Given I open the app file "app/models/user.rb"
   And I turn on projectile-mode
   When I run command "projectile-rails-generate" inputting "rspec:install"
