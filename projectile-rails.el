@@ -4,7 +4,7 @@
 
 ;; Author:            Adam Sokolnicki <adam.sokolnicki@gmail.com>
 ;; URL:               https://github.com/asok/projectile-rails
-;; Version:           0.1.0
+;; Version:           0.2.0
 ;; Keywords:          rails, projectile
 ;; Package-Requires:  ((projectile "1.0.0-cvs") (inflections "1.1") (inf-ruby "2.2.6"))
 
