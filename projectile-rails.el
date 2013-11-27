@@ -357,19 +357,14 @@
   "Accepts a string, returns a relative filepath to that class.
 
 If the passed name is not capitalized it will singularize it."
-  (let* ((names (s-split "::" name))
-	 (last (-last-item names)))
-    (s-downcase
-     (s-join
-      "/"
-      (-map
-       's-snake-case
-       (-concat
-	(-slice names 0 -1)
-	(list
-	 (if (s-capitalized? last) ;a constant
-	     last
-	   (singularize-string last)))))))))
+  (let ((case-fold-search nil))
+    (downcase
+     (replace-regexp-in-string
+      "::" "/"
+      (replace-regexp-in-string
+       " " "_"
+       (replace-regexp-in-string
+	"\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" name))))))
 
 (defun projectile-rails-generate ()
   "Runs rails generate command"
@@ -382,25 +377,45 @@ If the passed name is not capitalized it will singularize it."
       (concat command-prefix (read-string command-prefix))
       'projectile-rails-generate-mode))))
 
+(defun projectile-rails-goto-file (subpath name &optional ext)
+  (projectile-rails-ff
+   (projectile-expand-root
+    (concat subpath (projectile-rails-declassify name) ext))))
+
+(defun projectile-rails-find-template-at-point-mayb ()
+  (when (string-match-p "\\_<render\\_>" (projectile-rails-current-line))
+    (projectile-rails-find-template-at-point)))
+
 (defun projectile-rails-ff-at-point ()
   "Tries to find file at point"
   (interactive)
-  (cond ((string-match-p "\\_<render\\_>" (projectile-rails-current-line))
-	 (projectile-rails-find-template-at-point))
-	((string-match "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (projectile-rails-current-line))
-	 (projectile-rails-ff
-	  (projectile-expand-root
-	   (concat
-	    "app/controllers/"
-	    (projectile-rails-declassify (match-string 1 (projectile-rails-current-line)))
-	    ".rb"))));;TODO: jumping to line
-	((string-match "Rendered \\([^ ]+\\)" (projectile-rails-current-line))
-	 (projectile-rails-ff
-	  (projectile-expand-root
-	   (concat "app/views/" (match-string 1 (projectile-rails-current-line))))))
-	(t
-	 (projectile-rails-find-class-at-point)))
-    )
+  (let ((name (projectile-rails-name-at-point))
+	(case-fold-search nil))
+    (cond ((string-match "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (projectile-rails-current-line))
+	   (projectile-rails-goto-file
+	    "app/controllers/" (match-string 1 (projectile-rails-current-line)) ".rb"))
+	  
+	  ((string-match "Rendered \\([^ ]+\\)" (projectile-rails-current-line))
+	   (projectile-rails-goto-file
+	    "app/views/" (match-string 1 (projectile-rails-current-line))))
+	  
+	  ((string-match-p "\\_<render\\_>" (projectile-rails-current-line))
+	   (projectile-rails-find-template-at-point))
+	  
+	  ((string-match-p "\\(c\\|C\\)ontroller$" name)
+	   (projectile-rails-goto-file "app/controllers/" name ".rb"))
+	  
+	  ((not (string-match-p "^[A-Z]" name))
+	   (projectile-rails-goto-file "app/models/" (singularize-string name) ".rb"))
+	  
+	  ((string-match-p "^[A-Z]" name)
+	   (or
+	    (projectile-rails-goto-file "app/models/" name ".rb")
+	    (projectile-rails-goto-file "lib/" name ".rb")))
+	  
+	  (t
+	   (projectile-rails-find-constant-at-point))))
+  )
 
 (defun projectile-rails-in-controller? ()
   (string-match "app/controllers/\\(.+\\)_controller\\.rb$" (buffer-file-name)))
@@ -437,13 +452,12 @@ If the passed name is not capitalized it will singularize it."
 	 (name (projectile-rails-template-name template))
 	 (format (projectile-rails-template-format template)))
     (if format
-      (projectile-rails-ff
-       (catch 'break
-	 (loop for processor in '("erb" "haml" "slim") do
-	       (loop for template-or-partial in `(,(s-lex-format "${dir}${name}.${format}.${processor}")
-						  ,(s-lex-format "${dir}_${name}.${format}.${processor}"))
-		     do (when (file-exists-p template-or-partial)
-			  (throw 'break template-or-partial))))))
+	(cl-loop for processor in '("erb" "haml" "slim")
+		 for template = (s-lex-format "${dir}${name}.${format}.${processor}")
+		 for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
+		 until (or
+			(projectile-rails-ff template)
+			(projectile-rails-ff partial)))
       (message "Could not recognize the template's format")
       (dired dir))))
 
@@ -457,15 +471,6 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 
 (defun projectile-rails-name-at-point ()
   (projectile-rails-sanitize-name (symbol-name (symbol-at-point))))
-
-(defun projectile-rails-find-class-at-point ()
-  "Tries to find class at point."
-  (interactive)
-  (let* ((filepath (projectile-rails-declassify
-		    (projectile-rails-name-at-point)))
-	 (model (projectile-expand-root (format "app/models/%s.rb" filepath)))
-	 (lib (projectile-expand-root (format "lib/%s.rb" filepath))))
-    (or (projectile-rails-ff model) (projectile-rails-ff lib))))
 
 (defun projectile-rails-apply-ansi-color ()
   (toggle-read-only)

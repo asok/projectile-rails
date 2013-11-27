@@ -14,13 +14,13 @@
  (desc "projectile-rails-declassify"
        (expect "user"
 	       (projectile-rails-declassify "user"))
-       (expect "user"
-	       (projectile-rails-declassify "users"))
        (expect "memberships"
 	       (projectile-rails-declassify "Memberships"))
        (expect "users_controller"
 	       (projectile-rails-declassify "UsersController"))
        (expect "admin/users_controller"
        	       (projectile-rails-declassify "Admin::UsersController"))
+       (expect "users/index.html.erb"
+       	       (projectile-rails-declassify "users/index.html.erb"))
        )
  )

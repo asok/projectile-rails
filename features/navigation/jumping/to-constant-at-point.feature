@@ -1,7 +1,7 @@
-Feature: Jumping to class at point
-  In order to do find fast classes at point
+Feature: Jumping to constant at point
+  In order to do find fast constants at point
   As a user
-  I want to be able to run projectile-rails command and jump to the class at point
+  I want to be able to run projectile-rails command and jump to the constant at point
 
   Background:
     Given I open the app file "app/controllers/foos_controller.rb"
@@ -68,6 +68,15 @@ Feature: Jumping to class at point
     And I place the cursor between "Admin::Log" and "ging"
     When I run "projectile-rails-ff-at-point"
     Then I am in file "lib/admin/logging.rb"
+    
+  Scenario: Jumping to ruby constant which is a controller
+    And I clear the buffer and insert:
+    """
+    Admin::UsersController
+    """
+    And I place the cursor between "Admin::Use" and "rs"
+    When I run "projectile-rails-ff-at-point"
+    Then I am in file "app/controllers/admin/users_controller.rb"
     
   Scenario: Not jumping to non-existant model
     And I clear the buffer and insert:
