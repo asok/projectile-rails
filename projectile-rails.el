@@ -181,10 +181,9 @@
 	      (append keywords projectile-rails-active-support-keywords)))))
 
 (defun projectile-rails-dir-files (dir re)
-  (let ((length (length dir)))
-    (--map (substring it length)
-	   (--filter (string-match-p re it)
-		     (projectile-dir-files (projectile-expand-root dir))))))
+  (--map (substring it (length dir))
+	 (--filter (string-match-p re it)
+		   (projectile-dir-files (projectile-expand-root dir)))))
 
 (defun projectile-rails-find-file-in-dir (prompt dir re)
   (find-file 
@@ -354,9 +353,7 @@
   (--map (replace-regexp-in-string "_" "" (upcase-initials it)) (split-string name "/")))
 
 (defun projectile-rails-declassify (name)
-  "Accepts a string, returns a relative filepath to that class.
-
-If the passed name is not capitalized it will singularize it."
+  "Converts passed string to a relative filepath."
   (let ((case-fold-search nil))
     (downcase
      (replace-regexp-in-string
