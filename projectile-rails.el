@@ -253,7 +253,7 @@
 	       "log/"
 	       (projectile-completing-read
 		"log: "
-		(directory-files (projectile-expand-root "log/") nil "[^.|^..]")))))
+		(f-files (projectile-expand-root "log/"))))))
   (auto-revert-tail-mode +1)
   (setq-local auto-revert-verbose nil)
   (buffer-disable-undo))
@@ -305,11 +305,10 @@
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
-  (condition-case nil
-                  (if (file-exists-p (projectile-expand-root "config/environment.rb"))
-                    (projectile-project-root)
-                    nil)
-    (error nil)))
+  (and
+   (projectile-project-p)
+   (file-exists-p (projectile-expand-root "config/environment.rb"))
+   (projectile-project-root)))
 
 (defun projectile-rails-console ()
   (interactive)
@@ -374,10 +373,10 @@
       (concat command-prefix (read-string command-prefix))
       'projectile-rails-generate-mode))))
 
-(defun projectile-rails-goto-file (subpath name &optional ext)
+(defun projectile-rails-goto-file (dir name &optional ext)
   (projectile-rails-ff
    (projectile-expand-root
-    (concat subpath (projectile-rails-declassify name) ext))))
+    (concat (projectile-rails-sanitize-dir-name dir) (projectile-rails-declassify name) ext))))
 
 (defun projectile-rails-find-template-at-point-mayb ()
   (when (string-match-p "\\_<render\\_>" (projectile-rails-current-line))
@@ -399,19 +398,17 @@
 	  ((string-match-p "\\_<render\\_>" (projectile-rails-current-line))
 	   (projectile-rails-find-template-at-point))
 	  
-	  ((string-match-p "\\(c\\|C\\)ontroller$" name)
-	   (projectile-rails-goto-file "app/controllers/" name ".rb"))
-	  
 	  ((not (string-match-p "^[A-Z]" name))
 	   (projectile-rails-goto-file "app/models/" (singularize-string name) ".rb"))
 	  
 	  ((string-match-p "^[A-Z]" name)
-	   (or
-	    (projectile-rails-goto-file "app/models/" name ".rb")
-	    (projectile-rails-goto-file "lib/" name ".rb")))
-	  
-	  (t
-	   (projectile-rails-find-constant-at-point))))
+	   (cl-loop for dir in (-concat
+				(--map
+				 (substring it (length (projectile-rails-root)))
+				 (f-directories (projectile-expand-root "app/")))
+				'("lib/"))
+		    until (projectile-rails-goto-file dir name ".rb"))))
+    )
   )
 
 (defun projectile-rails-in-controller? ()

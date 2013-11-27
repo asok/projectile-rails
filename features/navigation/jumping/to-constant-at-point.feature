@@ -78,6 +78,15 @@ Feature: Jumping to constant at point
     When I run "projectile-rails-ff-at-point"
     Then I am in file "app/controllers/admin/users_controller.rb"
     
+  Scenario: Jumping to ruby constant which is defined in app/jobs
+    And I clear the buffer and insert:
+    """
+    Admin::FooBarJob
+    """
+    And I place the cursor between "Foo" and "Bar"
+    When I run "projectile-rails-ff-at-point"
+    Then I am in file "app/jobs/admin/foo_bar_job.rb"
+    
   Scenario: Not jumping to non-existant model
     And I clear the buffer and insert:
     """
