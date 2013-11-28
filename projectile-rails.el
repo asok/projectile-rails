@@ -403,6 +403,9 @@
 	  
 	  ((string-match-p "\\_<render\\_>" (projectile-rails-current-line))
 	   (projectile-rails-find-template-at-point))
+
+	  ((string-match-p "\\_<require_relative\\_>" (projectile-rails-current-line))
+	   (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
 	  
 	  ((not (string-match-p "^[A-Z]" name))
 	   (projectile-rails-goto-file "app/models/" (singularize-string name) ".rb"))
@@ -504,13 +507,13 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-sanitize-dir-name (name)
   (if (s-ends-with? "/" name) name (concat name "/")))
 
-;;stolen from rhtml-mode
 (defun projectile-rails-current-line ()
   (save-excursion
-    (beginning-of-line)
-    (set-mark-command nil)
-    (end-of-line)
-    (buffer-substring-no-properties (mark) (point))))
+    (let (beg)
+      (beginning-of-line)
+      (setq beg (point))
+      (end-of-line)
+      (buffer-substring-no-properties beg (point)))))
 
 (defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
   `(if (file-exists-p (projectile-expand-root ".zeus.sock"))
