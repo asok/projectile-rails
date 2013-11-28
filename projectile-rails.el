@@ -245,6 +245,12 @@
     )
   )
 
+
+(defun projectile-rails-list-entries (fun dir)
+  (--map
+   (substring it (length (concat (projectile-rails-root) dir)))
+   (funcall fun (projectile-expand-root dir))))
+
 (defun projectile-rails-find-log ()
   (interactive)
   ;;logs tend to not be under scm so do not resort to projectile-dir-files
@@ -253,7 +259,7 @@
 	       "log/"
 	       (projectile-completing-read
 		"log: "
-		(f-files (projectile-expand-root "log/"))))))
+		(projectile-rails-list-entries 'f-files "log/")))))
   (auto-revert-tail-mode +1)
   (setq-local auto-revert-verbose nil)
   (buffer-disable-undo))
@@ -404,8 +410,8 @@
 	  ((string-match-p "^[A-Z]" name)
 	   (cl-loop for dir in (-concat
 				(--map
-				 (substring it (length (projectile-rails-root)))
-				 (f-directories (projectile-expand-root "app/")))
+				 (concat "app/" it)
+				 (projectile-rails-list-entries 'f-directories "app/"))
 				'("lib/"))
 		    until (projectile-rails-goto-file dir name ".rb"))))
     )
