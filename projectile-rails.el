@@ -384,6 +384,13 @@
    (projectile-expand-root
     (concat (projectile-rails-sanitize-dir-name dir) (projectile-rails-declassify name) ext))))
 
+(defun projectile-rails-goto-gem (path)
+  (if (not (fboundp 'bundle-open))
+      (user-error "Please install budler.el from https://github.com/tobiassvn/bundler.el")
+    (message "Using bundle-open command to open the gem")
+    (bundle-open (car (s-split "/" path))))
+  )
+
 (defun projectile-rails-ff-at-point ()
   "Tries to find file at point"
   (interactive)
@@ -404,7 +411,7 @@
 	   (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
 
 	  ((string-match-p "\\_<require\\_>" (projectile-rails-current-line))
-	   (projectile-rails-goto-gem-file (thing-at-point 'filename)))
+	   (projectile-rails-goto-gem (thing-at-point 'filename)))
 	  
 	  ((not (string-match-p "^[A-Z]" name))
 	   (projectile-rails-goto-file "app/models/" (singularize-string name) ".rb"))
