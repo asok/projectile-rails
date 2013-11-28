@@ -384,10 +384,6 @@
    (projectile-expand-root
     (concat (projectile-rails-sanitize-dir-name dir) (projectile-rails-declassify name) ext))))
 
-(defun projectile-rails-find-template-at-point-mayb ()
-  (when (string-match-p "\\_<render\\_>" (projectile-rails-current-line))
-    (projectile-rails-find-template-at-point)))
-
 (defun projectile-rails-ff-at-point ()
   "Tries to find file at point"
   (interactive)
@@ -406,6 +402,9 @@
 
 	  ((string-match-p "\\_<require_relative\\_>" (projectile-rails-current-line))
 	   (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
+
+	  ((string-match-p "\\_<require\\_>" (projectile-rails-current-line))
+	   (projectile-rails-goto-gem-file (thing-at-point 'filename)))
 	  
 	  ((not (string-match-p "^[A-Z]" name))
 	   (projectile-rails-goto-file "app/models/" (singularize-string name) ".rb"))
