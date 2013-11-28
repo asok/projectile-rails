@@ -23,6 +23,8 @@ With Projectile Rails you can:
 
 Once you have setup [Melpa](http://melpa.milkbox.net/#/getting-started) you can use `package-install` command to install Projectile Rails. The package name is `projectile-rails`.
 
+## Usage
+
 ### Hooking up with Projectile
 
 To make it start alongside `projectile-mode`:
@@ -33,6 +35,21 @@ To make it start alongside `projectile-mode`:
 
 Probably you should read Projectile's [README](https://github.com/bbatsov/projectile) on setting up the completion system, caching and indexing files. Although the default settings are quite sensible and you should be ready to go without much tweaking.
 
+### Interactive commands
+
+Command                                | Description
+---------------------------------------|------------------------------------------------------------
+projectile-rails-model                 | Find a model using `projectile-completion-system`.
+projectile-rails-controller            | Find a controller using `projectile-completion-system`.
+projectile-rails-view                  | Find a template or partial using `projectile-completion-system`.
+projectile-rails-helper                | Find a helper using `projectile-completion-system`.
+projectile-rails-lib                   | Find a lib using `projectile-completion-system`.
+projectile-rails-spec                  | Find a spec using `projectile-completion-system`.
+projectile-rails-find-current-resource | Find files related to the current resource using `projectile-completion-system`.
+projectile-rails-console               | Run `rails console` command in `inf-ruby` buffer.
+projectile-rails-rake                  | Select a rake task to run using `projectile-completion-system`.
+projectile-rails-generate              | Run `rails generate` command.
+projectile-rails-ff-at-point           | Go to a file at point. Depending on the context that might be a constant, template or partial, or a gem.
 
 ## Contribution
 

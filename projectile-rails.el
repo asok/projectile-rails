@@ -543,7 +543,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "e") 'projectile-rails-rake)
       (define-key prefix-map (kbd "g") 'projectile-rails-generate)
-      (define-key prefix-map (kbd "f") 'projectile-rails-ff-at-point)
+      (define-key prefix-map (kbd "RET") 'projectile-rails-ff-at-point)
 
       (define-key map projectile-rails-keymap-prefix prefix-map))
     map)
