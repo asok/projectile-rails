@@ -383,12 +383,19 @@
       (concat command-prefix (read-string command-prefix))
       'projectile-rails-generate-mode))))
 
+(defun projectile-rails-sanitize-and-goto-file (dir name &optional ext)
+  "Calls `projectile-rails-goto-file' with passed arguments sanitizing them before."
+  (projectile-rails-goto-file
+   (projectile-rails-sanitize-dir-name dir)
+   (projectile-rails-declassify name)
+   ext))
+
 (defun projectile-rails-goto-file (dir name &optional ext)
-  (projectile-rails-ff
-   (projectile-expand-root
-    (concat (projectile-rails-sanitize-dir-name dir) (projectile-rails-declassify name) ext))))
+  "Concats the passed DIR, NAME and EXT and visits the resulting filepath after expanding root."
+  (projectile-rails-ff (projectile-expand-root (concat dir name ext))))
 
 (defun projectile-rails-goto-gem (path)
+  "Uses `bundle-open' function to open gem at point. If the function is defined notifies user."
   (if (not (fboundp 'bundle-open))
       (user-error "Please install budler.el from https://github.com/tobiassvn/bundler.el")
     (message "Using bundle-open command to open the gem")
@@ -401,11 +408,11 @@
   (let ((name (projectile-rails-name-at-point))
 	(case-fold-search nil))
     (cond ((string-match "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (projectile-rails-current-line))
-	   (projectile-rails-goto-file
+	   (projectile-rails-sanitize-and-goto-file
 	    "app/controllers/" (match-string 1 (projectile-rails-current-line)) ".rb"))
 	  
 	  ((string-match "Rendered \\([^ ]+\\)" (projectile-rails-current-line))
-	   (projectile-rails-goto-file
+	   (projectile-rails-sanitize-and-goto-file
 	    "app/views/" (match-string 1 (projectile-rails-current-line))))
 	  
 	  ((string-match-p "\\_<render\\_>" (projectile-rails-current-line))
@@ -418,7 +425,7 @@
 	   (projectile-rails-goto-gem (thing-at-point 'filename)))
 	  
 	  ((not (string-match-p "^[A-Z]" name))
-	   (projectile-rails-goto-file "app/models/" (singularize-string name) ".rb"))
+	   (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
 	  
 	  ((string-match-p "^[A-Z]" name)
 	   (cl-loop for dir in (-concat
@@ -426,7 +433,7 @@
 				 (concat "app/" it)
 				 (projectile-rails-list-entries 'f-directories "app/"))
 				'("lib/"))
-		    until (projectile-rails-goto-file dir name ".rb"))))
+		    until (projectile-rails-sanitize-and-goto-file dir name ".rb"))))
     )
   )
 
