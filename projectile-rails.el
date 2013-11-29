@@ -160,6 +160,14 @@
   :group 'projectile-rails
   :type 'string)
 
+(defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
+  `(if (file-exists-p (projectile-expand-root ".zeus.sock"))
+       ,command-for-zeus
+     ,command-for-bundler))
+
+(defmacro projetile-rails-with-root (body-form)
+  `(let ((default-directory (projectile-rails-root)))
+     ,body-form))
 
 (defun projectile-rails--highlight-keywords (keywords)
   "Highlight the passed KEYWORDS in current buffer."
@@ -520,15 +528,6 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (setq beg (point))
       (end-of-line)
       (buffer-substring-no-properties beg (point)))))
-
-(defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
-  `(if (file-exists-p (projectile-expand-root ".zeus.sock"))
-       ,command-for-zeus
-     ,command-for-bundler))
-
-(defmacro projetile-rails-with-root (body-form)
-  `(let ((default-directory (projectile-rails-root)))
-     ,body-form))
 
 (defvar projectile-rails-mode-map
   (let ((map (make-sparse-keymap)))
