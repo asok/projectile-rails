@@ -409,7 +409,7 @@
 	    "app/views/" (match-string 1 (projectile-rails-current-line))))
 	  
 	  ((string-match-p "\\_<render\\_>" (projectile-rails-current-line))
-	   (projectile-rails-find-template-at-point))
+	   (projectile-rails-goto-template-at-point))
 
 	  ((string-match-p "\\_<require_relative\\_>" (projectile-rails-current-line))
 	   (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
@@ -458,7 +458,7 @@
 	 (t
 	  default-directory))))
 
-(defun projectile-rails-find-template-at-point ()
+(defun projectile-rails-goto-template-at-point ()
   (interactive)
   (let* ((template (projectile-rails-name-at-point))
 	 (dir (projectile-rails-template-dir template))
