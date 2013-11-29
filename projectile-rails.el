@@ -548,6 +548,23 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     map)
   "Keymap for `projectile-rails-mode'.")
 
+(easy-menu-define projectile-rails-menu projectile-rails-mode-map
+  "Menu for `projectile-rails-mode'."
+  '("Rails"
+    ["Find model"		 projectile-rails-find-model]
+    ["Find controller"		 projectile-rails-find-controller]
+    ["Find view"		 projectile-rails-find-view]
+    ["Find helper"		 projectile-rails-find-helper]
+    ["Find lib"			 projectile-rails-find-lib]
+    ["Find spec"		 projectile-rails-find-spec]
+    ["Find current resource"	 projectile-rails-find-current-resource]
+    "--"
+    ["Go to file at point"	 projectile-rails-goto-file-at-point]
+    "--"
+    ["Run console"		 projectile-rails-console]
+    ["Run rake"			 projectile-rails-rake]
+    ["Run rails generate"	 projectile-rails-generate]))
+
 ;;;###autoload
 (define-minor-mode projectile-rails-mode
   "Rails mode based on projectile"
