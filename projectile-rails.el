@@ -430,9 +430,6 @@
     )
   )
 
-(defun projectile-rails-in-controller? ()
-  (string-match "app/controllers/\\(.+\\)_controller\\.rb$" (buffer-file-name)))
-
 (defun projectile-rails-template-name (template)
   (-first-item (s-split "\\." (-last-item (s-split "/" template)))))
 
@@ -452,7 +449,7 @@
    (cond ((string-match "\\(.+\\)/[^/]+$" template)
 	  (projectile-expand-root
 	   (concat "app/views/" (match-string 1 template))))
-	 ((projectile-rails-in-controller?)
+	 ((string-match "app/controllers/\\(.+\\)_controller\\.rb$" (buffer-file-name))
 	  (projectile-expand-root
 	   (concat "app/views/" (match-string 1 (buffer-file-name)))))
 	 (t
