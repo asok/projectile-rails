@@ -1,4 +1,4 @@
-Feature: Jumping to constant at point
+Feature: Going to constant at point
   In order to do find fast constants at point
   As a user
   I want to be able to run projectile-rails command and jump to the constant at point
@@ -7,7 +7,7 @@ Feature: Jumping to constant at point
     Given I open the app file "app/controllers/foos_controller.rb"
     And I turn on projectile-mode
 
-  Scenario: Jumping to a model from a ruby symbol in singular form
+  Scenario: Going to a model from a ruby symbol in singular form
     And I clear the buffer and insert:
     """
     belongs_to :user
@@ -16,7 +16,7 @@ Feature: Jumping to constant at point
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/models/user.rb"
 
-  Scenario: Jumping to a model from a ruby symbol in plural form
+  Scenario: Going to a model from a ruby symbol in plural form
     And I clear the buffer and insert:
     """
     belongs_to :users
@@ -25,7 +25,7 @@ Feature: Jumping to constant at point
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/models/user.rb"
 
-  Scenario: Jumping to a lib from a ruby constant in plural form
+  Scenario: Going to a lib from a ruby constant in plural form
     And I clear the buffer and insert:
     """
     def bar
@@ -36,7 +36,7 @@ Feature: Jumping to constant at point
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "lib/admin/memberships.rb"
 
-  Scenario: Jumping to a model from a ruby constant
+  Scenario: Going to a model from a ruby constant
     And I clear the buffer and insert:
     """
     def bar
@@ -47,7 +47,7 @@ Feature: Jumping to constant at point
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/models/user.rb"
 
-  Scenario: Jumping to a model from a namespaced ruby constant
+  Scenario: Going to a model from a namespaced ruby constant
     And I clear the buffer and insert:
     """
     def bar
@@ -58,7 +58,7 @@ Feature: Jumping to constant at point
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/models/admin/user.rb"
 
-  Scenario: Jumping to a lib from a namespaced ruby constant
+  Scenario: Going to a lib from a namespaced ruby constant
     And I clear the buffer and insert:
     """
     def bar
@@ -69,7 +69,7 @@ Feature: Jumping to constant at point
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "lib/admin/logging.rb"
     
-  Scenario: Jumping to ruby constant which is a controller
+  Scenario: Going to ruby constant which is a controller
     And I clear the buffer and insert:
     """
     Admin::UsersController
@@ -78,7 +78,7 @@ Feature: Jumping to constant at point
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/controllers/admin/users_controller.rb"
     
-  Scenario: Jumping to ruby constant which is defined in app/jobs
+  Scenario: Going to ruby constant which is defined in app/jobs
     And I clear the buffer and insert:
     """
     Admin::FooBarJob
@@ -87,7 +87,7 @@ Feature: Jumping to constant at point
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/jobs/admin/foo_bar_job.rb"
     
-  Scenario: Not jumping to non-existant model
+  Scenario: Not going to non-existant model
     And I clear the buffer and insert:
     """
     def bar

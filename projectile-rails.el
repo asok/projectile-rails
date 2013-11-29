@@ -193,36 +193,32 @@
 	 (--filter (string-match-p re it)
 		   (projectile-dir-files (projectile-expand-root dir)))))
 
-(defun projectile-rails-find-file-in-dir (prompt dir re)
-  (find-file 
-   (projectile-expand-root (concat dir
-				   (projectile-completing-read
-				    prompt
-				    (projectile-rails-dir-files dir re))))))
+(defun projectile-rails-interactive (prompt dir regexp)
+  (list (projectile-completing-read prompt (projectile-rails-dir-files dir regexp))))
 
-(defun projectile-rails-find-model ()
-  (interactive)
-  (projectile-rails-find-file-in-dir "models: " "app/models/" "\\.rb$"))
+(defun projectile-rails-find-model (model)
+  (interactive (projectile-rails-interactive "model: " "app/models/" "\\.rb$"))
+  (projectile-rails-goto-file "app/models/" model))
 
-(defun projectile-rails-find-controller ()
-  (interactive)
-  (projectile-rails-find-file-in-dir "controller: " "app/controllers/" "\\.rb$"))
+(defun projectile-rails-find-controller (controller)
+  (interactive (projectile-rails-interactive "controller: " "app/controllers/" "\\.rb$"))
+  (projectile-rails-goto-file "app/controllers/" controller))
 
-(defun projectile-rails-find-view ()
-  (interactive)
-  (projectile-rails-find-file-in-dir "views: " "app/views/" projectile-rails-views-re))
+(defun projectile-rails-find-view (view)
+  (interactive (projectile-rails-interactive "view: " "app/views/" projectile-rails-views-re))
+  (projectile-rails-goto-file "app/views/" view))
 
-(defun projectile-rails-find-helper ()
-  (interactive)
-  (projectile-rails-find-file-in-dir "helpers: " "app/helpers/" "\\.rb$"))
+(defun projectile-rails-find-helper (helper)
+  (interactive (projectile-rails-interactive "helper: " "app/helpers/" "\\.rb$"))
+  (projectile-rails-goto-file "app/helpers/" helper))
 
-(defun projectile-rails-find-lib ()
-  (interactive)
-  (projectile-rails-find-file-in-dir "libs: " "lib/" "\\.rb$"))
+(defun projectile-rails-find-lib (lib)
+  (interactive (projectile-rails-interactive "lib: " "lib/" "\\.rb$"))
+  (projectile-rails-goto-file "lib/" lib))
 
-(defun projectile-rails-find-spec ()
-  (interactive)
-  (projectile-rails-find-file-in-dir "specs: " "spec/" "_spec\\.rb$"))
+(defun projectile-rails-find-spec (spec)
+  (interactive (projectile-rails-interactive "spec: " "spec/" "\\.rb$"))
+  (projectile-rails-goto-file "spec/" spec))
 
 (defun projectile-rails-find-current-resource ()
   (interactive)
