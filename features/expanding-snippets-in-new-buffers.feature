@@ -4,8 +4,7 @@ Feature: Filling new buffer with class definition
   I want to be able to create a new file and have the buffer filled a class skeleton
 
 Background:
-  Given I open the app file "app/models/user.rb"
-  And I turn on snippet expansion
+  Given I turn on snippet expansion
 
 Scenario: Opening new model
   When I open the app file "app/models/foo.rb"
@@ -28,6 +27,7 @@ Scenario: Opening new controller
   """
 
 Scenario: Opening a new namespaced controller
+  Given directory "app/controllers/admin/" exists
   When I open the app file "app/controllers/admin/foos_controller.rb"
   And I turn on projectile-mode
   Then I should see:
@@ -48,6 +48,7 @@ Scenario: Opening a new lib
   """
 
 Scenario: Opening a new namespaced lib
+  Given directory "lib/admin/" exists
   When I open the app file "lib/admin/fooing.rb"
   And I turn on projectile-mode
   Then I should see:

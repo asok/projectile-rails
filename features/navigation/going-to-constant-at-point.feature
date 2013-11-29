@@ -8,6 +8,7 @@ Feature: Going to constant at point
     And I turn on projectile-mode
 
   Scenario: Going to a model from a ruby symbol in singular form
+    And file "app/models/user.rb" exists
     And I clear the buffer and insert:
     """
     belongs_to :user
@@ -17,6 +18,7 @@ Feature: Going to constant at point
     Then I am in file "app/models/user.rb"
 
   Scenario: Going to a model from a ruby symbol in plural form
+    And file "app/models/user.rb" exists
     And I clear the buffer and insert:
     """
     belongs_to :users
@@ -26,6 +28,7 @@ Feature: Going to constant at point
     Then I am in file "app/models/user.rb"
 
   Scenario: Going to a lib from a ruby constant in plural form
+    And file "lib/admin/memberships.rb" exists
     And I clear the buffer and insert:
     """
     def bar
@@ -37,6 +40,7 @@ Feature: Going to constant at point
     Then I am in file "lib/admin/memberships.rb"
 
   Scenario: Going to a model from a ruby constant
+    And file "app/models/user.rb" exists
     And I clear the buffer and insert:
     """
     def bar
@@ -48,6 +52,7 @@ Feature: Going to constant at point
     Then I am in file "app/models/user.rb"
 
   Scenario: Going to a model from a namespaced ruby constant
+    And file "app/models/admin/user.rb" exists
     And I clear the buffer and insert:
     """
     def bar
@@ -59,6 +64,7 @@ Feature: Going to constant at point
     Then I am in file "app/models/admin/user.rb"
 
   Scenario: Going to a lib from a namespaced ruby constant
+    And file "lib/admin/logging.rb" exists
     And I clear the buffer and insert:
     """
     def bar
@@ -70,6 +76,7 @@ Feature: Going to constant at point
     Then I am in file "lib/admin/logging.rb"
     
   Scenario: Going to ruby constant which is a controller
+    And file "app/controllers/admin/users_controller.rb" exists
     And I clear the buffer and insert:
     """
     Admin::UsersController
@@ -79,6 +86,7 @@ Feature: Going to constant at point
     Then I am in file "app/controllers/admin/users_controller.rb"
     
   Scenario: Going to ruby constant which is defined in app/jobs
+    And file "app/jobs/admin/foo_bar_job.rb" exists
     And I clear the buffer and insert:
     """
     Admin::FooBarJob

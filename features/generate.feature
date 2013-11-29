@@ -18,6 +18,7 @@ Scenario: Running generate rspec:install when zeus is running
 
 Scenario: Using buttons
   Given I open the app file "app/models/user.rb"
+  And file "spec/spec_helper.rb" exists
   And I simulate running "projectile-rails-generate" inputting "rspec:install" with output:
   """
   be rails g rspec:install

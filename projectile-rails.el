@@ -450,8 +450,8 @@
 	  ((string-match at-line-re (projectile-rails-current-line))
 	   (match-string 1 (projectile-rails-current-line)))
 	  (t
-	   (string-match at-point-re (buffer-file-name))
-	   (match-string 1 (buffer-file-name))))))
+	   (when (string-match at-point-re (buffer-file-name))
+	     (match-string 1 (buffer-file-name)))))))
 
 (defun projectile-rails-template-dir (template)
   (projectile-rails-sanitize-dir-name

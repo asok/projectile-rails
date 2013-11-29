@@ -1,6 +1,6 @@
 (When "^I open the app file \"\\(.+\\)\""
       (lambda (filename)
-	(find-file (concat projectile-rails-app-path filename))))
+	(find-file (concat projectile-rails-test-app-path "/" filename))))
 
 (When "^I open the file \"\\(.+\\)\""
       (lambda (filename) (find-file (concat projectile-rails-root-path "/" filename))))
@@ -52,15 +52,16 @@
 
 (Given "^zeus is running"
        (lambda ()
-	 (f-touch (concat projectile-rails-app-path ".zeus.sock"))))
+	 (f-touch (concat projectile-rails-test-app-path "/.zeus.sock"))))
 
 (Given "the cache file with projectile-rails task exists"
        (lambda ()
-	 (with-temp-file (concat projectile-rails-app-path "tmp/rake-output")
+	 (with-temp-file (concat projectile-rails-test-app-path "/tmp/rake-output")
 	   (insert "rake projectile-rails #a test task\n"))))
 
 (Then "^projectile-rails should be turned on"
-      (lambda () (should projectile-rails-mode)))
+      (lambda ()
+	(should projectile-rails-mode)))
 
 (Then "^projectile-rails should not be turned on"
       (lambda () (should-not projectile-rails-mode)))
@@ -122,3 +123,7 @@
 	(When "I clear the buffer")
 	(compilation-filter (get-buffer-process (current-buffer)) output)
 	(run-hook-with-args 'compilation-finish-functions (current-buffer) "")))
+
+(Given "\\(?:directory\\|file\\) \"\\(.*\\)\" exists"
+       (lambda (filepath)
+	 (projectile-rails-test-touch-file filepath)))

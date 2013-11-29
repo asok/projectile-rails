@@ -4,6 +4,7 @@ Feature: Going from a ruby file from require line
   I want to be able to run projectile-rails command and jump to the file or gem at point
 
 Scenario: Going at: require_relative './admin/logging'
+  Given file "lib/admin/logging.rb" exists
   And I open the app file "lib/logging.rb"
   And I clear the buffer and insert:
   """
@@ -14,6 +15,7 @@ Scenario: Going at: require_relative './admin/logging'
   Then I am in file "lib/admin/logging.rb"
 
 Scenario: Going at: require_relative 'admin/logging'
+  Given file "lib/admin/logging.rb" exists
   And I open the app file "lib/logging.rb"
   And I clear the buffer and insert:
   """

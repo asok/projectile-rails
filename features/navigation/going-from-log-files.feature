@@ -4,7 +4,8 @@ Feature: Going from a line in a log file
   I want to be able to run projectile-rails command and jump to the correct file
   
   Scenario: Going from: Processing by Admin/UsersController#new as HTML
-    Given I open the app file "app/models/user.rb"
+    Given file "app/controllers/admin/users_controller.rb" exists
+    And I open the app file "app/models/user.rb"
     And I turn on projectile-mode
     And I clear the buffer and insert:
     """
@@ -15,7 +16,8 @@ Feature: Going from a line in a log file
     Then I am in file "app/controllers/admin/users_controller.rb"
 
   Scenario: Going from: Rendered users/index.html.erb (43.5ms)
-    Given I open the app file "app/models/user.rb"
+    Given file "app/views/users/index.html.erb" exists
+    And I open the app file "app/models/user.rb"
     And I turn on projectile-mode
     And I clear the buffer and insert:
     """
