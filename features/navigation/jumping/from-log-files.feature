@@ -11,7 +11,7 @@ Feature: Jumping from a line in a log file
     Processing by Admin::UsersController#new as HTML
     """
     And I place the cursor between "Admin::Use" and "rs"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/controllers/admin/users_controller.rb"
 
   Scenario: Jumping from: Rendered users/index.html.erb (43.5ms)
@@ -22,5 +22,5 @@ Feature: Jumping from a line in a log file
         Rendered users/index.html.erb (43.5ms)
     """
     And I place the cursor between "users/in" and "dex"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/views/users/index.html.erb"

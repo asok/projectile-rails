@@ -49,7 +49,7 @@ projectile-rails-find-current-resource | Find files related to the current resou
 projectile-rails-console               | Run `rails console` command in `inf-ruby` buffer.
 projectile-rails-rake                  | Select a rake task to run using `projectile-completion-system`.
 projectile-rails-generate              | Run `rails generate` command.
-projectile-rails-ff-at-point           | Go to a file at point. Depending on the context that might be a constant, template or partial, or a gem.
+projectile-rails-goto-file-at-point    | Go to a file at point. Depending on the context that might be a constant, template or partial, or a gem.
 
 ## Contribution
 

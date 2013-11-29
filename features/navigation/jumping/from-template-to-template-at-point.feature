@@ -13,7 +13,7 @@ Background:
     render 'index'
     """
     And I place the cursor between "ind" and "ex"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/views/users/index.html.erb"
 
   Scenario: Jumping from: render 'users/index'
@@ -23,7 +23,7 @@ Background:
     render 'users/index'
     """
     And I place the cursor between "ind" and "ex"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/views/users/index.html.erb"
 
   Scenario: Jumping from: render 'admin/users/index'
@@ -33,7 +33,7 @@ Background:
     render 'admin/users/index'
     """
     And I place the cursor between "ind" and "ex"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/views/admin/users/index.html.haml"
 
   Scenario: Jumping from: render 'users/user'
@@ -43,7 +43,7 @@ Background:
     render 'users/user'
     """
     And I place the cursor between "use" and "r"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/views/users/_user.html.erb"
 
   Scenario: Jumping from: render 'user'
@@ -53,5 +53,5 @@ Background:
     render 'user'
     """
     And I place the cursor between "use" and "r"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/views/users/_user.html.erb"

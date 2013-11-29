@@ -13,7 +13,7 @@ Feature: Jumping to constant at point
     belongs_to :user
     """
     And I place the cursor between "belongs_to :u" and "ser"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/models/user.rb"
 
   Scenario: Jumping to a model from a ruby symbol in plural form
@@ -22,7 +22,7 @@ Feature: Jumping to constant at point
     belongs_to :users
     """
     And I place the cursor between "belongs_to :u" and "sers"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/models/user.rb"
 
   Scenario: Jumping to a lib from a ruby constant in plural form
@@ -33,7 +33,7 @@ Feature: Jumping to constant at point
     end
     """
     And I place the cursor between "Admin::M" and "emberships"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "lib/admin/memberships.rb"
 
   Scenario: Jumping to a model from a ruby constant
@@ -44,7 +44,7 @@ Feature: Jumping to constant at point
     end
     """
     And I place the cursor between "Use" and "r"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/models/user.rb"
 
   Scenario: Jumping to a model from a namespaced ruby constant
@@ -55,7 +55,7 @@ Feature: Jumping to constant at point
     end
     """
     And I place the cursor between "Use" and "r"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/models/admin/user.rb"
 
   Scenario: Jumping to a lib from a namespaced ruby constant
@@ -66,7 +66,7 @@ Feature: Jumping to constant at point
     end
     """
     And I place the cursor between "Admin::Log" and "ging"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "lib/admin/logging.rb"
     
   Scenario: Jumping to ruby constant which is a controller
@@ -75,7 +75,7 @@ Feature: Jumping to constant at point
     Admin::UsersController
     """
     And I place the cursor between "Admin::Use" and "rs"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/controllers/admin/users_controller.rb"
     
   Scenario: Jumping to ruby constant which is defined in app/jobs
@@ -84,7 +84,7 @@ Feature: Jumping to constant at point
     Admin::FooBarJob
     """
     And I place the cursor between "Foo" and "Bar"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/jobs/admin/foo_bar_job.rb"
     
   Scenario: Not jumping to non-existant model
@@ -95,5 +95,5 @@ Feature: Jumping to constant at point
     end
     """
     And I place the cursor between "Ba" and "r"
-    When I run "projectile-rails-ff-at-point"
+    When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/controllers/foos_controller.rb"

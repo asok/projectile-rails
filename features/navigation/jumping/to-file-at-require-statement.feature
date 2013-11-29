@@ -10,7 +10,7 @@ Scenario: Jumping at: require_relative './admin/logging'
   require_relative './admin/logging'
   """
   And I place the cursor between "log" and "ging"
-  When I run "projectile-rails-ff-at-point"
+  When I run "projectile-rails-goto-file-at-point"
   Then I am in file "lib/admin/logging.rb"
 
 Scenario: Jumping at: require_relative 'admin/logging'
@@ -20,5 +20,5 @@ Scenario: Jumping at: require_relative 'admin/logging'
   require_relative 'admin/logging'
   """
   And I place the cursor between "log" and "ging"
-  When I run "projectile-rails-ff-at-point"
+  When I run "projectile-rails-goto-file-at-point"
   Then I am in file "lib/admin/logging.rb"
