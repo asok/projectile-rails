@@ -355,7 +355,7 @@
 		(s-join
 		 ""
 		 (--map (s-lex-format "module ${it}\n") (butlast parts)))
-		"class %s\n$1\nend"
+		"${1:module} %s\n$2\nend"
 		(s-join "" (make-list (1- (length parts)) "\nend")))
 	       (-last-item parts))))))))
 
