@@ -352,9 +352,11 @@
 	    (let ((parts (projectile-rails-classify (match-string 1 name))))
 	      (format
 	       (concat
-		(--mapcat (s-lex-format "module ${it}\n") (butlast parts 1))
+		(s-join
+		 ""
+		 (--map (s-lex-format "module ${it}\n") (butlast parts)))
 		"class %s\n$1\nend"
-		(s-join "" (make-list (- (length parts) 1) "\nend")))
+		(s-join "" (make-list (1- (length parts)) "\nend")))
 	       (-last-item parts))))))))
 
 (defun projectile-rails-classify (name)
