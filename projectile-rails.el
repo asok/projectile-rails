@@ -505,6 +505,22 @@ The binded variables are \"singular\" and \"plural\"."
       (message "Could not recognize the template's format")
       (dired dir))))
 
+(defun projectile-rails-goto-gemfile ()
+  (interactive)
+  (projectile-rails-goto-file "./" "Gemfile"))
+
+(defun projectile-rails-goto-schema ()
+  (interactive)
+  (projectile-rails-goto-file "db/" "schema.rb"))
+
+(defun projectile-rails-goto-routes ()
+  (interactive)
+  (projectile-rails-goto-file "config/" "routes.rb"))
+
+(defun projectile-rails-goto-spec-helper ()
+  (interactive)
+  (projectile-rails-goto-file "spec/" "spec_helper.rb"))
+
 (defun projectile-rails-ff (path &optional ask)
   "Calls `find-file' function on PATH when it is not nil and the file exists.
 
@@ -556,6 +572,22 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (end-of-line)
       (buffer-substring-no-properties beg (point)))))
 
+(defvar projectile-rails-mode-goto-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "m") 'projectile-rails-find-current-model)
+    (define-key map (kbd "c") 'projectile-rails-find-current-controller)
+    (define-key map (kbd "v") 'projectile-rails-find-current-view)
+    (define-key map (kbd "h") 'projectile-rails-find-current-helper)
+    (define-key map (kbd "s") 'projectile-rails-find-current-spec)
+    (define-key map (kbd "f") 'projectile-rails-goto-file-at-point)
+    (define-key map (kbd "g") 'projectile-rails-goto-gemfile)
+    (define-key map (kbd "r") 'projectile-rails-goto-routes)
+    (define-key map (kbd "h") 'projectile-rails-goto-schema)
+    (define-key map (kbd "p") 'projectile-rails-goto-spec-helper)
+    map)
+  "A goto map for `projectile-rails-mode'."
+)
+
 (defvar projectile-rails-mode-map
   (let ((map (make-sparse-keymap)))
     (let ((prefix-map (make-sparse-keymap)))
@@ -572,9 +604,10 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "S") 'projectile-rails-find-current-spec)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "e") 'projectile-rails-rake)
-      (define-key prefix-map (kbd "g") 'projectile-rails-generate)
+      (define-key prefix-map (kbd "t") 'projectile-rails-generate)
       (define-key prefix-map (kbd "RET") 'projectile-rails-goto-file-at-point)
 
+      (define-key prefix-map (kbd "g") projectile-rails-mode-goto-map)
       (define-key map projectile-rails-keymap-prefix prefix-map))
     map)
   "Keymap for `projectile-rails-mode'.")
