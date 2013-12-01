@@ -24,3 +24,21 @@ Scenario: Going at: require_relative 'admin/logging'
   And I place the cursor between "log" and "ging"
   When I run "projectile-rails-goto-file-at-point"
   Then I am in file "lib/admin/logging.rb"
+
+Scenario: Going to gem at line: require 'foo'
+  Given there is foo gem in directory "vendor/foo/"
+  And I open the app file "Gemfile"
+  And I clear the buffer and insert:
+  """
+  gem 'foo', path: './vendor/foo'
+  """
+  And I save the buffer
+  And I open the app file "app/models/user.rb"
+  And I clear the buffer and insert:
+  """
+  require 'foo'
+  """
+  When I place the cursor between "'fo" and "o'"
+  And I run "projectile-rails-goto-file-at-point"
+  Then I am in a dired buffer "vendor/foo/"
+

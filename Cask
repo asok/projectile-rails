@@ -8,6 +8,7 @@
 
 (development
  (depends-on "yasnippet")
+ (depends-on "bundler")
  (depends-on "ert-expectations")
  (depends-on "el-mock")
  (depends-on "ecukes")

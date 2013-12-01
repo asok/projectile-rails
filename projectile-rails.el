@@ -396,12 +396,12 @@
   "Concats the passed DIR, NAME and EXT and visits the resulting filepath after expanding root."
   (projectile-rails-ff (projectile-expand-root (concat dir name ext))))
 
-(defun projectile-rails-goto-gem (path)
-  "Uses `bundle-open' function to open gem at point. If the function is defined notifies user."
+(defun projectile-rails-goto-gem (gem)
+  "Uses `bundle-open' to open GEM. If the function is not defined notifies user."
   (if (not (fboundp 'bundle-open))
       (user-error "Please install budler.el from https://github.com/tobiassvn/bundler.el")
     (message "Using bundle-open command to open the gem")
-    (bundle-open (car (s-split "/" path))))
+    (bundle-open (car (s-split "/" gem))))
   )
 
 (defun projectile-rails-goto-file-at-point ()

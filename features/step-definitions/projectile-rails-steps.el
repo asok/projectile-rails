@@ -122,3 +122,11 @@
 (Given "\\(?:directory\\|file\\) \"\\(.*\\)\" exists"
        (lambda (filepath)
 	 (projectile-rails-test-touch-file filepath)))
+
+(Given "there is foo gem in directory \"\\(.+\\)\""
+       (lambda (dir)
+	 (projectile-rails-test-create-foo-gem dir)))
+
+(Given "I save the buffer"
+       (lambda ()
+	 (save-buffer)))

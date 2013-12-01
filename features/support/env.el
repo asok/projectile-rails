@@ -21,6 +21,16 @@
 	  (make-directory fullpath)
 	(f-touch fullpath)))))
 
+(defun projectile-rails-test-create-foo-gem (dir)
+  (make-directory (concat projectile-rails-test-app-path dir))
+  (find-file (concat projectile-rails-test-app-path dir "foo.gemspec"))
+  (insert "Gem::Specification.new do |spec|
+  spec.name          = 'foo'
+  spec.version       = '0.0.0'
+end")
+  (save-buffer)
+  )
+
 (require 'projectile-rails)
 (require 'espuds)
 (require 'ert)
@@ -58,6 +68,7 @@
 		     "spec/lib/"
 		     "spec/models/"
 		     "tmp/"
+		     "vendor/"
 		     "Gemfile"
 		     "config/environment.rb")
        do (projectile-rails-test-touch-file path))
@@ -65,6 +76,7 @@
 
 (Before
  (require 'yasnippet)
+ (require 'bundler)
  (require 'projectile-rails)
 
  (add-hook 'projectile-mode-hook 'projectile-rails-on)

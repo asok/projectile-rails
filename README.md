@@ -65,3 +65,5 @@ Run all tests with:
 ```bash
 $ make test
 ```
+
+For all of them to pass you will need the `bundle` executable in your path.
