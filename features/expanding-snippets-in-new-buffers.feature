@@ -42,7 +42,7 @@ Scenario: Opening a new lib
   And I turn on projectile-mode
   Then I should see:
   """
-  class Fooing
+  module Fooing
     
   end
   """
@@ -54,7 +54,7 @@ Scenario: Opening a new namespaced lib
   Then I should see:
   """
   module Admin
-    class Fooing
+    module Fooing
       
     end
   end

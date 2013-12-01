@@ -14,11 +14,6 @@
 (defvar projectile-rails-test-app-path
   (concat (make-temp-file "projectile-rails-test" t) "/"))
 
-(defvar projectile-rails-test-completion-buffer "*projectile-rails-test-completion*")
-
-(defun projectile-rails-buffer-exists-p (name)
- (-contains? (-map 'buffer-name (buffer-list)) name))
-
 (defun projectile-rails-test-touch-file (filepath)
   (let ((fullpath (expand-file-name filepath projectile-rails-test-app-path)))
     (unless (file-exists-p fullpath)
@@ -78,21 +73,12 @@
        (when (file-exists-p (concat projectile-rails-test-app-path name))
 	 (f-delete (concat projectile-rails-test-app-path name))))
 
- (loop for name in '("*projectile-rails-compilation*" "*projectile-rails-generate*") do
-       (when (projectile-rails-buffer-exists-p name)
-	 (kill-buffer name)))
-
  (setq projectile-completion-system 'ido
        projectile-rails-expand-snippet nil)
-
- (when (projectile-rails-buffer-exists-p projectile-rails-test-completion-buffer)
-   (with-current-buffer projectile-rails-test-completion-buffer
-     (Given "the buffer is empty")))
  )
 
 (After
  (yas-exit-all-snippets)
- (set-buffer-modified-p nil)
  (--map (kill-buffer it) (buffer-list))
  )
 

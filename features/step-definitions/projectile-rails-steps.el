@@ -79,11 +79,6 @@
       (lambda ()
 	(should (and auto-revert-tail-mode (not auto-revert-verbose)))))
 
-(Then "^the completions should be:"
-      (lambda (text)
-	(with-current-buffer projectile-rails-test-completion-buffer
-	  (Then "I should see:" text))))
-
 (And "I exit the snippets"
      (lambda ()
        (yas-exit-all-snippets)))
