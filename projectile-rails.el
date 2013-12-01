@@ -220,35 +220,60 @@
   (interactive (projectile-rails-interactive "spec: " "spec/" "\\.rb$"))
   (projectile-rails-goto-file "spec/" spec))
 
-(defun projectile-rails-find-current-resource ()
+(defmacro projectile-rails-find-current-resource (dir re)
+  "RE will be the argument to `s-lex-format'.
+
+The binded variables are \"singular\" and \"plural\"."
+  `(let* ((singular (projectile-rails-current-resource-name))
+	 (plural (pluralize-string singular))
+	 (files (projectile-rails-dir-files ,dir (s-lex-format ,re))))
+    (if (= (length files) 1)
+	(projectile-rails-goto-file ,dir (-first-item files))
+      (projectile-rails-goto-file
+       ,dir
+       (projectile-completing-read "Which exactly: " files))))
+  )
+
+(defun projectile-rails-find-current-model ()
   (interactive)
-  (let* ((name (projectile-rails-current-resource-name))
-	 (singular (singularize-string name))
-	 (plural (pluralize-string name)))
-    (find-file 
-     (projectile-expand-root 
-      (projectile-completing-read
-       (concat singular ": ")
-       (--filter
-	(string-match-p (s-lex-format "\\(${singular}\\|${plural}\\)\\(_controller\\)?\\(_spec\\)?\\.rb$") it) 
-	(projectile-current-project-files)))))))
+  (projectile-rails-find-current-resource
+   "app/models/" "/${singular}\\.rb$"))
+
+(defun projectile-rails-find-current-controller ()
+  (interactive)
+  (projectile-rails-find-current-resource
+   "app/controllers/" "/${plural}_controller\\.rb$"))
+
+(defun projectile-rails-find-current-view ()
+  (interactive)
+  (projectile-rails-find-current-resource
+   "app/views/" "/${plural}/.+$"))
+
+(defun projectile-rails-find-current-helper ()
+  (interactive)
+  (projectile-rails-find-current-resource
+   "app/helpers/" "/${plural}_helper\\.rb$"))
+
+(defun projectile-rails-find-current-spec ()
+  (interactive)
+  (if (fboundp 'rspec-toggle-spec-and-target)
+      (rspec-toggle-spec-and-target)
+    (projectile-find-test-file)))
 
 (defun projectile-rails-current-resource-name ()
   "Returns a resource name extracted from the name of the currently visiting file"
   (let ((file-name (buffer-file-name)))
     (if file-name
-	(catch 'break (loop
-		       for re in '("app/models/\\(.+\\)\\.rb$"
-				   "/\\([a-z_]+\\)_controller\\.rb$"
-				   "app/views/\\(.+\\)/[^/]+$"
-				   "app/helpers/\\(.+\\)_helper\\.rb$"
-				   "lib/.*\\([a-z_]+\\)\\.rb$"
-				   "spec/.*/\\([a-z_]+?\\)\\(_controller\\)?_spec\\.rb$")
-		       do (if (string-match re file-name)
-			      (throw 'break (match-string 1 file-name))))))
+	(singularize-string
+	 (loop for re in '("app/models/\\(.+\\)\\.rb$"
+			   "app/controllers/\\(.+\\)_controller\\.rb$"
+			   "app/views/\\(.+\\)/[^/]+$"
+			   "app/helpers/\\(.+\\)_helper\\.rb$"
+			   "spec/.*/\\([a-z_]+?\\)\\(_controller\\)?_spec\\.rb$")
+	       until (string-match re file-name)
+	       finally return (match-string 1 file-name))))
     )
   )
-
 
 (defun projectile-rails-list-entries (fun dir)
   (--map
@@ -430,12 +455,12 @@
 	   (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
 	  
 	  ((string-match-p "^[A-Z]" name)
-	   (cl-loop for dir in (-concat
-				(--map
-				 (concat "app/" it)
-				 (projectile-rails-list-entries 'f-directories "app/"))
-				'("lib/"))
-		    until (projectile-rails-sanitize-and-goto-file dir name ".rb"))))
+	   (loop for dir in (-concat
+			     (--map
+			      (concat "app/" it)
+			      (projectile-rails-list-entries 'f-directories "app/"))
+			     '("lib/"))
+		 until (projectile-rails-sanitize-and-goto-file dir name ".rb"))))
     )
   )
 
@@ -471,12 +496,12 @@
 	 (name (projectile-rails-template-name template))
 	 (format (projectile-rails-template-format template)))
     (if format
-	(cl-loop for processor in '("erb" "haml" "slim")
-		 for template = (s-lex-format "${dir}${name}.${format}.${processor}")
-		 for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
-		 until (or
-			(projectile-rails-ff template)
-			(projectile-rails-ff partial)))
+	(loop for processor in '("erb" "haml" "slim")
+	      for template = (s-lex-format "${dir}${name}.${format}.${processor}")
+	      for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
+	      until (or
+		     (projectile-rails-ff template)
+		     (projectile-rails-ff partial)))
       (message "Could not recognize the template's format")
       (dired dir))))
 
@@ -535,12 +560,16 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   (let ((map (make-sparse-keymap)))
     (let ((prefix-map (make-sparse-keymap)))
       (define-key prefix-map (kbd "m") 'projectile-rails-find-model)
+      (define-key prefix-map (kbd "M") 'projectile-rails-find-current-model)
       (define-key prefix-map (kbd "c") 'projectile-rails-find-controller)
+      (define-key prefix-map (kbd "C") 'projectile-rails-find-current-controller)
       (define-key prefix-map (kbd "v") 'projectile-rails-find-view)
+      (define-key prefix-map (kbd "V") 'projectile-rails-find-current-view)
       (define-key prefix-map (kbd "h") 'projectile-rails-find-helper)
+      (define-key prefix-map (kbd "H") 'projectile-rails-find-current-helper)
       (define-key prefix-map (kbd "l") 'projectile-rails-find-lib)
       (define-key prefix-map (kbd "s") 'projectile-rails-find-spec)
-      (define-key prefix-map (kbd "o") 'projectile-rails-find-current-resource)
+      (define-key prefix-map (kbd "S") 'projectile-rails-find-current-spec)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "e") 'projectile-rails-rake)
       (define-key prefix-map (kbd "g") 'projectile-rails-generate)
@@ -559,9 +588,12 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find helper"		 projectile-rails-find-helper]
     ["Find lib"			 projectile-rails-find-lib]
     ["Find spec"		 projectile-rails-find-spec]
-    ["Find current resource"	 projectile-rails-find-current-resource]
     "--"
     ["Go to file at point"	 projectile-rails-goto-file-at-point]
+    ["Go to current model"	 projectile-rails-find-current-spec]
+    ["Go to current controller"	 projectile-rails-find-current-controller]
+    ["Go to current view"	 projectile-rails-find-current-view]
+    ["Go to current spec"	 projectile-rails-find-current-spec]
     "--"
     ["Run console"		 projectile-rails-console]
     ["Run rake"			 projectile-rails-rake]

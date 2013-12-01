@@ -67,6 +67,8 @@ end")
 		     "spec/"
 		     "spec/lib/"
 		     "spec/models/"
+		     "spec/controllers/"
+		     "spec/controllers/admin/"
 		     "tmp/"
 		     "vendor/"
 		     "Gemfile"
@@ -77,6 +79,7 @@ end")
 (Before
  (require 'yasnippet)
  (require 'bundler)
+ (require 'rspec-mode)
  (require 'projectile-rails)
 
  (add-hook 'projectile-mode-hook 'projectile-rails-on)
