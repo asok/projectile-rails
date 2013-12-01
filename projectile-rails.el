@@ -623,6 +623,12 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find spec"		 projectile-rails-find-spec]
     "--"
     ["Go to file at point"	 projectile-rails-goto-file-at-point]
+    "--"
+    ["Go to Gemfile"	         projectile-rails-goto-gemfile]
+    ["Go to routes"	         projectile-rails-goto-routes]
+    ["Go to schema"	         projectile-rails-goto-schema]
+    ["Go to spec_helper"	 projectile-rails-goto-spec-helper]
+    "--"
     ["Go to current model"	 projectile-rails-find-current-spec]
     ["Go to current controller"	 projectile-rails-find-current-controller]
     ["Go to current view"	 projectile-rails-find-current-view]
