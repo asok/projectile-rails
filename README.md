@@ -75,25 +75,12 @@ Consider installing other Emacs packages that can help you working specifically 
 
 ### Templates
 
-#### ERB
-
-Take a look at the README files of each of the packages to find a one that best suits your needs. 
-
-* [web-mode](https://github.com/fxbois/web-mode)
-* [mmm-mode](https://github.com/purcell/mmm-mode)
-* [rhtml-mode](https://github.com/eschulte/rhtml)
-
-#### HAML
-
-* [haml-mode](https://github.com/nex3/haml-mode)
-
-#### Slim
-
-* [emacs-slim](https://github.com/slim-template/emacs-slim)
-
-#### YAML
-
-* [yaml-mode](https://github.com/yoshiki/yaml-mode)
+Extension   | Alternatives
+------------|------------------------------------------------------
+ erb        | [web-mode](https://github.com/fxbois/web-mode), [mmm-mode](https://github.com/purcell/mmm-mode), [rhtml-mode](https://github.com/eschulte/rhtml)
+ haml		| [haml-mode](https://github.com/nex3/haml-mode)
+ slim		| [emacs-slim](https://github.com/slim-template/emacs-slim)
+ yaml		| [yaml-mode](https://github.com/yoshiki/yaml-mode)
 
 ### Running ruby gems
 
@@ -104,25 +91,13 @@ Some of the Projectile Rails functions run `rake` or `rails` executables. If you
 
 OS X users might want to look at [exec-path-from-shell](https://github.com/purcell/exec-path-from-shell).
 
-### Bundler
+### Miscellaneous
 
-[bundler.el](https://github.com/tobiassvn/bundler.el)
-
-### RSpec
-
-[rspec-mode](https://github.com/pezra/rspec-mode)
-
-### Cucumber
-
-[feature-mode](https://github.com/michaelklishin/cucumber.el)
-
-### Documentation viewer
-
-* [robe](https://github.com/dgutov/robe)
-
-### Git
-
-[magit](https://github.com/magit/magit)
+* [bundler.el](https://github.com/tobiassvn/bundler.el) to interact with Bundler.
+* [rspec-mode](https://github.com/pezra/rspec-mode) to run and edit spec files.
+* [feature-mode](https://github.com/michaelklishin/cucumber.el) to edit feature files.
+* [robe](https://github.com/dgutov/robe) to view gems documentation.
+* [magit](https://github.com/magit/magit) to interact with git.
 
 ## Contribution
 
