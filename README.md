@@ -69,6 +69,61 @@ You might want to create your own keybinding for your favorite commands. For exa
 (define-key projectile-rails-mode-map (kbd "C-c g")  projectile-rails-mode-goto-map)
 ```
 
+## Beyond
+
+Consider installing other Emacs packages that can help you working specifically with Rails projects.
+
+### Templates
+
+#### ERB
+
+Take a look at the README files of each of the packages to find a one that best suits your needs. 
+
+* [web-mode](https://github.com/fxbois/web-mode)
+* [mmm-mode](https://github.com/purcell/mmm-mode)
+* [rhtml-mode](https://github.com/eschulte/rhtml)
+
+#### HAML
+
+* [haml-mode](https://github.com/nex3/haml-mode)
+
+#### Slim
+
+* [emacs-slim](https://github.com/slim-template/emacs-slim)
+
+#### YAML
+
+* [yaml-mode](https://github.com/yoshiki/yaml-mode)
+
+### Running ruby gems
+
+Some of the Projectile Rails functions run `rake` or `rails` executables. If you are using a ruby version manager you might need to configure your Emacs to play nicely with them.
+
+* [rvm.el](https://github.com/senny/rvm.el)
+* [rbenv.el](https://github.com/senny/rbenv.el)
+
+OS X users might want to look at [exec-path-from-shell](https://github.com/purcell/exec-path-from-shell).
+
+### Bundler
+
+[bundler.el](https://github.com/tobiassvn/bundler.el)
+
+### RSpec
+
+[rspec-mode](https://github.com/pezra/rspec-mode)
+
+### Cucumber
+
+[feature-mode](https://github.com/michaelklishin/cucumber.el)
+
+### Documentation viewer
+
+* [robe](https://github.com/dgutov/robe)
+
+### Git
+
+[magit](https://github.com/magit/magit)
+
 ## Contribution
 
 Install [cask](https://github.com/rejeep/cask.el) if you haven't already, then:
