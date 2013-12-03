@@ -50,6 +50,7 @@ projectile-rails-find-current-helper     | <kbd>C-c r H</kbd>, <kbd>C-c r g h</k
 projectile-rails-find-lib                | <kbd>C-c r l</kbd>                         | Find a lib using `projectile-completion-system`.
 projectile-rails-find-spec               | <kbd>C-c r s</kbd>                         | Find a spec using `projectile-completion-system`.
 projectile-rails-find-current-spec       | <kbd>C-c r S</kbd>, <kbd>C-c r g s</kbd>   | Go to a spec connected with current resource.
+projectile-rails-find-log                | <kbd>C-c r o</kbd>                         | Find a log file and enable `auto-revert-tail-mode` in its buffer.
 projectile-rails-console                 | <kbd>C-c r r</kbd>                         | Run `rails console` command in `inf-ruby` buffer.
 projectile-rails-rake                    | <kbd>C-c r e</kbd>                         | Select a rake task to run using `projectile-completion-system`.
 projectile-rails-generate                | <kbd>C-c r t</kbd>                         | Run `rails generate` command.

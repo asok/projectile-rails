@@ -602,6 +602,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "l") 'projectile-rails-find-lib)
       (define-key prefix-map (kbd "s") 'projectile-rails-find-spec)
       (define-key prefix-map (kbd "S") 'projectile-rails-find-current-spec)
+      (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "e") 'projectile-rails-rake)
       (define-key prefix-map (kbd "t") 'projectile-rails-generate)
@@ -621,6 +622,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find helper"		 projectile-rails-find-helper]
     ["Find lib"			 projectile-rails-find-lib]
     ["Find spec"		 projectile-rails-find-spec]
+    ["Find log"                  projectile-rails-find-log]
     "--"
     ["Go to file at point"	 projectile-rails-goto-file-at-point]
     "--"
