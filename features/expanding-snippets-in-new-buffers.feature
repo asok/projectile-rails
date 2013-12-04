@@ -61,13 +61,13 @@ Scenario: Opening a new namespaced lib
   """
 
 Scenario: Opening a new spec
-  When I open the app file "spec/models/user_spec.rb"
+  When I open the app file "spec/models/bar_spec.rb"
   And I turn on projectile-mode
   Then I should see:
   """
   require "spec_helper"
 
-  describe User do
+  describe Bar do
     
   end
   """
