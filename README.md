@@ -57,8 +57,8 @@ projectile-rails-generate                | <kbd>C-c r t</kbd>                   
 projectile-rails-goto-file-at-point      | <kbd>C-c r RET</kbd>, <kbd>C-c r g f</kbd> | Go to a file at point. Depending on the context that might be a constant, template or partial, or a gem.
 projectile-rails-goto-gemfile            | <kbd>C-c r g g</kbd>                       | Go to `Gemfile` file.
 projectile-rails-goto-routes             | <kbd>C-c r g r</kbd>                       | Go to `config/routes.rb` file.
-projectile-rails-goto-routes             | <kbd>C-c r g h</kbd>                       | Go to `db/schema.rb` file.
-projectile-rails-goto-routes             | <kbd>C-c r g p</kbd>                       | Go to `spec/spec_helper.rb` file.
+projectile-rails-goto-schema             | <kbd>C-c r g h</kbd>                       | Go to `db/schema.rb` file.
+projectile-rails-goto-spec-helper        | <kbd>C-c r g p</kbd>                       | Go to `spec/spec_helper.rb` file.
 
 You might want to create your own keybinding for your favorite commands. For example:
 
@@ -97,7 +97,7 @@ OS X users might want to look at [exec-path-from-shell](https://github.com/purce
 * [bundler.el](https://github.com/tobiassvn/bundler.el) to interact with Bundler.
 * [rspec-mode](https://github.com/pezra/rspec-mode) to run and edit spec files.
 * [feature-mode](https://github.com/michaelklishin/cucumber.el) to edit feature files.
-* [robe](https://github.com/dgutov/robe) to view gems documentation.
+* [robe](https://github.com/dgutov/robe) to view gems documentation and jump to methods and classes definitions.
 * [magit](https://github.com/magit/magit) to interact with git.
 
 ## Contribution
