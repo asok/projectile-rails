@@ -361,19 +361,19 @@ The binded variables are \"singular\" and \"plural\"."
 (defun projectile-rails-expand-corresponding-snippet ()
   (let ((name (buffer-file-name)))
     (yas-expand-snippet
-     (cond ((string-match "app/controllers/\\(.*\\)\\.rb$" name)
+     (cond ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
 	    (format
 	     "class %s < ${1:ApplicationController}\n$2\nend"
 	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-	   ((string-match "spec/[^/]+/\\(.*\\)_spec\\.rb$" name)
+	   ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
 	    (format
 	     "require \"spec_helper\"\n\ndescribe %s do\n$1\nend"
 	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-	   ((string-match "app/models/\\(.*\\)\\.rb$" name)
+	   ((string-match "app/models/\\(.+\\)\\.rb$" name)
 	    (format
 	     "class %s < ${1:ActiveRecord::Base}\n$2\nend"
 	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-	   ((string-match "lib/\\(.*\\)\\.rb$" name)
+	   ((string-match "lib/\\(.+\\)\\.rb$" name)
 	    (let ((parts (projectile-rails-classify (match-string 1 name))))
 	      (format
 	       (concat
