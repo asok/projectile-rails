@@ -23,4 +23,11 @@
        (expect "users/index.html.erb"
        	       (projectile-rails-declassify "users/index.html.erb"))
        )
+ (desc "projectile-rails-hash-keys"
+       (expect '("baz" "bar" "foo")
+	       (let ((hash (make-hash-table :test 'equal)))
+		 (puthash "foo" 1 hash)
+		 (puthash "bar" 1 hash)
+		 (puthash "baz" 1 hash)
+		 (projectile-rails-hash-keys hash))))
  )

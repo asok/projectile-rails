@@ -188,52 +188,65 @@
              (projectile-rails--highlight-keywords
 	      (append keywords projectile-rails-active-support-keywords)))))
 
-(defun projectile-rails-dir-files (dir re)
-  (--map (substring it (length dir))
-	 (--filter (string-match-p re it)
-		   (projectile-dir-files (projectile-expand-root dir)))))
+(defun projectile-rails-choices (dir re)
+  "Uses `projectile-dir-files' function to find files in DIR with names matching RE."
 
-(defun projectile-rails-interactive (prompt dir regexp)
-  (list (projectile-completing-read prompt (projectile-rails-dir-files dir regexp))))
+  "Returns a hash table with keys being short names and values being relative paths to the files."
+  (let ((files (projectile-dir-files (projectile-expand-root dir)))
+	(hash (make-hash-table :test 'equal)))
+    (loop for file in files do
+	  (when (string-match re file)
+	    (puthash (match-string 1 file) file hash)))
+    hash))
 
-(defun projectile-rails-find-model (model)
-  (interactive (projectile-rails-interactive "model: " "app/models/" "\\.rb$"))
-  (projectile-rails-goto-file "app/models/" model))
+(defun projectile-rails-hash-keys (hash)
+  (let (keys)
+    (maphash (lambda (key value) (setq keys (cons key keys))) hash)
+    keys))
 
-(defun projectile-rails-find-controller (controller)
-  (interactive (projectile-rails-interactive "controller: " "app/controllers/" "\\.rb$"))
-  (projectile-rails-goto-file "app/controllers/" controller))
+(defun projectile-rails-find-resource (prompt dir re)
+  (let ((choices (projectile-rails-choices dir re)))
+     (projectile-rails-goto-file
+      (gethash (projectile-completing-read prompt (projectile-rails-hash-keys choices)) choices))))
 
-(defun projectile-rails-find-view (view)
-  (interactive (projectile-rails-interactive "view: " "app/views/" projectile-rails-views-re))
-  (projectile-rails-goto-file "app/views/" view))
+(defun projectile-rails-find-model ()
+  (interactive)
+  (projectile-rails-find-resource "model: " "app/models/" "app/models/\\(.+\\)\\.rb$"))
 
-(defun projectile-rails-find-helper (helper)
-  (interactive (projectile-rails-interactive "helper: " "app/helpers/" "\\.rb$"))
-  (projectile-rails-goto-file "app/helpers/" helper))
+(defun projectile-rails-find-controller ()
+  (interactive)
+  (projectile-rails-find-resource "controller: " "app/controllers/" "app/controllers/\\(.+\\)_controller\\.rb$"))
 
-(defun projectile-rails-find-lib (lib)
-  (interactive (projectile-rails-interactive "lib: " "lib/" "\\.rb$"))
-  (projectile-rails-goto-file "lib/" lib))
+(defun projectile-rails-find-view ()
+  (interactive)
+  (projectile-rails-find-resource "view: " "app/views/" (concat "app/views/\\(.+\\)" projectile-rails-views-re)))
 
-(defun projectile-rails-find-spec (spec)
-  (interactive (projectile-rails-interactive "spec: " "spec/" "\\.rb$"))
-  (projectile-rails-goto-file "spec/" spec))
+(defun projectile-rails-find-helper ()
+  (interactive)
+  (projectile-rails-find-resource "helper: " "app/helpers/" "app/helpers/\\(.+\\)_helper\\.rb$"))
+
+(defun projectile-rails-find-lib ()
+  (interactive)
+  (projectile-rails-find-resource "lib: " "lib/" "lib/\\(.+\\)\\.rb$"))
+
+(defun projectile-rails-find-spec ()
+  (interactive)
+  (projectile-rails-find-resource "spec: " "spec/" "spec/\\(.+\\)_spec\\.rb$"))
 
 (defmacro projectile-rails-find-current-resource (dir re)
   "RE will be the argument to `s-lex-format'.
 
 The binded variables are \"singular\" and \"plural\"."
   `(let* ((singular (projectile-rails-current-resource-name))
-	 (plural (pluralize-string singular))
-	 (files (projectile-rails-dir-files ,dir (s-lex-format ,re))))
-    (if (= (length files) 1)
-	(projectile-rails-goto-file ,dir (-first-item files))
-      (projectile-rails-goto-file
-       ,dir
-       (projectile-completing-read "Which exactly: " files))))
-  )
-
+	  (plural (pluralize-string singular))
+	  (files (--filter
+		  (string-match-p (s-lex-format ,re) it)
+		  (projectile-dir-files (projectile-expand-root ,dir)))))
+     (projectile-rails-goto-file
+       (if (= (length files) 1)
+	   (-first-item files)
+	 (projectile-completing-read "Which exactly: " files)))))
+     
 (defun projectile-rails-find-current-model ()
   (interactive)
   (projectile-rails-find-current-resource
@@ -413,13 +426,12 @@ The binded variables are \"singular\" and \"plural\"."
 (defun projectile-rails-sanitize-and-goto-file (dir name &optional ext)
   "Calls `projectile-rails-goto-file' with passed arguments sanitizing them before."
   (projectile-rails-goto-file
-   (projectile-rails-sanitize-dir-name dir)
-   (projectile-rails-declassify name)
-   ext))
+   (concat 
+    (projectile-rails-sanitize-dir-name dir) (projectile-rails-declassify name) ext)))
 
-(defun projectile-rails-goto-file (dir name &optional ext)
-  "Concats the passed DIR, NAME and EXT and visits the resulting filepath after expanding root."
-  (projectile-rails-ff (projectile-expand-root (concat dir name ext))))
+(defun projectile-rails-goto-file (filepath)
+  "Finds the FILEPATH after expanding root."
+  (projectile-rails-ff (projectile-expand-root filepath)))
 
 (defun projectile-rails-goto-gem (gem)
   "Uses `bundle-open' to open GEM. If the function is not defined notifies user."
@@ -507,19 +519,19 @@ The binded variables are \"singular\" and \"plural\"."
 
 (defun projectile-rails-goto-gemfile ()
   (interactive)
-  (projectile-rails-goto-file "./" "Gemfile"))
+  (projectile-rails-goto-file "Gemfile"))
 
 (defun projectile-rails-goto-schema ()
   (interactive)
-  (projectile-rails-goto-file "db/" "schema.rb"))
+  (projectile-rails-goto-file "db/chema.rb"))
 
 (defun projectile-rails-goto-routes ()
   (interactive)
-  (projectile-rails-goto-file "config/" "routes.rb"))
+  (projectile-rails-goto-file "config/routes.rb"))
 
 (defun projectile-rails-goto-spec-helper ()
   (interactive)
-  (projectile-rails-goto-file "spec/" "spec_helper.rb"))
+  (projectile-rails-goto-file "spec/spec_helper.rb"))
 
 (defun projectile-rails-ff (path &optional ask)
   "Calls `find-file' function on PATH when it is not nil and the file exists.
