@@ -176,7 +176,7 @@
    (list (list
           (concat "\\(^\\|[^_:.@$]\\|\\.\\.\\)\\b"
                   (regexp-opt keywords t)
-                  ruby-keyword-end-re)
+		  "\\_>")
           (list 2 projectile-rails-font-lock-face-name)))))
 
 (defun projectile-rails-apply-keywords-for-file-type ()
