@@ -65,7 +65,7 @@ You might want to create your own keybinding for your favorite commands. For exa
 
 ```lisp
 (define-key projectile-rails-mode-map (kbd "s-m")   'projectile-rails-find-model)
-(define-key projectile-rails-mode-map (kbd "s-t")   'projectile-rails-find-controller)
+(define-key projectile-rails-mode-map (kbd "s-c")   'projectile-rails-find-controller)
 (define-key projectile-rails-mode-map (kbd "s-v")   'projectile-rails-find-view)
 (define-key projectile-rails-mode-map (kbd "s-RET") 'projectile-rails-goto-file-at-point)
 (define-key projectile-rails-mode-map (kbd "C-c g")  projectile-rails-mode-goto-map)
@@ -86,7 +86,7 @@ Extension   | Alternatives
 
 ### Running ruby gems
 
-Some of the Projectile Rails functions run `rake` or `rails` executables. If you are using a ruby version manager you might need to configure your Emacs to play nicely with them.
+Some of the Projectile Rails functions run `rake` or `rails` executables. If you are using a ruby version manager you might need to configure your Emacs to play nicely with it.
 
 * [rvm.el](https://github.com/senny/rvm.el)
 * [rbenv.el](https://github.com/senny/rbenv.el)
