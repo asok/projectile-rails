@@ -43,7 +43,7 @@ The mode's buffers will have the Rails keywords higlighted. To turn it off:
 (setq projectile-rails-add-keywords nil)
 ```
 
-If you are using yasnippet and you open a new file it will be filled with a skeleton class. To turn it off:
+If you are using [yasnippet](https://github.com/capitaomorte/yasnippet) and you open a new file it will be filled with a skeleton class. To turn it off:
 ```lisp
 (setq projectile-rails-expand-snippet nil)
 ```
