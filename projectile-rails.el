@@ -523,7 +523,7 @@ The binded variables are \"singular\" and \"plural\"."
 
 (defun projectile-rails-goto-schema ()
   (interactive)
-  (projectile-rails-goto-file "db/chema.rb"))
+  (projectile-rails-goto-file "db/schema.rb"))
 
 (defun projectile-rails-goto-routes ()
   (interactive)
