@@ -155,6 +155,9 @@
 (defcustom projectile-rails-expand-snippet t
   "If not nil newly created buffers will be pre-filled with class skeleton.")
 
+(defcustom projectile-rails-add-keywords t
+  "If not nil the rails keywords will be font locked in the mode's bufffers.")
+
 (defcustom projectile-rails-keymap-prefix (kbd "C-c r")
   "`projectile-rails-mode' keymap prefix."
   :group 'projectile-rails
@@ -179,7 +182,7 @@
 		  "\\_>")
           (list 2 projectile-rails-font-lock-face-name)))))
 
-(defun projectile-rails-apply-keywords-for-file-type ()
+(defun projectile-rails-add-keywords-for-file-type ()
   "Apply extra font lock keywords specific to models, controllers etc."
   (loop for (re keywords) in `(("_controller\\.rb$"   ,projectile-rails-controller-keywords)
                                ("app/models/.+\\.rb$" ,projectile-rails-model-keywords)
@@ -657,8 +660,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   "Rails mode based on projectile"
   :init-value nil
   :lighter " Rails"
-  (when (and projectile-rails-mode projectile-rails-expand-snippet)
-   (projectile-rails-expand-snippet-maybe)))
+  (when projectile-rails-mode
+    (and projectile-rails-expand-snippet (projectile-rails-expand-snippet-maybe))
+    (and projectile-rails-add-keywords (projectile-rails-add-keywords-for-file-type))))
 
 ;;;###autoload
 (defun projectile-rails-on ()
@@ -677,8 +681,6 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (define-derived-mode projectile-rails-generate-mode projectile-rails-compilation-mode "Projectile Rails Generate"
   "Mode for output of rails generate."
   (add-hook 'compilation-finish-functions 'projectile-rails-make-buttons nil t))
-
-(add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
 
 (provide 'projectile-rails)
 
