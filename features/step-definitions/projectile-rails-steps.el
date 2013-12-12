@@ -13,9 +13,6 @@
       (lambda ()
 	(projectile-rails-off)))
 
-(When "^I turn on ruby-mode"
-      (lambda () (ruby-mode)))
-
 (When "^I run command \"\\(.+\\)\" \\(?:selecting\\|inputting\\) \"\\(.+\\)\"$"
       (lambda (command argument)
 	(When "I start an action chain")
@@ -39,6 +36,14 @@
 (Given "^I turn on snippet expansion"
       (lambda ()
 	(setq projectile-rails-expand-snippet t)))
+
+(Given "^I turn off snippet expansion"
+      (lambda ()
+	(setq projectile-rails-expand-snippet nil)))
+
+(Given "^I turn off adding keywords"
+      (lambda ()
+	(setq projectile-rails-add-keywords nil)))
 
 (When "^I run \"\\(.+\\)\""
       (lambda (command)
@@ -74,6 +79,11 @@
       (lambda (keyword)
 	(When (s-lex-format "I go to word \"${keyword}\""))
 	(should (equal (get-text-property (+ (point) 1) 'face) 'font-lock-keyword-face))))
+
+(Then "^I should not see \"\\(.+\\)\" font locked"
+      (lambda (keyword)
+	(When (s-lex-format "I go to word \"${keyword}\""))
+	(should (not (equal (get-text-property (+ (point) 1) 'face) 'font-lock-keyword-face)))))
 
 (Then "^the buffer is auto reverting"
       (lambda ()
