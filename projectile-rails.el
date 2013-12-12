@@ -661,6 +661,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "S") 'projectile-rails-find-current-spec)
       (define-key prefix-map (kbd "i") 'projectile-rails-find-migration)
       (define-key prefix-map (kbd "I") 'projectile-rails-find-current-migration)
+      (define-key prefix-map (kbd "j") 'projectile-rails-find-javascript)
       (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "e") 'projectile-rails-rake)
@@ -682,6 +683,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find lib"			 projectile-rails-find-lib]
     ["Find spec"		 projectile-rails-find-spec]
     ["Find log"                  projectile-rails-find-log]
+    ["Find migration"            projectile-rails-find-migration]
+    ["Find javascript"           projectile-rails-find-javascript]
     "--"
     ["Go to file at point"	 projectile-rails-goto-file-at-point]
     "--"
@@ -694,6 +697,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Go to current controller"	 projectile-rails-find-current-controller]
     ["Go to current view"	 projectile-rails-find-current-view]
     ["Go to current spec"	 projectile-rails-find-current-spec]
+    ["Go to current migration"	 projectile-rails-find-current-migration]
     "--"
     ["Run console"		 projectile-rails-console]
     ["Run rake"			 projectile-rails-rake]
