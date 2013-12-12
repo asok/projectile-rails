@@ -71,3 +71,15 @@ Scenario: Opening a new spec
     
   end
   """
+
+Scenario: Opening a new spec and the buffer is not empty
+  When I open the app file "spec/models/bar_spec.rb"
+  And I insert:
+  """
+  Emacs!
+  """
+  And I turn on projectile-mode
+  Then I should not see:
+  """
+  require "spec_helper"
+  """

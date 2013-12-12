@@ -367,8 +367,8 @@ The binded variables are \"singular\" and \"plural\"."
 
 (defun projectile-rails-expand-snippet-maybe ()
   (when (and (fboundp 'yas-expand-snippet)
-	     projectile-rails-expand-snippet
   	     (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
+	     (s-blank? (buffer-string))
   	(projectile-rails-expand-corresponding-snippet))))
 
 (defun projectile-rails-expand-corresponding-snippet ()
@@ -656,7 +656,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (define-minor-mode projectile-rails-mode
   "Rails mode based on projectile"
   :init-value nil
-  :lighter " Rails")
+  :lighter " Rails"
+  (when (and projectile-rails-mode projectile-rails-expand-snippet)
+   (projectile-rails-expand-snippet-maybe)))
 
 ;;;###autoload
 (defun projectile-rails-on ()
@@ -677,7 +679,6 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   (add-hook 'compilation-finish-functions 'projectile-rails-make-buttons nil t))
 
 (add-hook 'projectile-rails-mode-hook 'projectile-rails-apply-keywords-for-file-type)
-(add-hook 'projectile-rails-mode-hook 'projectile-rails-expand-snippet-maybe)
 
 (provide 'projectile-rails)
 
