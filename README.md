@@ -36,6 +36,18 @@ That will start it only if the current project is a Rails project.
 
 Probably you should read Projectile's [README](https://github.com/bbatsov/projectile) on setting up the completion system, caching and indexing files. Although the default settings are quite sensible and you should be ready to go without much tweaking.
 
+### Customizing
+
+The mode's buffers will have the Rails keywords higlighted. To turn it off:
+```lisp
+(setq projectile-rails-add-keywords nil)
+```
+
+If you are using yasnippet and you open a new file it will be filled with a skeleton class. To turn it off:
+```lisp
+(setq projectile-rails-expand-snippet nil)
+```
+
 ### Interactive commands
 
 Command                                  | Keybinding                                 | Description
