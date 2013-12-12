@@ -152,6 +152,12 @@
   :group 'projectile-rails
   :type 'string)
 
+(defcustom projectile-rails-javascript-dirs
+  '("app/assets/javascripts/" "lib/assets/javascripts/" "public/javascripts/")
+  "The list directories to for javascript files in."
+  :group 'projectile-rails
+  :type '(repeat stirng))
+
 (defcustom projectile-rails-expand-snippet t
   "If not nil newly created buffers will be pre-filled with class skeleton.")
 
@@ -205,11 +211,15 @@ The binded variables are \"singular\" and \"plural\"."
              (projectile-rails--highlight-keywords
 	      (append keywords projectile-rails-active-support-keywords)))))
 
-(defun projectile-rails-choices (dir re)
-  "Uses `projectile-dir-files' function to find files in DIR with names matching RE."
+(defun projectile-rails-dir-files (dirs)
+  "Similar to `projectile-dir-files' except the argument is a list of directories to look in."
+  (-flatten (--map (projectile-dir-files (projectile-expand-root it)) dirs)))
+
+(defun projectile-rails-choices (dirs re)
+  "Uses `projectile-rails-dir-files' function to find files in DIRS with names matching RE."
 
   "Returns a hash table with keys being short names and values being relative paths to the files."
-  (let ((files (projectile-dir-files (projectile-expand-root dir)))
+  (let ((files (projectile-rails-dir-files dirs))
 	(hash (make-hash-table :test 'equal)))
     (loop for file in files do
 	  (when (string-match re file)
@@ -228,31 +238,35 @@ The binded variables are \"singular\" and \"plural\"."
 
 (defun projectile-rails-find-model ()
   (interactive)
-  (projectile-rails-find-resource "model: " "app/models/" "/\\(.+\\)\\.rb$"))
+  (projectile-rails-find-resource "model: " '("app/models/") "/\\(.+\\)\\.rb$"))
 
 (defun projectile-rails-find-controller ()
   (interactive)
-  (projectile-rails-find-resource "controller: " "app/controllers/" "/\\(.+\\)_controller\\.rb$"))
+  (projectile-rails-find-resource "controller: " '("app/controllers/") "/\\(.+\\)_controller\\.rb$"))
 
 (defun projectile-rails-find-view ()
   (interactive)
-  (projectile-rails-find-resource "view: " "app/views/" (concat "app/views/\\(.+\\)" projectile-rails-views-re)))
+  (projectile-rails-find-resource "view: " '("app/views/") (concat "app/views/\\(.+\\)" projectile-rails-views-re)))
 
 (defun projectile-rails-find-helper ()
   (interactive)
-  (projectile-rails-find-resource "helper: " "app/helpers/" "/\\(.+\\)_helper\\.rb$"))
+  (projectile-rails-find-resource "helper: " '("app/helpers/") "/\\(.+\\)_helper\\.rb$"))
 
 (defun projectile-rails-find-lib ()
   (interactive)
-  (projectile-rails-find-resource "lib: " "lib/" "/\\(.+\\)\\.rb$"))
+  (projectile-rails-find-resource "lib: " '("lib/") "/\\(.+\\)\\.rb$"))
 
 (defun projectile-rails-find-spec ()
   (interactive)
-  (projectile-rails-find-resource "spec: " "spec/" "/\\(.+\\)_spec\\.rb$"))
+  (projectile-rails-find-resource "spec: " '("spec/") "/\\(.+\\)_spec\\.rb$"))
 
 (defun projectile-rails-find-migration ()
   (interactive)
-  (projectile-rails-find-resource "migration: " "db/migrate/" "/\\(.+\\)\\.rb$"))
+  (projectile-rails-find-resource "migration: " '("db/migrate/") "/\\(.+\\)\\.rb$"))
+
+(defun projectile-rails-find-javascript ()
+  (interactive)
+  (projectile-rails-find-resource "stylesheet: " projectile-rails-javascript-dirs "/\\(.+\\)\\.[^.]+$"))
 
 (defun projectile-rails-find-current-model ()
   (interactive)
@@ -453,31 +467,49 @@ The binded variables are \"singular\" and \"plural\"."
     (bundle-open (car (s-split "/" gem))))
   )
 
+(defun projectile-rails-goto-javascript-at-point ()
+  (let ((name (thing-at-point 'filename)))
+    (projectile-rails-ff
+     (loop for dir in projectile-rails-javascript-dirs
+	   for re = (s-lex-format "${dir}${name}\\..+$")
+	   for files = (projectile-rails-dir-files (list dir))
+	   for file = (--first (string-match-p re it) files)
+	   until file
+	   finally return (projectile-expand-root file))))
+  )
+
 (defun projectile-rails-goto-file-at-point ()
   "Tries to find file at point"
   (interactive)
   (let ((name (projectile-rails-name-at-point))
+	(line (projectile-rails-current-line))
 	(case-fold-search nil))
-    (cond ((string-match "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (projectile-rails-current-line))
+    (cond ((string-match "Processing by \\(.+\\)#\\(?:[^ ]+\\)" line)
 	   (projectile-rails-sanitize-and-goto-file
-	    "app/controllers/" (match-string 1 (projectile-rails-current-line)) ".rb"))
+	    "app/controllers/" (match-string 1 line) ".rb"))
 	  
-	  ((string-match "Rendered \\([^ ]+\\)" (projectile-rails-current-line))
+	  ((string-match "Rendered \\([^ ]+\\)" line)
 	   (projectile-rails-sanitize-and-goto-file
-	    "app/views/" (match-string 1 (projectile-rails-current-line))))
+	    "app/views/" (match-string 1 line)))
 	  
-	  ((string-match-p "\\_<render\\_>" (projectile-rails-current-line))
+	  ((string-match-p "\\_<render\\_>" line)
 	   (projectile-rails-goto-template-at-point))
 
-	  ((string-match-p "\\_<require_relative\\_>" (projectile-rails-current-line))
+	  ((string-match-p "^//= require .+$" line)
+	   (projectile-rails-goto-javascript-at-point))
+
+	  ((string-match-p "\\_<require_relative\\_>" line)
 	   (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
 
-	  ((string-match-p "\\_<require\\_>" (projectile-rails-current-line))
+	  ((string-match-p "\\_<require\\_>" line)
 	   (projectile-rails-goto-gem (thing-at-point 'filename)))
 	  
 	  ((not (string-match-p "^[A-Z]" name))
 	   (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
-	  
+
+	  ((not (string-match-p "^[A-Z]" name))
+	   (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
+
 	  ((string-match-p "^[A-Z]" name)
 	   (loop for dir in (-concat
 			     (--map
