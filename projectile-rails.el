@@ -172,6 +172,20 @@
   `(let ((default-directory (projectile-rails-root)))
      ,body-form))
 
+(defmacro projectile-rails-find-current-resource (dir re)
+  "RE will be the argument to `s-lex-format'.
+
+The binded variables are \"singular\" and \"plural\"."
+  `(let* ((singular (projectile-rails-current-resource-name))
+	  (plural (pluralize-string singular))
+	  (files (--filter
+		  (string-match-p (s-lex-format ,re) it)
+		  (projectile-dir-files (projectile-expand-root ,dir)))))
+     (projectile-rails-goto-file
+       (if (= (length files) 1)
+	   (-first-item files)
+	 (projectile-completing-read "Which exactly: " files)))))
+
 (defun projectile-rails--highlight-keywords (keywords)
   "Highlight the passed KEYWORDS in current buffer."
   (font-lock-add-keywords
@@ -214,11 +228,11 @@
 
 (defun projectile-rails-find-model ()
   (interactive)
-  (projectile-rails-find-resource "model: " "app/models/" "app/models/\\(.+\\)\\.rb$"))
+  (projectile-rails-find-resource "model: " "app/models/" "/\\(.+\\)\\.rb$"))
 
 (defun projectile-rails-find-controller ()
   (interactive)
-  (projectile-rails-find-resource "controller: " "app/controllers/" "app/controllers/\\(.+\\)_controller\\.rb$"))
+  (projectile-rails-find-resource "controller: " "app/controllers/" "/\\(.+\\)_controller\\.rb$"))
 
 (defun projectile-rails-find-view ()
   (interactive)
@@ -226,30 +240,20 @@
 
 (defun projectile-rails-find-helper ()
   (interactive)
-  (projectile-rails-find-resource "helper: " "app/helpers/" "app/helpers/\\(.+\\)_helper\\.rb$"))
+  (projectile-rails-find-resource "helper: " "app/helpers/" "/\\(.+\\)_helper\\.rb$"))
 
 (defun projectile-rails-find-lib ()
   (interactive)
-  (projectile-rails-find-resource "lib: " "lib/" "lib/\\(.+\\)\\.rb$"))
+  (projectile-rails-find-resource "lib: " "lib/" "/\\(.+\\)\\.rb$"))
 
 (defun projectile-rails-find-spec ()
   (interactive)
-  (projectile-rails-find-resource "spec: " "spec/" "spec/\\(.+\\)_spec\\.rb$"))
+  (projectile-rails-find-resource "spec: " "spec/" "/\\(.+\\)_spec\\.rb$"))
 
-(defmacro projectile-rails-find-current-resource (dir re)
-  "RE will be the argument to `s-lex-format'.
+(defun projectile-rails-find-migration ()
+  (interactive)
+  (projectile-rails-find-resource "migration: " "db/migrate/" "/\\(.+\\)\\.rb$"))
 
-The binded variables are \"singular\" and \"plural\"."
-  `(let* ((singular (projectile-rails-current-resource-name))
-	  (plural (pluralize-string singular))
-	  (files (--filter
-		  (string-match-p (s-lex-format ,re) it)
-		  (projectile-dir-files (projectile-expand-root ,dir)))))
-     (projectile-rails-goto-file
-       (if (= (length files) 1)
-	   (-first-item files)
-	 (projectile-completing-read "Which exactly: " files)))))
-     
 (defun projectile-rails-find-current-model ()
   (interactive)
   (projectile-rails-find-current-resource
@@ -275,6 +279,11 @@ The binded variables are \"singular\" and \"plural\"."
   (if (fboundp 'rspec-toggle-spec-and-target)
       (rspec-toggle-spec-and-target)
     (projectile-find-test-file)))
+
+(defun projectile-rails-find-current-migration ()
+  (interactive)
+  (projectile-rails-find-current-resource
+   "db/migrate/" "/[0-9]\\{14\\}.*_\\(${plural}\\|${singular}\\).*\\.rb$"))
 
 (defun projectile-rails-current-resource-name ()
   "Returns a resource name extracted from the name of the currently visiting file"
@@ -594,6 +603,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "v") 'projectile-rails-find-current-view)
     (define-key map (kbd "h") 'projectile-rails-find-current-helper)
     (define-key map (kbd "s") 'projectile-rails-find-current-spec)
+    (define-key map (kbd "i") 'projectile-rails-find-current-migration)
     (define-key map (kbd "f") 'projectile-rails-goto-file-at-point)
     (define-key map (kbd "g") 'projectile-rails-goto-gemfile)
     (define-key map (kbd "r") 'projectile-rails-goto-routes)
@@ -617,6 +627,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "l") 'projectile-rails-find-lib)
       (define-key prefix-map (kbd "s") 'projectile-rails-find-spec)
       (define-key prefix-map (kbd "S") 'projectile-rails-find-current-spec)
+      (define-key prefix-map (kbd "i") 'projectile-rails-find-migration)
+      (define-key prefix-map (kbd "I") 'projectile-rails-find-current-migration)
       (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "e") 'projectile-rails-rake)
