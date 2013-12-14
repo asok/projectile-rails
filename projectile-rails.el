@@ -547,7 +547,7 @@ The binded variables are \"singular\" and \"plural\"."
 
 (defun projectile-rails-goto-template-at-point ()
   (interactive)
-  (let* ((template (projectile-rails-name-at-point))
+  (let* ((template (projectile-rails-filename-at-point))
 	 (dir (projectile-rails-template-dir template))
 	 (name (projectile-rails-template-name template))
 	 (format (projectile-rails-template-format template)))
@@ -588,6 +588,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-name-at-point ()
   (projectile-rails-sanitize-name (symbol-name (symbol-at-point))))
 
+(defun projectile-rails-filename-at-point ()
+  (projectile-rails-sanitize-name (thing-at-point 'filename)))
+
 (defun projectile-rails-apply-ansi-color ()
   (toggle-read-only)
   (ansi-color-apply-on-region compilation-filter-start (point))
@@ -608,14 +611,15 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   (find-file (projectile-expand-root (button-label button))))
 
 (defun projectile-rails-sanitize-name (name)
-  (cond ((or (s-starts-with? ":" name) (s-starts-with? "/" name))
-	 (substring name 1))
-	((or
-	  (and (s-starts-with? "'" name) (s-ends-with? "'" name))
-	  (and (s-starts-with? "\"" name) (s-ends-with? "\"" name)))
-	 (substring name 1 (1- (length name))))
-	(t
-	 name)))
+  (when (or
+	 (and (s-starts-with? "'" name) (s-ends-with? "'" name))
+	 (and (s-starts-with? "\"" name) (s-ends-with? "\"" name)))
+    (setq name (substring name 1 (1- (length name)))))
+  (when (or (s-starts-with? ":" name) (s-starts-with? "/" name))
+    (setq name (substring name 1)))
+  (when (s-ends-with? "," name)
+    (setq name (substring name 0 (1- (length name)))))
+  name)
 
 (defun projectile-rails-sanitize-dir-name (name)
   (if (s-ends-with? "/" name) name (concat name "/")))
