@@ -63,15 +63,15 @@ projectile-rails-find-current-helper     | <kbd>C-c r H</kbd>, <kbd>C-c r g h</k
 projectile-rails-find-lib                | <kbd>C-c r l</kbd>                         | Find a lib using `projectile-completion-system`.
 projectile-rails-find-spec               | <kbd>C-c r s</kbd>                         | Find a spec using `projectile-completion-system`.
 projectile-rails-find-current-spec       | <kbd>C-c r S</kbd>, <kbd>C-c r g s</kbd>   | Go to a spec connected with the current resource.
-projectile-rails-find-migration          | <kbd>C-c r i</kbd>                         | Find a migration using `projectile-completion-system`.
+projectile-rails-find-migration          | <kbd>C-c r n</kbd>                         | Find a migration using `projectile-completion-system`.
+projectile-rails-find-current-migration  | <kbd>C-c r N</kbd>, <kbd>C-c r g n</kbd>   | Go to a migration connected with the current resource.
 projectile-rails-find-javascript         | <kbd>C-c r j</kbd>                         | Find a javascript using `projectile-completion-system`.
-projectile-rails-find-current-migration  | <kbd>C-c r I</kbd>, <kbd>C-c r g i</kbd>   | Go to a migration connected with the current resource.
 projectile-rails-find-log                | <kbd>C-c r o</kbd>                         | Find a log file and enable `auto-revert-tail-mode` in its buffer.
-projectile-rails-find-initializer        | <kbd>C-c r z</kbd>                         | Find an initializer file using `projectile-completions-system`.
-projectile-rails-find-environment        | <kbd>C-c r n</kbd>                         | Find an environment file using `projectile-completions-system`.
+projectile-rails-find-initializer        | <kbd>C-c r i</kbd>                         | Find an initializer file using `projectile-completions-system`.
+projectile-rails-find-environment        | <kbd>C-c r e</kbd>                         | Find an environment file using `projectile-completions-system`.
 projectile-rails-find-locale             | <kbd>C-c r a</kbd>                         | Find a locale file using `projectile-completions-system`.
 projectile-rails-console                 | <kbd>C-c r r</kbd>                         | Run `rails console` command in `inf-ruby` buffer.
-projectile-rails-rake                    | <kbd>C-c r e</kbd>                         | Select a rake task to run using `projectile-completion-system`.
+projectile-rails-rake                    | <kbd>C-c r k</kbd>                         | Select a rake task to run using `projectile-completion-system`.
 projectile-rails-generate                | <kbd>C-c r t</kbd>                         | Run `rails generate` command.
 projectile-rails-goto-file-at-point      | <kbd>C-c r RET</kbd>, <kbd>C-c r g f</kbd> | Go to a file at point. Depending on the context that might be a constant, template or partial, or a gem.
 projectile-rails-goto-gemfile            | <kbd>C-c r g g</kbd>                       | Go to `Gemfile` file.
