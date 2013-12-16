@@ -268,6 +268,10 @@ The binded variables are \"singular\" and \"plural\"."
   (interactive)
   (projectile-rails-find-resource "stylesheet: " projectile-rails-javascript-dirs "/\\(.+\\)\\.[^.]+$"))
 
+(defun projectile-rails-find-initializer ()
+  (interactive)
+  (projectile-rails-find-resource "initializer: " '("config/initializers/") "/\\(.+\\)\\.rb$"))
+
 (defun projectile-rails-find-current-model ()
   (interactive)
   (projectile-rails-find-current-resource
@@ -661,6 +665,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "S") 'projectile-rails-find-current-spec)
       (define-key prefix-map (kbd "i") 'projectile-rails-find-migration)
       (define-key prefix-map (kbd "I") 'projectile-rails-find-current-migration)
+      (define-key prefix-map (kbd "z") 'projectile-rails-find-initializer)
       (define-key prefix-map (kbd "j") 'projectile-rails-find-javascript)
       (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
@@ -685,6 +690,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find log"                  projectile-rails-find-log]
     ["Find migration"            projectile-rails-find-migration]
     ["Find javascript"           projectile-rails-find-javascript]
+    ["Find initializer"          projectile-rails-find-initializer]
     "--"
     ["Go to file at point"	 projectile-rails-goto-file-at-point]
     "--"

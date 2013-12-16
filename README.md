@@ -67,6 +67,7 @@ projectile-rails-find-migration          | <kbd>C-c r i</kbd>                   
 projectile-rails-find-javascript         | <kbd>C-c r j</kbd>                         | Find a javascript using `projectile-completion-system`.
 projectile-rails-find-current-migration  | <kbd>C-c r I</kbd>, <kbd>C-c r g i</kbd>   | Go to a migration connected with the current resource.
 projectile-rails-find-log                | <kbd>C-c r o</kbd>                         | Find a log file and enable `auto-revert-tail-mode` in its buffer.
+projectile-rails-find-initializer        | <kbd>C-c r z</kbd>                         | Find an initializer file using `projectile-completions-system`.
 projectile-rails-console                 | <kbd>C-c r r</kbd>                         | Run `rails console` command in `inf-ruby` buffer.
 projectile-rails-rake                    | <kbd>C-c r e</kbd>                         | Select a rake task to run using `projectile-completion-system`.
 projectile-rails-generate                | <kbd>C-c r t</kbd>                         | Run `rails generate` command.
