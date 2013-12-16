@@ -60,6 +60,7 @@ end")
 		     "app/jobs/admin/"
 		     "config/"
 		     "config/initializers/"
+		     "config/environments/"
 		     "db/"
 		     "db/migrate/"
 		     "lib/"

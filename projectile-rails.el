@@ -215,15 +215,16 @@ The binded variables are \"singular\" and \"plural\"."
   "Similar to `projectile-dir-files' except the argument is a list of directories to look in."
   (-flatten (--map (projectile-dir-files (projectile-expand-root it)) dirs)))
 
-(defun projectile-rails-choices (dirs re)
-  "Uses `projectile-rails-dir-files' function to find files in DIRS with names matching RE."
+(defun projectile-rails-choices (dirs)
+  "Uses `projectile-rails-dir-files' function to find files in directories.
 
-  "Returns a hash table with keys being short names and values being relative paths to the files."
-  (let ((files (projectile-rails-dir-files dirs))
-	(hash (make-hash-table :test 'equal)))
-    (loop for file in files do
-	  (when (string-match re file)
-	    (puthash (match-string 1 file) file hash)))
+The DIRS is list of lists consisting of a directory path and regexp to filter files from that directory.
+Returns a hash table with keys being short names and values being relative paths to the files."
+  (let ((hash (make-hash-table :test 'equal)))
+    (loop for (dir re) in dirs do
+	  (loop for file in (projectile-dir-files (projectile-expand-root dir)) do
+		(when (string-match re file)
+		  (puthash (match-string 1 file) file hash))))
     hash))
 
 (defun projectile-rails-hash-keys (hash)
@@ -231,46 +232,57 @@ The binded variables are \"singular\" and \"plural\"."
     (maphash (lambda (key value) (setq keys (cons key keys))) hash)
     keys))
 
-(defun projectile-rails-find-resource (prompt dir re)
-  (let ((choices (projectile-rails-choices dir re)))
+(defun proeectile-rails-find-resource (prompt dirs)
+  (let ((choices (projectile-rails-choices dirs)))
      (projectile-rails-goto-file
       (gethash (projectile-completing-read prompt (projectile-rails-hash-keys choices)) choices))))
 
 (defun projectile-rails-find-model ()
   (interactive)
-  (projectile-rails-find-resource "model: " '("app/models/") "/\\(.+\\)\\.rb$"))
+  (projectile-rails-find-resource "model: " '(("app/models/" "/\\(.+\\)\\.rb$"))))
 
 (defun projectile-rails-find-controller ()
   (interactive)
-  (projectile-rails-find-resource "controller: " '("app/controllers/") "/\\(.+\\)_controller\\.rb$"))
+  (projectile-rails-find-resource "controller: " '(("app/controllers/" "/\\(.+\\)_controller\\.rb$"))))
 
 (defun projectile-rails-find-view ()
   (interactive)
-  (projectile-rails-find-resource "view: " '("app/views/") (concat "app/views/\\(.+\\)" projectile-rails-views-re)))
+  (projectile-rails-find-resource
+   "view: "
+   `(("app/views/" ,(concat "app/views/\\(.+\\)" projectile-rails-views-re)))))
 
 (defun projectile-rails-find-helper ()
   (interactive)
-  (projectile-rails-find-resource "helper: " '("app/helpers/") "/\\(.+\\)_helper\\.rb$"))
+  (projectile-rails-find-resource "helper: " '(("app/helpers/" "/\\(.+\\)_helper\\.rb$"))))
 
 (defun projectile-rails-find-lib ()
   (interactive)
-  (projectile-rails-find-resource "lib: " '("lib/") "/\\(.+\\)\\.rb$"))
+  (projectile-rails-find-resource "lib: " '(("lib/" "/\\(.+\\)\\.rb$"))))
 
 (defun projectile-rails-find-spec ()
   (interactive)
-  (projectile-rails-find-resource "spec: " '("spec/") "/\\(.+\\)_spec\\.rb$"))
+  (projectile-rails-find-resource "spec: " '(("spec/" "/\\(.+\\)_spec\\.rb$"))))
 
 (defun projectile-rails-find-migration ()
   (interactive)
-  (projectile-rails-find-resource "migration: " '("db/migrate/") "/\\(.+\\)\\.rb$"))
+  (projectile-rails-find-resource "migration: " '(("db/migrate/" "/\\(.+\\)\\.rb$"))))
 
 (defun projectile-rails-find-javascript ()
   (interactive)
-  (projectile-rails-find-resource "stylesheet: " projectile-rails-javascript-dirs "/\\(.+\\)\\.[^.]+$"))
+  (projectile-rails-find-resource
+   "stylesheet: "
+   (--map (list it "/\\(.+\\)\\.[^.]+$") projectile-rails-javascript-dirs)))
 
 (defun projectile-rails-find-initializer ()
   (interactive)
-  (projectile-rails-find-resource "initializer: " '("config/initializers/") "/\\(.+\\)\\.rb$"))
+  (projectile-rails-find-resource "initializer: " '(("config/initializers/" "/\\(.+\\)\\.rb$"))))
+
+(defun projectile-rails-find-environment ()
+  (interactive)
+  (projectile-rails-find-resource
+   "environment: "
+   '(("config/" "/\\(application\\|environment\\)\\.rb$")
+     ("config/environments/" "\\(.+\\)\\.rb$"))))
 
 (defun projectile-rails-find-current-model ()
   (interactive)
@@ -668,6 +680,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "z") 'projectile-rails-find-initializer)
       (define-key prefix-map (kbd "j") 'projectile-rails-find-javascript)
       (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
+      (define-key prefix-map (kbd "n") 'projectile-rails-find-environment)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "e") 'projectile-rails-rake)
       (define-key prefix-map (kbd "t") 'projectile-rails-generate)
@@ -691,6 +704,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find migration"            projectile-rails-find-migration]
     ["Find javascript"           projectile-rails-find-javascript]
     ["Find initializer"          projectile-rails-find-initializer]
+    ["Find environment"          projectile-rails-find-environment]
     "--"
     ["Go to file at point"	 projectile-rails-goto-file-at-point]
     "--"
