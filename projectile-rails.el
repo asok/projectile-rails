@@ -211,12 +211,8 @@ The binded variables are \"singular\" and \"plural\"."
              (projectile-rails--highlight-keywords
 	      (append keywords projectile-rails-active-support-keywords)))))
 
-(defun projectile-rails-dir-files (dirs)
-  "Similar to `projectile-dir-files' except the argument is a list of directories to look in."
-  (-flatten (--map (projectile-dir-files (projectile-expand-root it)) dirs)))
-
 (defun projectile-rails-choices (dirs)
-  "Uses `projectile-rails-dir-files' function to find files in directories.
+  "Uses `projectile-dir-files' function to find files in directories.
 
 The DIRS is list of lists consisting of a directory path and regexp to filter files from that directory.
 Returns a hash table with keys being short names and values being relative paths to the files."
@@ -492,7 +488,7 @@ Returns a hash table with keys being short names and values being relative paths
     (projectile-rails-ff
      (loop for dir in projectile-rails-javascript-dirs
 	   for re = (s-lex-format "${dir}${name}\\..+$")
-	   for files = (projectile-rails-dir-files (list dir))
+	   for files = (projectile-dir-files (projectile-expand-root dir))
 	   for file = (--first (string-match-p re it) files)
 	   until file
 	   finally return (projectile-expand-root file))))
