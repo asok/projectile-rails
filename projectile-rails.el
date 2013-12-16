@@ -232,7 +232,7 @@ Returns a hash table with keys being short names and values being relative paths
     (maphash (lambda (key value) (setq keys (cons key keys))) hash)
     keys))
 
-(defun proeectile-rails-find-resource (prompt dirs)
+(defun projectile-rails-find-resource (prompt dirs)
   (let ((choices (projectile-rails-choices dirs)))
      (projectile-rails-goto-file
       (gethash (projectile-completing-read prompt (projectile-rails-hash-keys choices)) choices))))
@@ -283,6 +283,10 @@ Returns a hash table with keys being short names and values being relative paths
    "environment: "
    '(("config/" "/\\(application\\|environment\\)\\.rb$")
      ("config/environments/" "\\(.+\\)\\.rb$"))))
+
+(defun projectile-rails-find-locale ()
+  (interactive)
+  (projectile-rails-find-resource "locale: " '(("config/locales/" "/\\(.+\\)\\.\\(?:rb\\|yml\\)$"))))
 
 (defun projectile-rails-find-current-model ()
   (interactive)
@@ -681,6 +685,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "j") 'projectile-rails-find-javascript)
       (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
       (define-key prefix-map (kbd "n") 'projectile-rails-find-environment)
+      (define-key prefix-map (kbd "a") 'projectile-rails-find-locale)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "e") 'projectile-rails-rake)
       (define-key prefix-map (kbd "t") 'projectile-rails-generate)
@@ -705,6 +710,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find javascript"           projectile-rails-find-javascript]
     ["Find initializer"          projectile-rails-find-initializer]
     ["Find environment"          projectile-rails-find-environment]
+    ["Find locale"               projectile-rails-find-locale]
     "--"
     ["Go to file at point"	 projectile-rails-goto-file-at-point]
     "--"

@@ -69,6 +69,7 @@ projectile-rails-find-current-migration  | <kbd>C-c r I</kbd>, <kbd>C-c r g i</k
 projectile-rails-find-log                | <kbd>C-c r o</kbd>                         | Find a log file and enable `auto-revert-tail-mode` in its buffer.
 projectile-rails-find-initializer        | <kbd>C-c r z</kbd>                         | Find an initializer file using `projectile-completions-system`.
 projectile-rails-find-environment        | <kbd>C-c r n</kbd>                         | Find an environment file using `projectile-completions-system`.
+projectile-rails-find-locale             | <kbd>C-c r a</kbd>                         | Find a locale file using `projectile-completions-system`.
 projectile-rails-console                 | <kbd>C-c r r</kbd>                         | Run `rails console` command in `inf-ruby` buffer.
 projectile-rails-rake                    | <kbd>C-c r e</kbd>                         | Select a rake task to run using `projectile-completion-system`.
 projectile-rails-generate                | <kbd>C-c r t</kbd>                         | Run `rails generate` command.
