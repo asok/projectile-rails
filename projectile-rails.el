@@ -235,11 +235,11 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-find-model ()
   (interactive)
-  (projectile-rails-find-resource "model: " '(("app/models/" "/\\(.+\\)\\.rb$"))))
+  (projectile-rails-find-resource "model: " '(("app/models/" "/models/\\(.+\\)\\.rb$"))))
 
 (defun projectile-rails-find-controller ()
   (interactive)
-  (projectile-rails-find-resource "controller: " '(("app/controllers/" "/\\(.+\\)_controller\\.rb$"))))
+  (projectile-rails-find-resource "controller: " '(("app/controllers/" "/controllers/\\(.+\\)_controller\\.rb$"))))
 
 (defun projectile-rails-find-view ()
   (interactive)
@@ -249,19 +249,19 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-find-helper ()
   (interactive)
-  (projectile-rails-find-resource "helper: " '(("app/helpers/" "/\\(.+\\)_helper\\.rb$"))))
+  (projectile-rails-find-resource "helper: " '(("app/helpers/" "/helpers/\\(.+\\)_helper\\.rb$"))))
 
 (defun projectile-rails-find-lib ()
   (interactive)
-  (projectile-rails-find-resource "lib: " '(("lib/" "/\\(.+\\)\\.rb$"))))
+  (projectile-rails-find-resource "lib: " '(("lib/" "lib/\\(.+\\)\\.rb$"))))
 
 (defun projectile-rails-find-spec ()
   (interactive)
-  (projectile-rails-find-resource "spec: " '(("spec/" "/\\(.+\\)_spec\\.rb$"))))
+  (projectile-rails-find-resource "spec: " '(("spec/" "spec/\\(.+\\)_spec\\.rb$"))))
 
 (defun projectile-rails-find-migration ()
   (interactive)
-  (projectile-rails-find-resource "migration: " '(("db/migrate/" "/\\(.+\\)\\.rb$"))))
+  (projectile-rails-find-resource "migration: " '(("db/migrate/" "db/migrate/\\(.+\\)\\.rb$"))))
 
 (defun projectile-rails-find-javascript ()
   (interactive)
@@ -271,18 +271,18 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-find-initializer ()
   (interactive)
-  (projectile-rails-find-resource "initializer: " '(("config/initializers/" "/\\(.+\\)\\.rb$"))))
+  (projectile-rails-find-resource "initializer: " '(("config/initializers/" "config/initializers/\\(.+\\)\\.rb$"))))
 
 (defun projectile-rails-find-environment ()
   (interactive)
   (projectile-rails-find-resource
    "environment: "
    '(("config/" "/\\(application\\|environment\\)\\.rb$")
-     ("config/environments/" "\\(.+\\)\\.rb$"))))
+     ("config/environments/" "/\\([^/]+\\)\\.rb$"))))
 
 (defun projectile-rails-find-locale ()
   (interactive)
-  (projectile-rails-find-resource "locale: " '(("config/locales/" "/\\(.+\\)\\.\\(?:rb\\|yml\\)$"))))
+  (projectile-rails-find-resource "locale: " '(("config/locales/" "config/locales/\\(.+\\)\\.\\(?:rb\\|yml\\)$"))))
 
 (defun projectile-rails-find-current-model ()
   (interactive)
