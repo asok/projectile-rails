@@ -169,12 +169,15 @@
   :group 'projectile-rails
   :type 'string)
 
-(defmacro projectile-rails-if-zeus (command-for-zeus command-for-bundler)
-  `(if (file-exists-p (projectile-expand-root ".zeus.sock"))
-       ,command-for-zeus
-     ,command-for-bundler))
+(defmacro projectile-rails-with-preloader (&rest cases)
+  `(cond ((projectile-rails-spring-p)
+	  ,(plist-get cases :spring))
+	 ((projectile-rails-zeus-p)
+	  ,(plist-get cases :zeus))
+	 (t
+	  ,(plist-get cases :vanilla))))
 
-(defmacro projetile-rails-with-root (body-form)
+(defmacro projectile-rails-with-root (body-form)
   `(let ((default-directory (projectile-rails-root)))
      ,body-form))
 
@@ -191,6 +194,18 @@ The binded variables are \"singular\" and \"plural\"."
        (if (= (length files) 1)
 	   (-first-item files)
 	 (projectile-completing-read "Which exactly: " files)))))
+
+(defun projectile-rails-spring-p ()
+  (file-exists-p (f-canonical
+		  (concat
+		   temporary-file-directory
+		   "spring/"
+		   (md5 (projectile-project-root) 0 -1)
+		   ".pid")))
+  )
+
+(defun projectile-rails-zeus-p ()
+  (file-exists-p (projectile-expand-root ".zeus.sock")))
 
 (defun projectile-rails--highlight-keywords (keywords)
   "Highlight the passed KEYWORDS in current buffer."
@@ -374,9 +389,12 @@ Returns a hash table with keys being short names and values being relative paths
   (if (file-exists-p (projectile-rails-rake-tmp-file)) (delete-file (projectile-rails-rake-tmp-file)))
   (with-temp-file (projectile-rails-rake-tmp-file)
     (insert
-     (projetile-rails-with-root
+     (projectile-rails-with-root
       (shell-command-to-string
-       (projectile-rails-if-zeus "zeus rake -T" "bundle exec rake -T"))))))
+       (projectile-rails-with-preloader
+	:spring "spring rake -T"
+	:zeus "zeus rake -T"
+	:vanilla "bundle exec rake -T"))))))
 
 (defun projectile-rails-rake (task)
   (interactive
@@ -385,12 +403,14 @@ Returns a hash table with keys being short names and values being relative paths
      "Rake (default: default): "
      (projectile-rails-pcmpl-rake-tasks))))
   (let ((default-directory (projectile-rails-root)))
-    (projetile-rails-with-root
+    (projectile-rails-with-root
      (compile
       (concat
-       (projectile-rails-if-zeus "zeus rake " "bundle exec rake ") (if (= 0 (length task))
-                                                          "default"
-                                                        task))
+       (projectile-rails-with-preloader
+	:spring "spring rake "
+	:zeus "zeus rake "
+	:vanilla "bundle exec rake ")
+       (if (= 0 (length task)) "default" task))
       'projectile-rails-compilation-mode))))
 
 (defun projectile-rails-root ()
@@ -402,9 +422,12 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-console ()
   (interactive)
-  (projetile-rails-with-root
+  (projectile-rails-with-root
    (with-current-buffer (run-ruby
-			 (projectile-rails-if-zeus "zeus console" "bundle exec rails console"))
+			 (projectile-rails-with-preloader
+			  :spring "spring rails console"
+			  :zeus "zeus console"
+			  :vanilla "bundle exec rails console"))
      (projectile-rails-mode +1))))
 
 (defun projectile-rails-expand-snippet-maybe ()
@@ -457,10 +480,11 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails-generate ()
   "Runs rails generate command"
   (interactive)
-  (projetile-rails-with-root
-   (let ((command-prefix (projectile-rails-if-zeus
-                          "zeus generate "
-                          "bundle exec rails generate ")))
+  (projectile-rails-with-root
+   (let ((command-prefix (projectile-rails-with-preloader
+			  :spring "spring rails generate "
+                          :zeus "zeus generate "
+                          :vanilla "bundle exec rails generate ")))
      (compile
       (concat command-prefix (read-string command-prefix))
       'projectile-rails-generate-mode))))

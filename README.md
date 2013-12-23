@@ -5,7 +5,7 @@ Internally it based on [Projectile](https://github.com/bbatsov/projectile).
 
 It means that you can use Projectile's commands for greping (or acking) files, run tests, switch between projects, etc.
 
-With Projectile Rails you can:
+With Projectile Rails you are able to:
 
 * navigate through rails resources (controllers, views, helpers and so on)
 * jump to ruby classes and template files
@@ -14,6 +14,7 @@ With Projectile Rails you can:
 * run `rails generate`
 * open log files with `auto-revert-mode` on
 * see rails keywords highlighted
+* take advantage of [zeus](https://github.com/burke/zeus) and [spring](https://github.com/jonleighton/spring) preloaders
 
 ## Setup
 

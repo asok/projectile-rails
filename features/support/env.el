@@ -12,7 +12,20 @@
 (add-to-list 'load-path projectile-rails-root-path)
 
 (defvar projectile-rails-test-app-path
-  (concat (make-temp-file "projectile-rails-test" t) "/"))
+  (f-canonical (concat (make-temp-file "projectile-rails-test" t) "/")))
+
+(defvar projectile-rails-test-spring-pid-file
+  (concat
+   temporary-file-directory
+   "spring/"
+   (md5 projectile-rails-test-app-path 0 -1)
+   ".pid"))
+
+(defvar projectile-rails-test-zeus-pid-file
+  (concat projectile-rails-test-app-path ".zeus.sock"))
+
+(defvar projectile-rails-test-rake-cache-file
+  (concat projectile-rails-test-app-path "/tmp/rake-output"))
 
 (defun projectile-rails-test-touch-file (filepath)
   (let ((fullpath (expand-file-name filepath projectile-rails-test-app-path)))
@@ -41,7 +54,6 @@ end")
 	     kill-buffer-query-functions))
 
  (make-temp-file projectile-rails-test-app-path t)
- (cd projectile-rails-test-app-path)
  (setq projectile-indexing-method 'native)
  (loop for path in '("app/"
 		     "app/assets/"
@@ -92,12 +104,15 @@ end")
 
  (add-hook 'projectile-mode-hook 'projectile-rails-on)
 
- (loop for name in '(".zeus.sock" "tmp/rake-output") do
-       (when (file-exists-p (concat projectile-rails-test-app-path name))
-	 (f-delete (concat projectile-rails-test-app-path name))))
+ (loop for file in (list projectile-rails-test-spring-pid-file
+			 projectile-rails-test-zeus-pid-file
+			 projectile-rails-test-rake-cache-file)
+       do (when (f-exists? file) (f-delete file)))
 
  (setq projectile-completion-system 'ido
        projectile-rails-expand-snippet nil)
+
+ (cd projectile-rails-test-app-path)
  )
 
 (After
