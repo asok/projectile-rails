@@ -16,6 +16,8 @@ With Projectile Rails you are able to:
 * see rails keywords highlighted
 * take advantage of [zeus](https://github.com/burke/zeus) and [spring](https://github.com/jonleighton/spring) preloaders
 
+It can be a replacement for [rinari](https://github.com/eschulte/rinari).
+
 ## Setup
 
 ### Installation
