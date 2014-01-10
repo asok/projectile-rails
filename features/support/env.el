@@ -70,6 +70,7 @@ end")
 		     "app/views/admin/users/"
 		     "app/jobs/"
 		     "app/jobs/admin/"
+		     "app/mailers/"
 		     "config/"
 		     "config/environments/"
 		     "config/initializers/"

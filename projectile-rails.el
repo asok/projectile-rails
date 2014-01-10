@@ -299,6 +299,10 @@ Returns a hash table with keys being short names and values being relative paths
   (interactive)
   (projectile-rails-find-resource "locale: " '(("config/locales/" "config/locales/\\(.+\\)\\.\\(?:rb\\|yml\\)$"))))
 
+(defun projectile-rails-find-mailer ()
+  (interactive)
+  (projectile-rails-find-resource "mailer: " '(("app/mailers/" "app/mailers/\\(.+\\)\\.rb$"))))
+
 (defun projectile-rails-find-current-model ()
   (interactive)
   (projectile-rails-find-current-resource
@@ -720,6 +724,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
       (define-key prefix-map (kbd "e") 'projectile-rails-find-environment)
       (define-key prefix-map (kbd "a") 'projectile-rails-find-locale)
+      (define-key prefix-map (kbd "@") 'projectile-rails-find-mailer)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "k") 'projectile-rails-rake)
       (define-key prefix-map (kbd "t") 'projectile-rails-generate)
@@ -745,6 +750,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find initializer"          projectile-rails-find-initializer]
     ["Find environment"          projectile-rails-find-environment]
     ["Find locale"               projectile-rails-find-locale]
+    ["Find mailer"               projectile-rails-find-mailer]
     "--"
     ["Go to file at point"	 projectile-rails-goto-file-at-point]
     "--"
