@@ -262,6 +262,12 @@ Returns a hash table with keys being short names and values being relative paths
    "view: "
    `(("app/views/" ,(concat "app/views/\\(.+\\)" projectile-rails-views-re)))))
 
+(defun projectile-rails-find-layout ()
+  (interactive)
+  (projectile-rails-find-resource
+   "layout: "
+   `(("app/views/layouts/" ,(concat "app/views/layouts/\\(.+\\)" projectile-rails-views-re)))))
+
 (defun projectile-rails-find-helper ()
   (interactive)
   (projectile-rails-find-resource "helper: " '(("app/helpers/" "/helpers/\\(.+\\)_helper\\.rb$"))))
@@ -725,6 +731,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "e") 'projectile-rails-find-environment)
       (define-key prefix-map (kbd "a") 'projectile-rails-find-locale)
       (define-key prefix-map (kbd "@") 'projectile-rails-find-mailer)
+      (define-key prefix-map (kbd "y") 'projectile-rails-find-layout)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
       (define-key prefix-map (kbd "k") 'projectile-rails-rake)
       (define-key prefix-map (kbd "t") 'projectile-rails-generate)
@@ -751,6 +758,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find environment"          projectile-rails-find-environment]
     ["Find locale"               projectile-rails-find-locale]
     ["Find mailer"               projectile-rails-find-mailer]
+    ["Find layout"               projectile-rails-find-layout]
     "--"
     ["Go to file at point"	 projectile-rails-goto-file-at-point]
     "--"

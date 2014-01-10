@@ -68,6 +68,7 @@ end")
 		     "app/views/users/"
 		     "app/views/admin/"
 		     "app/views/admin/users/"
+		     "app/views/layouts/"
 		     "app/jobs/"
 		     "app/jobs/admin/"
 		     "app/mailers/"
