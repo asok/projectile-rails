@@ -55,7 +55,7 @@ end")
 
  (make-temp-file projectile-rails-test-app-path t)
  (setq projectile-indexing-method 'native)
- (loop for path in '("app/"
+ (loop for path in `("app/"
 		     "app/assets/"
 		     "app/assets/javascripts/"
 		     "app/assets/stylesheets/"
@@ -92,7 +92,8 @@ end")
 		     "tmp/"
 		     "vendor/"
 		     "Gemfile"
-		     "config/environment.rb")
+		     "config/environment.rb"
+		     ,(concat temporary-file-directory "spring/"))
        do (projectile-rails-test-touch-file path))
  )
 
