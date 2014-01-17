@@ -38,6 +38,7 @@
 (require 'projectile)
 (require 'inf-ruby)
 (require 'inflections)
+(require 'f)
 
 (defgroup projectile-rails nil
   "Rails mode based on projectile"
@@ -174,7 +175,7 @@
        ,command-for-zeus
      ,command-for-bundler))
 
-(defmacro projetile-rails-with-root (body-form)
+(defmacro projectile-rails-with-root (body-form)
   `(let ((default-directory (projectile-rails-root)))
      ,body-form))
 
@@ -374,7 +375,7 @@ Returns a hash table with keys being short names and values being relative paths
   (if (file-exists-p (projectile-rails-rake-tmp-file)) (delete-file (projectile-rails-rake-tmp-file)))
   (with-temp-file (projectile-rails-rake-tmp-file)
     (insert
-     (projetile-rails-with-root
+     (projectile-rails-with-root
       (shell-command-to-string
        (projectile-rails-if-zeus "zeus rake -T" "bundle exec rake -T"))))))
 
@@ -385,7 +386,7 @@ Returns a hash table with keys being short names and values being relative paths
      "Rake (default: default): "
      (projectile-rails-pcmpl-rake-tasks))))
   (let ((default-directory (projectile-rails-root)))
-    (projetile-rails-with-root
+    (projectile-rails-with-root
      (compile
       (concat
        (projectile-rails-if-zeus "zeus rake " "bundle exec rake ") (if (= 0 (length task))
@@ -402,7 +403,7 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-console ()
   (interactive)
-  (projetile-rails-with-root
+  (projectile-rails-with-root
    (with-current-buffer (run-ruby
 			 (projectile-rails-if-zeus "zeus console" "bundle exec rails console"))
      (projectile-rails-mode +1))))
@@ -457,7 +458,7 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails-generate ()
   "Runs rails generate command"
   (interactive)
-  (projetile-rails-with-root
+  (projectile-rails-with-root
    (let ((command-prefix (projectile-rails-if-zeus
                           "zeus generate "
                           "bundle exec rails generate ")))
