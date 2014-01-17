@@ -4,9 +4,9 @@
 
 ;; Author:            Adam Sokolnicki <adam.sokolnicki@gmail.com>
 ;; URL:               https://github.com/asok/projectile-rails
-;; Version:           0.4.0
+;; Version:           0.4.1
 ;; Keywords:          rails, projectile
-;; Package-Requires:  ((projectile "1.0.0-cvs") (inflections "1.1") (inf-ruby "2.2.6"))
+;; Package-Requires:  ((projectile "1.0.0-cvs") (inflections "1.1") (inf-ruby "2.2.6") (f "0.13.0"))
 
 ;; This file is NOT part of GNU Emacs.
 
