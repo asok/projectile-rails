@@ -10,6 +10,12 @@ Scenario: Runnning generate rspec:install
   And I switch to buffer "*projectile-rails-generate*"
   Then I should see "bundle exec rails generate rspec:install"
 
+Scenario: Running generate rspec:install when spring is running
+  And spring is running
+  When I run command "projectile-rails-generate" inputting "rspec:install"
+  And I switch to buffer "*projectile-rails-generate*"
+  Then I should see "spring rails generate rspec:install"
+
 Scenario: Running generate rspec:install when zeus is running
   And zeus is running
   When I run command "projectile-rails-generate" inputting "rspec:install"

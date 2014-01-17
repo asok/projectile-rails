@@ -5,7 +5,7 @@ Internally it based on [Projectile](https://github.com/bbatsov/projectile).
 
 It means that you can use Projectile's commands for greping (or acking) files, run tests, switch between projects, etc.
 
-With Projectile Rails you can:
+With Projectile Rails you are able to:
 
 * navigate through rails resources (controllers, views, helpers and so on)
 * jump to ruby classes and template files
@@ -14,6 +14,9 @@ With Projectile Rails you can:
 * run `rails generate`
 * open log files with `auto-revert-mode` on
 * see rails keywords highlighted
+* take advantage of [zeus](https://github.com/burke/zeus) and [spring](https://github.com/jonleighton/spring) preloaders
+
+It can be a replacement for [rinari](https://github.com/eschulte/rinari).
 
 ## Setup
 
@@ -70,6 +73,8 @@ projectile-rails-find-log                | <kbd>C-c r o</kbd>                   
 projectile-rails-find-initializer        | <kbd>C-c r i</kbd>                         | Find an initializer file using `projectile-completions-system`.
 projectile-rails-find-environment        | <kbd>C-c r e</kbd>                         | Find an environment file using `projectile-completions-system`.
 projectile-rails-find-locale             | <kbd>C-c r a</kbd>                         | Find a locale file using `projectile-completions-system`.
+projectile-rails-find-mailer             | <kbd>C-c r @</kbd>                         | Find a mailer file using `projectile-completions-system`.
+projectile-rails-find-layout             | <kbd>C-c r y</kbd>                         | Find a layout file using `projectile-completions-system`.
 projectile-rails-console                 | <kbd>C-c r r</kbd>                         | Run `rails console` command in `inf-ruby` buffer.
 projectile-rails-rake                    | <kbd>C-c r k</kbd>                         | Select a rake task to run using `projectile-completion-system`.
 projectile-rails-generate                | <kbd>C-c r t</kbd>                         | Run `rails generate` command.

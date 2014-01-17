@@ -55,13 +55,17 @@
 (When "^I sleep for \\([0-9]+\\) seconds"
       (lambda(seconds) (sit-for (string-to-int seconds))))
 
+(Given "^spring is running"
+       (lambda ()
+	 (f-touch projectile-rails-test-spring-pid-file)))
+
 (Given "^zeus is running"
        (lambda ()
-	 (f-touch (concat projectile-rails-test-app-path "/.zeus.sock"))))
+	 (f-touch projectile-rails-test-zeus-pid-file)))
 
 (Given "the cache file with projectile-rails task exists"
        (lambda ()
-	 (with-temp-file (concat projectile-rails-test-app-path "/tmp/rake-output")
+	 (with-temp-file projectile-rails-test-rake-cache-file
 	   (insert "rake projectile-rails #a test task\n"))))
 
 (Then "^projectile-rails should be turned on"

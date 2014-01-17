@@ -12,6 +12,12 @@ Scenario: Running about task
   And I switch to buffer "*projectile-rails-compilation*"
   Then I should see "bundle exec rake about"
   
+Scenario: Running about task when spring is running
+  And spring is running
+  When I run command "projectile-rails-rake" selecting "about"
+  And I switch to buffer "*projectile-rails-compilation*"
+  Then I should see "spring rake about"
+
 Scenario: Running about task when zeus is running
   And zeus is running
   When I run command "projectile-rails-rake" selecting "about"
