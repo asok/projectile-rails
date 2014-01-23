@@ -372,7 +372,8 @@ Returns a hash table with keys being short names and values being relative paths
 		(projectile-rails-list-entries 'f-files "log/")))))
   (auto-revert-tail-mode +1)
   (setq-local auto-revert-verbose nil)
-  (buffer-disable-undo))
+  (buffer-disable-undo)
+  (projectile-rails-on))
 
 (defun projectile-rails-rake-tmp-file ()
   (projectile-expand-root "tmp/rake-output"))

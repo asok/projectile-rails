@@ -10,3 +10,4 @@ Scenario: Opening development log
   When I run command "projectile-rails-find-log" selecting "development.log"
   Then I am in file "log/development.log"
   And the buffer is auto reverting
+  And projectile-rails should be turned on
