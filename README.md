@@ -124,6 +124,13 @@ OS X users might want to look at [exec-path-from-shell](https://github.com/purce
 * [robe](https://github.com/dgutov/robe) to view gems documentation and jump to methods and classes definitions.
 * [magit](https://github.com/magit/magit) to interact with git.
 
+## Caveat
+
+### Running pry instead of irb
+* Pry's paging is not working in emacs. It should be disabled with `Pry.config.pager = false`. [Reference](https://github.com/pry/pry/wiki/Customization-and-configuration#wiki-pager)
+
+* When `projectile-rails-console` runs rails console using a pre-loader (zeus or spring) and pry's indent correction is enabled then pry will insert some ansi codes that are misinterpreted by `comint-mode`. A workaround is to disable the indentation correction with `Pry.config.correct_indent = false`. [Reference](https://github.com/pry/pry/wiki/Customization-and-configuration#wiki-correct-indent).
+
 ## Contribution
 
 Install [cask](https://github.com/rejeep/cask.el) if you haven't already, then:
