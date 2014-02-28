@@ -404,9 +404,9 @@ Returns a hash table with keys being short names and values being relative paths
      (projectile-rails-with-root
       (shell-command-to-string
        (projectile-rails-with-preloader
-	:spring "spring rake -T"
-	:zeus "zeus rake -T"
-	:vanilla "bundle exec rake -T"))))))
+	:spring "spring rake -T -A"
+	:zeus "zeus rake -T -A"
+	:vanilla "bundle exec rake -T -A"))))))
 
 (defun projectile-rails-rake (task)
   (interactive
