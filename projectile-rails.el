@@ -645,9 +645,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   (projectile-rails-sanitize-name (thing-at-point 'filename)))
 
 (defun projectile-rails-apply-ansi-color ()
-  (toggle-read-only)
+  (read-only-mode)
   (ansi-color-apply-on-region compilation-filter-start (point))
-  (toggle-read-only))
+  (read-only-mode))
 
 (defun projectile-rails-make-buttons (buffer exit-code)
   (with-current-buffer buffer
