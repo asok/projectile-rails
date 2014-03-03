@@ -208,7 +208,7 @@ The binded variables are \"singular\" and \"plural\"."
 (defun projectile-rails-zeus-p ()
   (file-exists-p (projectile-expand-root ".zeus.sock")))
 
-(defun projectile-rails--highlight-keywords (keywords)
+(defun projectile-rails-highlight-keywords (keywords)
   "Highlight the passed KEYWORDS in current buffer."
   (font-lock-add-keywords
    nil
@@ -224,7 +224,7 @@ The binded variables are \"singular\" and \"plural\"."
                                ("app/models/.+\\.rb$" ,projectile-rails-model-keywords)
                                ("db/migrate/.+\\.rb$" ,projectile-rails-migration-keywords))
         do (when (and (buffer-file-name) (string-match-p re (buffer-file-name)))
-             (projectile-rails--highlight-keywords
+             (projectile-rails-highlight-keywords
 	      (append keywords projectile-rails-active-support-keywords)))))
 
 (defun projectile-rails-choices (dirs)
@@ -312,23 +312,19 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-find-current-model ()
   (interactive)
-  (projectile-rails-find-current-resource
-   "app/models/" "/${singular}\\.rb$"))
+  (projectile-rails-find-current-resource "app/models/" "/${singular}\\.rb$"))
 
 (defun projectile-rails-find-current-controller ()
   (interactive)
-  (projectile-rails-find-current-resource
-   "app/controllers/" "/${plural}_controller\\.rb$"))
+  (projectile-rails-find-current-resource "app/controllers/" "/${plural}_controller\\.rb$"))
 
 (defun projectile-rails-find-current-view ()
   (interactive)
-  (projectile-rails-find-current-resource
-   "app/views/" "/${plural}/.+$"))
+  (projectile-rails-find-current-resource "app/views/" "/${plural}/.+$"))
 
 (defun projectile-rails-find-current-helper ()
   (interactive)
-  (projectile-rails-find-current-resource
-   "app/helpers/" "/${plural}_helper\\.rb$"))
+  (projectile-rails-find-current-resource "app/helpers/" "/${plural}_helper\\.rb$"))
 
 (defun projectile-rails-find-current-spec ()
   (interactive)
@@ -557,9 +553,6 @@ Returns a hash table with keys being short names and values being relative paths
 	  ((string-match-p "\\_<require\\_>" line)
 	   (projectile-rails-goto-gem (thing-at-point 'filename)))
 	  
-	  ((not (string-match-p "^[A-Z]" name))
-	   (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
-
 	  ((not (string-match-p "^[A-Z]" name))
 	   (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
 
