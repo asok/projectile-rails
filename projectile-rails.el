@@ -155,9 +155,15 @@
 
 (defcustom projectile-rails-javascript-dirs
   '("app/assets/javascripts/" "lib/assets/javascripts/" "public/javascripts/")
-  "The list directories to for javascript files in."
+  "The list of directories to look for the javascript files in."
   :group 'projectile-rails
-  :type '(repeat stirng))
+  :type '(repeat string))
+
+(defcustom projectile-rails-stylesheet-dirs
+  '("app/assets/stylesheets/" "lib/assets/stylesheets/" "public/stylesheets/")
+  "The list of directories to look for the stylesheet files in."
+  :group 'projectile-rails
+  :type '(repeat string))
 
 (defcustom projectile-rails-expand-snippet t
   "If not nil newly created buffers will be pre-filled with class skeleton.")
@@ -288,8 +294,14 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails-find-javascript ()
   (interactive)
   (projectile-rails-find-resource
-   "stylesheet: "
+   "javascript: "
    (--map (list it "/\\(.+\\)\\.[^.]+$") projectile-rails-javascript-dirs)))
+
+(defun projectile-rails-find-stylesheet ()
+  (interactive)
+  (projectile-rails-find-resource
+   "stylesheet: "
+   (--map (list it "/\\(.+\\)\\.[^.]+$") projectile-rails-stylesheet-dirs)))
 
 (defun projectile-rails-find-initializer ()
   (interactive)
@@ -515,11 +527,11 @@ Returns a hash table with keys being short names and values being relative paths
     (bundle-open (car (s-split "/" gem))))
   )
 
-(defun projectile-rails-goto-javascript-at-point ()
+(defun projectile-rails-goto-asset-at-point (dirs)
   (let ((name
 	 (projectile-rails-sanitize-name (thing-at-point 'filename))))
     (projectile-rails-ff
-     (loop for dir in projectile-rails-javascript-dirs
+     (loop for dir in dirs
 	   for re = (s-lex-format "${dir}${name}\\..+$")
 	   for files = (projectile-dir-files (projectile-expand-root dir))
 	   for file = (--first (string-match-p re it) files)
@@ -540,12 +552,15 @@ Returns a hash table with keys being short names and values being relative paths
 	  ((string-match "Rendered \\([^ ]+\\)" line)
 	   (projectile-rails-sanitize-and-goto-file
 	    "app/views/" (match-string 1 line)))
-	  
+
 	  ((string-match-p "\\_<render\\_>" line)
 	   (projectile-rails-goto-template-at-point))
 
-	  ((string-match-p "^//= require .+$" line)
-	   (projectile-rails-goto-javascript-at-point))
+	  ((string-match-p "^\\s-*//= require .+\\s-*$" line)
+	   (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs))
+
+	  ((string-match-p "^\\s-*\\*= require .+\\s-*$" line)
+	   (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs))
 
 	  ((string-match-p "\\_<require_relative\\_>" line)
 	   (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
@@ -680,12 +695,14 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (end-of-line)
       (buffer-substring-no-properties beg (point)))))
 
-(defun projectile-rails-set-javascript-dirs ()
+(defun projectile-rails-set-assets-dirs ()
   (set
    (make-local-variable 'projectile-rails-javascript-dirs)
-   (--filter
-    (file-exists-p (projectile-expand-root it))
-    projectile-rails-javascript-dirs)))
+   (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-javascript-dirs))
+  (set
+   (make-local-variable 'projectile-rails-stylesheet-dirs)
+   (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-stylesheet-dirs))
+  )
 
 (defvar projectile-rails-mode-goto-map
   (let ((map (make-sparse-keymap)))
@@ -722,6 +739,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "N") 'projectile-rails-find-current-migration)
       (define-key prefix-map (kbd "i") 'projectile-rails-find-initializer)
       (define-key prefix-map (kbd "j") 'projectile-rails-find-javascript)
+      (define-key prefix-map (kbd "#") 'projectile-rails-find-stylesheet)
       (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
       (define-key prefix-map (kbd "e") 'projectile-rails-find-environment)
       (define-key prefix-map (kbd "a") 'projectile-rails-find-locale)
@@ -749,6 +767,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find log"                  projectile-rails-find-log]
     ["Find migration"            projectile-rails-find-migration]
     ["Find javascript"           projectile-rails-find-javascript]
+    ["Find stylesheet"           projectile-rails-find-stylesheet]
     ["Find initializer"          projectile-rails-find-initializer]
     ["Find environment"          projectile-rails-find-environment]
     ["Find locale"               projectile-rails-find-locale]
@@ -780,7 +799,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   (when projectile-rails-mode
     (and projectile-rails-expand-snippet (projectile-rails-expand-snippet-maybe))
     (and projectile-rails-add-keywords (projectile-rails-add-keywords-for-file-type))
-    (projectile-rails-set-javascript-dirs)))
+    (projectile-rails-set-assets-dirs)))
 
 ;;;###autoload
 (defun projectile-rails-on ()

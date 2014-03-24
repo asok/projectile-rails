@@ -47,3 +47,8 @@ Feature: Finding resources
     When I run command "projectile-rails-find-javascript" selecting "foo"
     Then I am in file "app/assets/javascripts/foo.js"
 
+  Scenario: Finding stylesheet
+    And file "app/assets/stylesheets/foo.js" exists
+    When I run command "projectile-rails-find-stylesheet" selecting "foo"
+    Then I am in file "app/assets/stylesheets/foo.js"
+
