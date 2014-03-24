@@ -287,6 +287,10 @@ Returns a hash table with keys being short names and values being relative paths
   (interactive)
   (projectile-rails-find-resource "spec: " '(("spec/" "spec/\\(.+\\)_spec\\.rb$"))))
 
+(defun projectile-rails-find-feature ()
+  (interactive)
+  (projectile-rails-find-resource "feature: " '(("features/" "features/\\(.+\\)\\.feature$"))))
+
 (defun projectile-rails-find-migration ()
   (interactive)
   (projectile-rails-find-resource "migration: " '(("db/migrate/" "db/migrate/\\(.+\\)\\.rb$"))))
@@ -734,6 +738,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "H") 'projectile-rails-find-current-helper)
       (define-key prefix-map (kbd "l") 'projectile-rails-find-lib)
       (define-key prefix-map (kbd "s") 'projectile-rails-find-spec)
+      (define-key prefix-map (kbd "f") 'projectile-rails-find-feature)
       (define-key prefix-map (kbd "S") 'projectile-rails-find-current-spec)
       (define-key prefix-map (kbd "n") 'projectile-rails-find-migration)
       (define-key prefix-map (kbd "N") 'projectile-rails-find-current-migration)

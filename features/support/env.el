@@ -91,6 +91,7 @@ end")
 		     "spec/models/"
 		     "spec/controllers/"
 		     "spec/controllers/admin/"
+		     "features/"
 		     "tmp/"
 		     "vendor/"
 		     "Gemfile"

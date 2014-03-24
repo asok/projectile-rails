@@ -36,6 +36,11 @@ Feature: Finding resources
     And file "spec/models/user_spec.rb" exists
     When I run command "projectile-rails-find-spec" selecting "models/user"
     Then I am in file "spec/models/user_spec.rb"
+
+  Scenario: Finding feature
+    And file "features/user.feature" exists
+    When I run command "projectile-rails-find-feature" selecting "user"
+    Then I am in file "features/user.feature"
     
   Scenario: Finding migration
     And file "db/migrate/12345678901234_create_users.rb" exists
