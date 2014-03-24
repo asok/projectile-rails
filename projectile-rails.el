@@ -358,11 +358,11 @@ Returns a hash table with keys being short names and values being relative paths
   (let ((file-name (buffer-file-name)))
     (if file-name
 	(singularize-string
-	 (loop for re in '("app/models/\\(.+\\)\\.rb$"
-			   "app/controllers/\\(.+\\)_controller\\.rb$"
-			   "app/views/\\(.+\\)/[^/]+$"
-			   "app/helpers/\\(.+\\)_helper\\.rb$"
-			   "spec/.*/\\([a-z_]+?\\)\\(_controller\\)?_spec\\.rb$")
+	 (loop for re in '("app/models/\\(?:.+/\\)*\\(.+\\)\\.rb"
+			   "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
+			   "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
+			   "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
+			   "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$")
 	       until (string-match re file-name)
 	       finally return (match-string 1 file-name))))
     )
