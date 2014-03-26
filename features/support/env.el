@@ -98,9 +98,7 @@ end")
 		     "config/environment.rb"
 		     ,(concat temporary-file-directory "spring/"))
        do (projectile-rails-test-touch-file path))
- )
 
-(Before
  (require 'yasnippet)
  (require 'bundler)
  (require 'rspec-mode)
@@ -108,15 +106,17 @@ end")
 
  (add-hook 'projectile-mode-hook 'projectile-rails-on)
 
- (loop for file in (list projectile-rails-test-spring-pid-file
-			 projectile-rails-test-zeus-pid-file
-			 projectile-rails-test-rake-cache-file)
-       do (when (f-exists? file) (f-delete file)))
-
  (setq projectile-completion-system 'ido
        projectile-rails-expand-snippet nil)
 
  (cd projectile-rails-test-app-path)
+ )
+
+(Before
+ (loop for file in (list projectile-rails-test-spring-pid-file
+			 projectile-rails-test-zeus-pid-file
+			 projectile-rails-test-rake-cache-file)
+       do (when (f-exists? file) (f-delete file)))
  )
 
 (After
