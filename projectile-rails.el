@@ -818,11 +818,13 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode used by `projectile-rails'."
-  (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t))
+  (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t)
+  (projectile-rails-on))
 
 (define-derived-mode projectile-rails-generate-mode projectile-rails-compilation-mode "Projectile Rails Generate"
   "Mode for output of rails generate."
-  (add-hook 'compilation-finish-functions 'projectile-rails-make-buttons nil t))
+  (add-hook 'compilation-finish-functions 'projectile-rails-make-buttons nil t)
+  (projectile-rails-on))
 
 (provide 'projectile-rails)
 

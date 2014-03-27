@@ -49,12 +49,7 @@ end")
 (require 'ert)
 
 (Setup
- (setq kill-buffer-query-functions
-       (remq 'process-kill-buffer-query-function
-	     kill-buffer-query-functions))
-
  (make-temp-file projectile-rails-test-app-path t)
- (setq projectile-indexing-method 'native)
  (loop for path in `("app/"
 		     "app/assets/"
 		     "app/assets/javascripts/"
@@ -106,7 +101,9 @@ end")
 
  (add-hook 'projectile-mode-hook 'projectile-rails-on)
 
- (setq projectile-completion-system 'ido
+ (setq kill-buffer-query-functions nil
+       projectile-completion-system 'ido
+       projectile-indexing-method 'native
        projectile-rails-expand-snippet nil)
 
  (cd projectile-rails-test-app-path)
@@ -121,7 +118,10 @@ end")
 
 (After
  (yas-exit-all-snippets)
- (--map (kill-buffer it) (buffer-list))
+ (--each (buffer-list)
+   (with-current-buffer it
+     (when projectile-rails-mode
+       (kill-buffer))))
  )
 
 (Teardown

@@ -12,18 +12,21 @@ Scenario: Runnning generate rspec:install
 
 Scenario: Running generate rspec:install when spring is running
   And spring is running
+  And I turn on projectile-mode
   When I run command "projectile-rails-generate" inputting "rspec:install"
   And I switch to buffer "*projectile-rails-generate*"
   Then I should see "spring rails generate rspec:install"
 
 Scenario: Running generate rspec:install when zeus is running
   And zeus is running
+  And I turn on projectile-mode
   When I run command "projectile-rails-generate" inputting "rspec:install"
   And I switch to buffer "*projectile-rails-generate*"
   Then I should see "zeus generate rspec:install"
 
 Scenario: Using buttons
   Given I open the app file "app/models/user.rb"
+  And I turn on projectile-mode
   And file "spec/spec_helper.rb" exists
   And I simulate running "projectile-rails-generate" inputting "rspec:install" with output:
   """

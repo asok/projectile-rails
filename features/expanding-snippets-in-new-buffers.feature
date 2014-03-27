@@ -88,7 +88,6 @@ Scenario: Disabling the feature
   Given I turn off snippet expansion
   When I open the app file "spec/models/bar_spec.rb"
   And I turn on projectile-mode
-  When I open the app file "spec/models/bar_spec.rb"
   Then I should not see:
   """
   require "spec_helper"
