@@ -1,3 +1,5 @@
+# Projectile Rails [![Build Status](https://travis-ci.org/asok/projectile-rails.png?branch=master)](https://travis-ci.org/asok/projectile-rails)
+
 ## Synopsis
 
 **Projectile Rails** is a minor mode for working with the Rails project in GNU Emacs.
