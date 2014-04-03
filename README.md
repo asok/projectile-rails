@@ -82,6 +82,7 @@ projectile-rails-find-layout             | <kbd>C-c r y</kbd>                   
 projectile-rails-console                 | <kbd>C-c r r</kbd>                         | Run `rails console` command in `inf-ruby` buffer.
 projectile-rails-rake                    | <kbd>C-c r k</kbd>                         | Select a rake task to run using `projectile-completion-system`.
 projectile-rails-generate                | <kbd>C-c r t</kbd>                         | Run `rails generate` command.
+projectile-rails-extract-region          | <kbd>C-c r x</kbd>                         | Extract the selected region to a partial.
 projectile-rails-goto-file-at-point      | <kbd>C-c r RET</kbd>, <kbd>C-c r g f</kbd> | Go to a file at point. Depending on the context that might be a constant, template or partial, or a gem.
 projectile-rails-goto-gemfile            | <kbd>C-c r g g</kbd>                       | Go to `Gemfile` file.
 projectile-rails-goto-routes             | <kbd>C-c r g r</kbd>                       | Go to `config/routes.rb` file.
