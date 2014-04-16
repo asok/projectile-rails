@@ -176,6 +176,12 @@
   :group 'projectile-rails
   :type 'string)
 
+(defvar projectile-rails-extracted-region-snippet
+  '(("erb"  . "<%%= render '%s' %%>")
+    ("haml" . "= render '%s'")
+    ("slim" . "= render '%s'"))
+  "A template used to insert text after extracting a region")
+
 (defmacro projectile-rails-with-preloader (&rest cases)
   `(cond ((projectile-rails-spring-p)
 	  ,(plist-get cases :spring))
@@ -585,13 +591,26 @@ Returns a hash table with keys being short names and values being relative paths
     )
   )
 
+(defun projectile-rails--view-p (path)
+  (string-prefix-p "app/views/" (s-chop-prefix (projectile-rails-root) path)))
+
 (defun projectile-rails-extract-region (partial-name)
-  (interactive (list (read-string "The name of the partial: " (format "%s_" default-directory))))
-  (kill-region (region-beginning) (region-end))
-  (deactivate-mark)
-  (find-file partial-name)
-  (yank)
-  (indent-region (point-min) (point-max)))
+  (interactive (list (read-string "The name of the partial: " default-directory)))
+  (let ((projectile-rails-expand-snippet nil)
+	(snippet (cdr (assoc (f-ext partial-name) projectile-rails-extracted-region-snippet)))
+	(path (replace-regexp-in-string "\/_" "/" (s-chop-prefix
+						   (projectile-expand-root "app/views/")
+						   (first (s-slice-at "\\." partial-name))))))
+	(kill-region (region-beginning) (region-end))
+	(deactivate-mark)
+	(when (projectile-rails--view-p (buffer-file-name))
+	  (insert (format snippet path)))
+	(indent-according-to-mode)
+	(find-file partial-name)
+	(yank)
+	(indent-region (point-min) (point-max))
+    )
+  )
 
 (defun projectile-rails-template-name (template)
   (-first-item (s-split "\\." (-last-item (s-split "/" template)))))
