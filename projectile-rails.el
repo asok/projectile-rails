@@ -182,6 +182,8 @@
     ("slim" . "= render '%s'"))
   "A template used to insert text after extracting a region")
 
+(defvar projectile-rails-server-buffer-name "*projectile-rails-server*")
+
 (defmacro projectile-rails-with-preloader (&rest cases)
   `(cond ((projectile-rails-spring-p)
 	  ,(plist-get cases :spring))
@@ -507,6 +509,17 @@ Returns a hash table with keys being short names and values being relative paths
        (replace-regexp-in-string
 	"\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" name))))))
 
+(defun projectile-rails-server ()
+  "Runs rails server command"
+  (interactive)
+  (if (memq projectile-rails-server-buffer-name (mapc 'buffer-name (buffer-list)))
+      (switch-to-buffer projectile-rails-server-buffer-name)
+    (projectile-rails-with-root
+     (compile (projectile-rails-with-preloader :spring "spring rails server"
+					       :zeus "zeus server"
+					       :vanilla "bundle exec rails server")
+	      'projectile-rails-server-mode))))
+
 (defun projectile-rails-generate ()
   "Runs rails generate command"
   (interactive)
@@ -555,15 +568,7 @@ Returns a hash table with keys being short names and values being relative paths
   (let ((name (projectile-rails-name-at-point))
 	(line (projectile-rails-current-line))
 	(case-fold-search nil))
-    (cond ((string-match "Processing by \\(.+\\)#\\(?:[^ ]+\\)" line)
-	   (projectile-rails-sanitize-and-goto-file
-	    "app/controllers/" (match-string 1 line) ".rb"))
-	  
-	  ((string-match "Rendered \\([^ ]+\\)" line)
-	   (projectile-rails-sanitize-and-goto-file
-	    "app/views/" (match-string 1 line)))
-
-	  ((string-match-p "\\_<render\\_>" line)
+    (cond ((string-match-p "\\_<render\\_>" line)
 	   (projectile-rails-goto-template-at-point))
 
 	  ((string-match-p "^\\s-*//= require .+\\s-*$" line)
@@ -688,7 +693,13 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   (ansi-color-apply-on-region compilation-filter-start (point))
   (read-only-mode))
 
-(defun projectile-rails-make-buttons (buffer exit-code)
+(defun projectile-rails--log-buffer-find-template (button)
+  (projectile-rails-sanitize-and-goto-file "app/views/" (button-label button)))
+
+(defun projectile-rails--log-buffer-find-controller (button)
+  (projectile-rails-sanitize-and-goto-file "app/controllers/" (button-label button) ".rb"))
+
+(defun projectile-rails-generate--make-buttons (buffer exit-code)
   (with-current-buffer buffer
     (goto-char 0)
     (while (re-search-forward projectile-rails-generate-filepath-re (max-char) t)
@@ -698,6 +709,23 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 	  (make-button beg end 'action 'projectile-rails-generate-ff 'follow-link t))))
     )
   )
+
+(defun projectile-rails-server-make-buttons ()
+  (projectile-rails--log-buffer-make-buttons compilation-filter-start (point)))
+
+(defun projectile-rails--log-buffer-make-buttons (start end)
+  (save-excursion
+    (goto-char start)
+    (while (not (= (point) end))
+      (cond ((re-search-forward "Rendered \\([^ ]+\\)" (line-end-position) t)
+	     (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-template 'follow-link t))
+	    ((re-search-forward "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (line-end-position) t)
+	     (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-controller 'follow-link t)))
+      (next-line)))
+  )
+
+(defun projectile-rails-server-terminate ()
+  (signal-process (get-buffer-process projectile-rails-server-buffer-name) 15))
 
 (defun projectile-rails-generate-ff (button)
   (find-file (projectile-expand-root (button-label button))))
@@ -846,6 +874,15 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   "Disable `projectile-rails-mode' minor mode."
   (projectile-rails-mode -1))
 
+(define-derived-mode projectile-rails-server-mode compilation-mode "Projectile Rails Server"
+  "Compilation mode for running rails server used by `projectile-rails'.
+
+Killing the buffer will terminate to server's process."
+  (set (make-local-variable 'compilation-error-regexp-alist) (list 'ruby-Test::Unit))
+  (add-hook 'compilation-filter-hook 'projectile-rails-server-make-buttons nil t)
+  (add-hook 'kill-buffer-hook 'projectile-rails-server-terminate t t)
+  (projectile-rails-on))
+
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode used by `projectile-rails'."
   (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t)
@@ -853,7 +890,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 
 (define-derived-mode projectile-rails-generate-mode projectile-rails-compilation-mode "Projectile Rails Generate"
   "Mode for output of rails generate."
-  (add-hook 'compilation-finish-functions 'projectile-rails-make-buttons nil t)
+  (add-hook 'compilation-finish-functions 'projectile-rails-generate--make-buttons nil t)
   (projectile-rails-on))
 
 (provide 'projectile-rails)

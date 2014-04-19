@@ -28,7 +28,7 @@ Scenario: Using buttons
   Given I open the app file "app/models/user.rb"
   And I turn on projectile-mode
   And file "spec/spec_helper.rb" exists
-  And I simulate running "projectile-rails-generate" inputting "rspec:install" with output:
+  And I simulate generating "rspec:install" with output:
   """
   be rails g rspec:install
       create  .rspec

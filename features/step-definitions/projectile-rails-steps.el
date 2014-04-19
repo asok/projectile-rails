@@ -124,9 +124,17 @@
       (lambda (line)
 	(should (= (count-lines 1 (point)) (string-to-int line)))))
 
-(When "I simulate running \"\\(.*\\)\" inputting \"\\(.+\\)\" with output:"
-      (lambda (command arg output)
-	(When (s-lex-format "I run command \"${command}\" inputting \"${arg}\""))
+(When "I simulate running server with output:"
+      (lambda (output)
+	(When "I run \"projectile-rails-server\"")
+	(And "I switch to buffer \"*projectile-rails-server*\"")
+	(And "I set read-only to false")
+	(When "I clear the buffer")
+	(compilation-filter (get-buffer-process (current-buffer)) output)))
+
+(When "I simulate generating \"\\(.*\\)\" with output:"
+      (lambda (arg output)
+	(When (s-lex-format "I run command \"projectile-rails-generate\" inputting \"${arg}\""))
 	(And "I switch to buffer \"*projectile-rails-generate*\"")
 	(And "I set read-only to false")
 	(When "I clear the buffer")

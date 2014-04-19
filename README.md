@@ -14,6 +14,7 @@ With Projectile Rails you are able to:
 * run `rake`
 * run `rails console`
 * run `rails generate`
+* run `rails server`
 * open log files with `auto-revert-mode` on
 * see rails keywords highlighted
 * take advantage of [zeus](https://github.com/burke/zeus) and [spring](https://github.com/jonleighton/spring) preloaders
@@ -80,6 +81,7 @@ projectile-rails-find-locale             | <kbd>C-c r a</kbd>                   
 projectile-rails-find-mailer             | <kbd>C-c r @</kbd>                         | Find a mailer file using `projectile-completions-system`.
 projectile-rails-find-layout             | <kbd>C-c r y</kbd>                         | Find a layout file using `projectile-completions-system`.
 projectile-rails-console                 | <kbd>C-c r r</kbd>                         | Run `rails console` command in `inf-ruby` buffer.
+projectile-rails-server                  | <kbd>C-c r R</kbd>                         | Run `rails server`.
 projectile-rails-rake                    | <kbd>C-c r k</kbd>                         | Select a rake task to run using `projectile-completion-system`.
 projectile-rails-generate                | <kbd>C-c r t</kbd>                         | Run `rails generate` command.
 projectile-rails-extract-region          | <kbd>C-c r x</kbd>                         | Extract the selected region to a partial.
