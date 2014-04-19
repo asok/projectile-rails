@@ -125,5 +125,8 @@ end")
  )
 
 (Teardown
+ ;;todo: come up with something that works
+ ;;some scenario is hanging when spring executable is present
+ (start-process-shell-command "spring" nil "spring stop")
  (delete-directory projectile-rails-test-app-path t)
  )

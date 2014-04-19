@@ -699,16 +699,18 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails--log-buffer-find-controller (button)
   (projectile-rails-sanitize-and-goto-file "app/controllers/" (button-label button) ".rb"))
 
-(defun projectile-rails-generate--make-buttons (buffer exit-code)
+(defun projectile-rails--generate-buffer-make-buttons (buffer exit-code)
   (with-current-buffer buffer
     (goto-char 0)
     (while (re-search-forward projectile-rails-generate-filepath-re (max-char) t)
-      (let ((beg (match-beginning 1))
-	    (end (match-end 1)))
-	(when (file-exists-p (projectile-expand-root (buffer-substring-no-properties beg end)))
-	  (make-button beg end 'action 'projectile-rails-generate-ff 'follow-link t))))
+      (make-button
+       (match-beginning 1)
+       (match-end 1)
+       'action
+       'projectile-rails-generate-ff
+       'follow-link
+       t)))
     )
-  )
 
 (defun projectile-rails-server-make-buttons ()
   (projectile-rails--log-buffer-make-buttons compilation-filter-start (point)))
@@ -890,7 +892,7 @@ Killing the buffer will terminate to server's process."
 
 (define-derived-mode projectile-rails-generate-mode projectile-rails-compilation-mode "Projectile Rails Generate"
   "Mode for output of rails generate."
-  (add-hook 'compilation-finish-functions 'projectile-rails-generate--make-buttons nil t)
+  (add-hook 'compilation-finish-functions 'projectile-rails--generate-buffer-make-buttons nil t)
   (projectile-rails-on))
 
 (provide 'projectile-rails)
