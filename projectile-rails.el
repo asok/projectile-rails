@@ -808,6 +808,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "@") 'projectile-rails-find-mailer)
       (define-key prefix-map (kbd "y") 'projectile-rails-find-layout)
       (define-key prefix-map (kbd "r") 'projectile-rails-console)
+      (define-key prefix-map (kbd "R") 'projectile-rails-server)
       (define-key prefix-map (kbd "k") 'projectile-rails-rake)
       (define-key prefix-map (kbd "t") 'projectile-rails-generate)
       (define-key prefix-map (kbd "x") 'projectile-rails-extract-region)
@@ -853,6 +854,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Extract to partial"       projectile-rails-extract-region]
     "--"
     ["Run console"		projectile-rails-console]
+    ["Run server"		projectile-rails-server]
     ["Run rake"			projectile-rails-rake]
     ["Run rails generate"	projectile-rails-generate]))
 
