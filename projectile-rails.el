@@ -727,7 +727,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   )
 
 (defun projectile-rails-server-terminate ()
-  (signal-process (get-buffer-process projectile-rails-server-buffer-name) 15))
+  (let ((process (get-buffer-process projectile-rails-server-buffer-name)))
+    (when process (signal-process process 15))))
 
 (defun projectile-rails-generate-ff (button)
   (find-file (projectile-expand-root (button-label button))))
@@ -885,6 +886,7 @@ Killing the buffer will terminate to server's process."
   (set (make-local-variable 'compilation-error-regexp-alist) (list 'ruby-Test::Unit))
   (add-hook 'compilation-filter-hook 'projectile-rails-server-make-buttons nil t)
   (add-hook 'kill-buffer-hook 'projectile-rails-server-terminate t t)
+  (add-hook 'kill-emacs-hook 'projectile-rails-server-terminate t t)
   (projectile-rails-on))
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
