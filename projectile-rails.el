@@ -447,11 +447,10 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
-  (condition-case nil
+  (ignore-errors
       (let ((root (projectile-project-root)))
 	(when (file-exists-p (expand-file-name "config/environment.rb" root))
-	  root))
-    (error nil)))
+	  root))))
 
 (defun projectile-rails-console ()
   (interactive)
@@ -601,7 +600,7 @@ Returns a hash table with keys being short names and values being relative paths
   (string-prefix-p "app/views/" (s-chop-prefix (projectile-rails-root) path)))
 
 (defun projectile-rails--boring-buffer-p ()
-  "Returns t if the current buffer name is a buffer used by emacs internals"
+  "Returns t if the current buffer is a buffer used by emacs internals"
   (string-match-p "\\*.*\\*" (buffer-name)))
 
 (defun projectile-rails-extract-region (partial-name)
