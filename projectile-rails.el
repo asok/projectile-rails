@@ -447,10 +447,11 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
-  (and
-   (projectile-project-p)
-   (file-exists-p (projectile-expand-root "config/environment.rb"))
-   (projectile-project-root)))
+  (condition-case nil
+      (let ((root (projectile-project-root)))
+	(when (file-exists-p (expand-file-name "config/environment.rb" root))
+	  root))
+    (error nil)))
 
 (defun projectile-rails-console ()
   (interactive)
