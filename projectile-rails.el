@@ -600,6 +600,10 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails--view-p (path)
   (string-prefix-p "app/views/" (s-chop-prefix (projectile-rails-root) path)))
 
+(defun projectile-rails--boring-buffer-p ()
+  "Returns t if the current buffer name is a buffer used by emacs internals"
+  (string-match-p "\\*.*\\*" (buffer-name)))
+
 (defun projectile-rails-extract-region (partial-name)
   (interactive (list (read-string "The name of the partial: " default-directory)))
   (let ((projectile-rails-expand-snippet nil)
@@ -873,7 +877,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 ;;;###autoload
 (defun projectile-rails-on ()
   "Enable `projectile-rails-mode' minor mode if this is a rails project."
-  (when (projectile-rails-root)
+  (when (and
+	 (not (projectile-rails--boring-buffer-p))
+	 (projectile-rails-root))
     (projectile-rails-mode +1)))
 
 (defun projectile-rails-off ()
@@ -888,17 +894,17 @@ Killing the buffer will terminate to server's process."
   (add-hook 'compilation-filter-hook 'projectile-rails-server-make-buttons nil t)
   (add-hook 'kill-buffer-hook 'projectile-rails-server-terminate t t)
   (add-hook 'kill-emacs-hook 'projectile-rails-server-terminate t t)
-  (projectile-rails-on))
+  (projectile-rails-mode +1))
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode used by `projectile-rails'."
   (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t)
-  (projectile-rails-on))
+  (projectile-rails-mode +1))
 
 (define-derived-mode projectile-rails-generate-mode projectile-rails-compilation-mode "Projectile Rails Generate"
   "Mode for output of rails generate."
   (add-hook 'compilation-finish-functions 'projectile-rails--generate-buffer-make-buttons nil t)
-  (projectile-rails-on))
+  (projectile-rails-mode +1))
 
 (provide 'projectile-rails)
 
