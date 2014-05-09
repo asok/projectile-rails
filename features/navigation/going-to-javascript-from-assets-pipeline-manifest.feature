@@ -1,5 +1,5 @@
 Feature: Going to a javascript file from assets pipeline manifest
-  
+
 Scenario: Going to file from: //= require user
     Given file "app/assets/javascripts/user.js" exists
     And I open the app file "app/assets/javascripts/application.js"

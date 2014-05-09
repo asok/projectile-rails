@@ -7,7 +7,7 @@ Feature: Enabling projectile-rails mode
     Given I open the app file "app/models/user.rb"
     And I turn on projectile-mode
     Then projectile-rails should be turned on
-    
+
   Scenario: Turning off
     Given I open the app file "app/models/user.rb"
     When I turn on projectile-mode

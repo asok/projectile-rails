@@ -2,8 +2,8 @@ Feature: Going from a template to a template at point
   In order to do find fast templates and partials at point
   As a user
   I want to be able to run projectile-rails command and jump to the template or partial at point
-  
-  
+
+
 Scenario: Going from: render 'index'
   And file "app/views/users/index.html.erb" exists
   And I open the app file "app/views/users/new.html.erb"

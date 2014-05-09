@@ -79,4 +79,3 @@
 		  (projectile-rails-template-dir "index"))))
        )
  )
-

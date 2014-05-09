@@ -370,11 +370,10 @@ Returns a hash table with keys being short names and values being relative paths
 			   "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
 			   "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
 			   "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
+			   "db/migrate/.*create_\\(.+\\)\\.rb$"
 			   "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$")
 	       until (string-match re file-name)
-	       finally return (match-string 1 file-name))))
-    )
-  )
+	       finally return (match-string 1 file-name))))))
 
 (defun projectile-rails-list-entries (fun dir)
   (--map
@@ -535,7 +534,7 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails-sanitize-and-goto-file (dir name &optional ext)
   "Calls `projectile-rails-goto-file' with passed arguments sanitizing them before."
   (projectile-rails-goto-file
-   (concat 
+   (concat
     (projectile-rails-sanitize-dir-name dir) (projectile-rails-declassify name) ext)))
 
 (defun projectile-rails-goto-file (filepath)
@@ -582,7 +581,7 @@ Returns a hash table with keys being short names and values being relative paths
 
 	  ((string-match-p "\\_<require\\_>" line)
 	   (projectile-rails-goto-gem (thing-at-point 'filename)))
-	  
+
 	  ((not (string-match-p "^[A-Z]" name))
 	   (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
 

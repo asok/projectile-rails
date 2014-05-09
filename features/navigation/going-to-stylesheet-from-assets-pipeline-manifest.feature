@@ -1,5 +1,5 @@
 Feature: Going to a stylesheet file from assets pipeline manifest
-  
+
 Scenario: Going to file from: *= require user
     Given file "app/assets/stylesheets/user.css" exists
     And I open the app file "app/assets/stylesheets/application.css"

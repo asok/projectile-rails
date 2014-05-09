@@ -2,7 +2,7 @@ Feature: Font locking rails specific keywords
   In order to read the rails application source code
   As a user
   I want to see rails keywords highlighted
-  
+
 Scenario: Font locking models keywords
   Given file "app/models/user.rb" exists
   And I open the app file "app/models/user.rb"

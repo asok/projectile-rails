@@ -1,5 +1,5 @@
 Feature: Running rails server command
-  
+
 Scenario: Running rails server
   Given file "app/controllers/users_controller.rb" exists
   And file "app/views/users/_user.html.erb" exists
