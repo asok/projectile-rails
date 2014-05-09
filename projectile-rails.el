@@ -350,6 +350,14 @@ Returns a hash table with keys being short names and values being relative paths
   (interactive)
   (projectile-rails-find-current-resource "app/helpers/" "/${plural}_helper\\.rb$"))
 
+(defun projectile-rails-find-current-javascript ()
+  (interactive)
+  (projectile-rails-find-current-resource "app/assets/javascripts" "/${plural}\\.\\(js\\|coffee\\)$"))
+
+(defun projectile-rails-find-current-stylesheet ()
+  (interactive)
+  (projectile-rails-find-current-resource "app/assets/stylesheets" "/${plural}\\.css\\(\\.scss\\)?$"))
+
 (defun projectile-rails-find-current-spec ()
   (interactive)
   (if (fboundp 'rspec-toggle-spec-and-target)
