@@ -370,6 +370,8 @@ Returns a hash table with keys being short names and values being relative paths
 			   "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
 			   "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
 			   "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
+			   "app/assets/javascripts/\\(.+\\)\\.\\(js\\|coffee\\)$"
+			   "app/assets/stylesheets/\\(.+\\)\\.css\\(\\.scss\\)?$"
 			   "db/migrate/.*create_\\(.+\\)\\.rb$"
 			   "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$")
 	       until (string-match re file-name)
