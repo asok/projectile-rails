@@ -370,11 +370,10 @@ Returns a hash table with keys being short names and values being relative paths
 			   "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
 			   "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
 			   "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
+			   "db/migrate/.*create_\\(.+\\)\\.rb$"
 			   "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$")
 	       until (string-match re file-name)
-	       finally return (match-string 1 file-name))))
-    )
-  )
+	       finally return (match-string 1 file-name))))))
 
 (defun projectile-rails-list-entries (fun dir)
   (--map

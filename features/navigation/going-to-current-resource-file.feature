@@ -48,3 +48,11 @@ Feature: Finding current resource
     And I turn on projectile-mode
     When I run "projectile-rails-find-current-migration"
     Then I am in file "db/migrate/12345678901234_create_users.rb"
+
+  Scenario: Finding current model from migration
+    Given file "db/migrate/12345678901234_create_users.rb" exists
+    And file "app/models/user.rb" exists
+    And I open the app file "db/migrate/12345678901234_create_users.rb"
+    And I turn on projectile-mode
+    When I run "projectile-rails-find-current-model"
+    Then I am in file "app/models/user.rb"
