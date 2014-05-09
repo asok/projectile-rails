@@ -2,7 +2,7 @@ Feature: Opening logs file
   In order to read log files
   As a user
   I want to be able to watch log files
-  
+
 Scenario: Opening development log
   Given I open the app file "app/models/user.rb"
   And file "log/development.log" exists

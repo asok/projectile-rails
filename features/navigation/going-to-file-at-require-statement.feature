@@ -44,4 +44,3 @@ Scenario: Going to gem at line: require 'foo'
   And I turn on projectile-mode
   And I run "projectile-rails-goto-file-at-point"
   Then I am in a dired buffer "vendor/foo/"
-

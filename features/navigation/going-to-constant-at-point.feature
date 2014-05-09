@@ -74,7 +74,7 @@ Feature: Going to constant at point
     And I place the cursor between "Admin::Log" and "ging"
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "lib/admin/logging.rb"
-    
+
   Scenario: Going to ruby constant which is a controller
     And file "app/controllers/admin/users_controller.rb" exists
     And I clear the buffer and insert:
@@ -84,7 +84,7 @@ Feature: Going to constant at point
     And I place the cursor between "Admin::Use" and "rs"
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/controllers/admin/users_controller.rb"
-    
+
   Scenario: Going to ruby constant which is defined in app/jobs
     And file "app/jobs/admin/foo_bar_job.rb" exists
     And I clear the buffer and insert:
@@ -94,7 +94,7 @@ Feature: Going to constant at point
     And I place the cursor between "Foo" and "Bar"
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/jobs/admin/foo_bar_job.rb"
-    
+
   Scenario: Not going to non-existant model
     And I clear the buffer and insert:
     """

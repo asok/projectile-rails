@@ -41,7 +41,7 @@ Feature: Finding resources
     And file "features/user.feature" exists
     When I run command "projectile-rails-find-feature" selecting "user"
     Then I am in file "features/user.feature"
-    
+
   Scenario: Finding migration
     And file "db/migrate/12345678901234_create_users.rb" exists
     When I run command "projectile-rails-find-migration" selecting "12345678901234_create_users"
@@ -56,4 +56,3 @@ Feature: Finding resources
     And file "app/assets/stylesheets/foo.js" exists
     When I run command "projectile-rails-find-stylesheet" selecting "foo"
     Then I am in file "app/assets/stylesheets/foo.js"
-

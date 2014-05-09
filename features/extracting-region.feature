@@ -1,5 +1,5 @@
 Feature: Extracting region
-  
+
 Scenario: Extracting a region to a partial
   Given file "app/views/admin/users/index.html.erb" exists
   And I open the app file "app/views/admin/users/index.html.erb"

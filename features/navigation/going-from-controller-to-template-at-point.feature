@@ -2,7 +2,7 @@ Feature: Going from a controller to a template at point
   In order to do find fast templates and partials at point
   As a user
   I want to be able to run projectile-rails command and jump to the template or partial at point
-  
+
   Scenario: Going from: format.html { render 'users/index' }
     Given file "app/views/admin/users/new.html.haml" exists
     And I open the app file "app/controllers/admin/users_controller.rb"

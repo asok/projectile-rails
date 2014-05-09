@@ -2,7 +2,7 @@ Feature: Using rails generate command
   In order to generate projects's files
   As a user
   I want to be able to run rails generate command from Emacs
-  
+
 Scenario: Runnning generate rspec:install
   Given I open the app file "app/models/user.rb"
   And I turn on projectile-mode
@@ -39,5 +39,3 @@ Scenario: Using buttons
   When I place the cursor between "conflict  spe" and "c"
   And I press "RET"
   Then I am in file "spec/spec_helper.rb"
-
-
