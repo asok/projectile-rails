@@ -598,9 +598,9 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails--view-p (path)
   (string-prefix-p "app/views/" (s-chop-prefix (projectile-rails-root) path)))
 
-(defun projectile-rails--boring-buffer-p ()
-  "Returns t if the current buffer is a buffer used by emacs internals"
-  (string-match-p "\\*.*\\*" (buffer-name)))
+(defun projectile-rails--ignore-buffer-p ()
+  "Returns t if `projectile-rails' should not be enabled for the current buffer"
+  (string-match-p "\\*\\(Minibuf-[0-9]+\\|helm mini\\)\\*" (buffer-name)))
 
 (defun projectile-rails-extract-region (partial-name)
   (interactive (list (read-string "The name of the partial: " default-directory)))
@@ -876,7 +876,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-on ()
   "Enable `projectile-rails-mode' minor mode if this is a rails project."
   (when (and
-	 (not (projectile-rails--boring-buffer-p))
+	 (not (projectile-rails--ignore-buffer-p))
 	 (projectile-rails-root))
     (projectile-rails-mode +1)))
 
