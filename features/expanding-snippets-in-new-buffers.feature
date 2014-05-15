@@ -47,6 +47,18 @@ Scenario: Opening a new lib
   end
   """
 
+Scenario: Opening a new file under the app directory
+  When I open the app file "app/jobs/admin/foo_job.rb"
+  And I turn on projectile-mode
+  Then I should see:
+  """
+  module Admin
+    class FooJob
+      
+    end
+  end
+  """
+
 Scenario: Opening a new namespaced lib
   Given directory "lib/admin/" exists
   When I open the app file "lib/admin/fooing.rb"

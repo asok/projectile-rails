@@ -467,6 +467,16 @@ Returns a hash table with keys being short names and values being relative paths
 	     (s-blank? (buffer-string))
   	(projectile-rails-expand-corresponding-snippet))))
 
+(defun projectile-rails--expand-snippet-for-module (last-part)
+  (let ((parts (projectile-rails-classify (match-string 1 name))))
+    (format
+     (concat
+      (s-join "" (--map (s-lex-format "module ${it}\n") (butlast parts)))
+      last-part
+      (s-join "" (make-list (1- (length parts)) "\nend")))
+     (-last-item parts)))
+  )
+
 (defun projectile-rails-expand-corresponding-snippet ()
   (let ((name (buffer-file-name)))
     (yas-expand-snippet
@@ -483,15 +493,9 @@ Returns a hash table with keys being short names and values being relative paths
 	     "class %s < ${1:ActiveRecord::Base}\n$2\nend"
 	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
 	   ((string-match "lib/\\(.+\\)\\.rb$" name)
-	    (let ((parts (projectile-rails-classify (match-string 1 name))))
-	      (format
-	       (concat
-		(s-join
-		 ""
-		 (--map (s-lex-format "module ${it}\n") (butlast parts)))
-		"${1:module} %s\n$2\nend"
-		(s-join "" (make-list (1- (length parts)) "\nend")))
-	       (-last-item parts))))))))
+	    (projectile-rails--expand-snippet-for-module "${1:module} %s\n$2\nend"))
+	   ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
+	    (projectile-rails--expand-snippet-for-module "${1:class} %s\n$2\nend"))))))
 
 (defun projectile-rails-classify (name)
   "Accepts a filepath, splits it by '/' character and classifieses each of the element"
