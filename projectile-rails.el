@@ -350,6 +350,14 @@ Returns a hash table with keys being short names and values being relative paths
   (interactive)
   (projectile-rails-find-current-resource "app/helpers/" "/${plural}_helper\\.rb$"))
 
+(defun projectile-rails-find-current-javascript ()
+  (interactive)
+  (projectile-rails-find-current-resource "app/assets/javascripts" "/${plural}\\.\\(js\\|coffee\\)$"))
+
+(defun projectile-rails-find-current-stylesheet ()
+  (interactive)
+  (projectile-rails-find-current-resource "app/assets/stylesheets" "/${plural}\\.css\\(\\.scss\\)?$"))
+
 (defun projectile-rails-find-current-spec ()
   (interactive)
   (if (fboundp 'rspec-toggle-spec-and-target)
@@ -370,6 +378,8 @@ Returns a hash table with keys being short names and values being relative paths
 			   "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
 			   "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
 			   "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
+			   "app/assets/javascripts/\\(.+\\)\\.\\(js\\|coffee\\)$"
+			   "app/assets/stylesheets/\\(.+\\)\\.css\\(\\.scss\\)?$"
 			   "db/migrate/.*create_\\(.+\\)\\.rb$"
 			   "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$")
 	       until (string-match re file-name)
