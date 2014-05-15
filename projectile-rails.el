@@ -774,7 +774,6 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "m") 'projectile-rails-find-current-model)
     (define-key map (kbd "c") 'projectile-rails-find-current-controller)
     (define-key map (kbd "v") 'projectile-rails-find-current-view)
-    (define-key map (kbd "h") 'projectile-rails-find-current-helper)
     (define-key map (kbd "s") 'projectile-rails-find-current-spec)
     (define-key map (kbd "n") 'projectile-rails-find-current-migration)
     (define-key map (kbd "f") 'projectile-rails-goto-file-at-point)

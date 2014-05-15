@@ -152,3 +152,7 @@
 (Given "I save the buffer"
        (lambda ()
 	 (save-buffer)))
+
+(Then "^key \"\\(.+\\)\" should be mapped to \"\\(.+\\)\"$"
+      (lambda (key command)
+	(should (equal (key-binding (kbd key)) (intern command)))))
