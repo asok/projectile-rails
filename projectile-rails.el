@@ -350,6 +350,10 @@ Returns a hash table with keys being short names and values being relative paths
   (interactive)
   (projectile-rails-find-current-resource "app/helpers/" "/${plural}_helper\\.rb$"))
 
+(defun projectile-rails-find-current-javascript ()
+  (interactive)
+  (projectile-rails-find-current-resource "app/assets/javascripts/" "/\\(?:.+/\\)*${plural}\\.\\(?:js\\|coffee\\)$"))
+
 (defun projectile-rails-find-current-spec ()
   (interactive)
   (if (fboundp 'rspec-toggle-spec-and-target)
@@ -776,6 +780,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "m") 'projectile-rails-find-current-model)
     (define-key map (kbd "c") 'projectile-rails-find-current-controller)
     (define-key map (kbd "v") 'projectile-rails-find-current-view)
+    (define-key map (kbd "j") 'projectile-rails-find-current-javascript)
     (define-key map (kbd "h") 'projectile-rails-find-current-helper)
     (define-key map (kbd "s") 'projectile-rails-find-current-spec)
     (define-key map (kbd "n") 'projectile-rails-find-current-migration)
@@ -807,6 +812,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "N") 'projectile-rails-find-current-migration)
       (define-key prefix-map (kbd "i") 'projectile-rails-find-initializer)
       (define-key prefix-map (kbd "j") 'projectile-rails-find-javascript)
+      (define-key prefix-map (kbd "J") 'projectile-rails-find-current-javascript)
       (define-key prefix-map (kbd "#") 'projectile-rails-find-stylesheet)
       (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
       (define-key prefix-map (kbd "e") 'projectile-rails-find-environment)
@@ -854,6 +860,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Go to current model"	projectile-rails-find-current-spec]
     ["Go to current controller"	projectile-rails-find-current-controller]
     ["Go to current view"	projectile-rails-find-current-view]
+    ["Go to current javascript"	projectile-rails-find-current-javascript]
     ["Go to current spec"	projectile-rails-find-current-spec]
     ["Go to current migration"	projectile-rails-find-current-migration]
     "--"
