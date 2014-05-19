@@ -829,12 +829,12 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (easy-menu-define projectile-rails-menu projectile-rails-mode-map
   "Menu for `projectile-rails-mode'."
   '("Rails"
-    ["Find model"   projectile-rails-find-model]
-    ["Find controller"    projectile-rails-find-controller]
-    ["Find view"    projectile-rails-find-view]
-    ["Find helper"    projectile-rails-find-helper]
-    ["Find lib"     projectile-rails-find-lib]
-    ["Find spec"    projectile-rails-find-spec]
+    ["Find model"               projectile-rails-find-model]
+    ["Find controller"          projectile-rails-find-controller]
+    ["Find view"                projectile-rails-find-view]
+    ["Find helper"              projectile-rails-find-helper]
+    ["Find lib"                 projectile-rails-find-lib]
+    ["Find spec"                projectile-rails-find-spec]
     ["Find log"                 projectile-rails-find-log]
     ["Find migration"           projectile-rails-find-migration]
     ["Find javascript"          projectile-rails-find-javascript]
@@ -845,27 +845,27 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find mailer"              projectile-rails-find-mailer]
     ["Find layout"              projectile-rails-find-layout]
     "--"
-    ["Go to file at point"  projectile-rails-goto-file-at-point]
+    ["Go to file at point"      projectile-rails-goto-file-at-point]
     "--"
-    ["Go to Gemfile"          projectile-rails-goto-gemfile]
-    ["Go to routes"         projectile-rails-goto-routes]
-    ["Go to schema"         projectile-rails-goto-schema]
-    ["Go to spec_helper"  projectile-rails-goto-spec-helper]
+    ["Go to Gemfile"            projectile-rails-goto-gemfile]
+    ["Go to routes"             projectile-rails-goto-routes]
+    ["Go to schema"             projectile-rails-goto-schema]
+    ["Go to spec_helper"        projectile-rails-goto-spec-helper]
     "--"
-    ["Go to current model"  projectile-rails-find-current-spec]
+    ["Go to current model"      projectile-rails-find-current-spec]
     ["Go to current controller" projectile-rails-find-current-controller]
-    ["Go to current view" projectile-rails-find-current-view]
+    ["Go to current view"       projectile-rails-find-current-view]
     ["Go to current javascript" projectile-rails-find-current-javascript]
     ["Go to current stylesheet" projectile-rails-find-current-stylesheet]
-    ["Go to current spec" projectile-rails-find-current-spec]
+    ["Go to current spec"       projectile-rails-find-current-spec]
     ["Go to current migration"  projectile-rails-find-current-migration]
     "--"
     ["Extract to partial"       projectile-rails-extract-region]
     "--"
-    ["Run console"    projectile-rails-console]
-    ["Run server"   projectile-rails-server]
-    ["Run rake"     projectile-rails-rake]
-    ["Run rails generate" projectile-rails-generate]))
+    ["Run console"              projectile-rails-console]
+    ["Run server"               projectile-rails-server]
+    ["Run rake"                 projectile-rails-rake]
+    ["Run rails generate"       projectile-rails-generate]))
 
 ;;;###autoload
 (define-minor-mode projectile-rails-mode
