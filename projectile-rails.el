@@ -186,11 +186,11 @@
 
 (defmacro projectile-rails-with-preloader (&rest cases)
   `(cond ((projectile-rails-spring-p)
-	  ,(plist-get cases :spring))
-	 ((projectile-rails-zeus-p)
-	  ,(plist-get cases :zeus))
-	 (t
-	  ,(plist-get cases :vanilla))))
+          ,(plist-get cases :spring))
+         ((projectile-rails-zeus-p)
+          ,(plist-get cases :zeus))
+         (t
+          ,(plist-get cases :vanilla))))
 
 (defmacro projectile-rails-with-root (body-form)
   `(let ((default-directory (projectile-rails-root)))
@@ -201,22 +201,22 @@
 
 The binded variables are \"singular\" and \"plural\"."
   `(let* ((singular (projectile-rails-current-resource-name))
-	  (plural (pluralize-string singular))
-	  (files (--filter
-		  (string-match-p (s-lex-format ,re) it)
-		  (projectile-dir-files (projectile-expand-root ,dir)))))
+          (plural (pluralize-string singular))
+          (files (--filter
+                  (string-match-p (s-lex-format ,re) it)
+                  (projectile-dir-files (projectile-expand-root ,dir)))))
      (projectile-rails-goto-file
-       (if (= (length files) 1)
-	   (-first-item files)
-	 (projectile-completing-read "Which exactly: " files)))))
+      (if (= (length files) 1)
+          (-first-item files)
+        (projectile-completing-read "Which exactly: " files)))))
 
 (defun projectile-rails-spring-p ()
   (file-exists-p (f-canonical
-		  (concat
-		   temporary-file-directory
-		   "spring/"
-		   (md5 (projectile-project-root) 0 -1)
-		   ".pid")))
+                  (concat
+                   temporary-file-directory
+                   "spring/"
+                   (md5 (projectile-project-root) 0 -1)
+                   ".pid")))
   )
 
 (defun projectile-rails-zeus-p ()
@@ -229,7 +229,7 @@ The binded variables are \"singular\" and \"plural\"."
    (list (list
           (concat "\\(^\\|[^_:.@$]\\|\\.\\.\\)\\b"
                   (regexp-opt keywords t)
-		  "\\_>")
+                  "\\_>")
           (list 2 projectile-rails-font-lock-face-name)))))
 
 (defun projectile-rails-add-keywords-for-file-type ()
@@ -239,7 +239,7 @@ The binded variables are \"singular\" and \"plural\"."
                                ("db/migrate/.+\\.rb$" ,projectile-rails-migration-keywords))
         do (when (and (buffer-file-name) (string-match-p re (buffer-file-name)))
              (projectile-rails-highlight-keywords
-	      (append keywords projectile-rails-active-support-keywords)))))
+              (append keywords projectile-rails-active-support-keywords)))))
 
 (defun projectile-rails-choices (dirs)
   "Uses `projectile-dir-files' function to find files in directories.
@@ -248,9 +248,9 @@ The DIRS is list of lists consisting of a directory path and regexp to filter fi
 Returns a hash table with keys being short names and values being relative paths to the files."
   (let ((hash (make-hash-table :test 'equal)))
     (loop for (dir re) in dirs do
-	  (loop for file in (projectile-dir-files (projectile-expand-root dir)) do
-		(when (string-match re file)
-		  (puthash (match-string 1 file) file hash))))
+          (loop for file in (projectile-dir-files (projectile-expand-root dir)) do
+                (when (string-match re file)
+                  (puthash (match-string 1 file) file hash))))
     hash))
 
 (defun projectile-rails-hash-keys (hash)
@@ -260,8 +260,8 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-find-resource (prompt dirs)
   (let ((choices (projectile-rails-choices dirs)))
-     (projectile-rails-goto-file
-      (gethash (projectile-completing-read prompt (projectile-rails-hash-keys choices)) choices))))
+    (projectile-rails-goto-file
+     (gethash (projectile-completing-read prompt (projectile-rails-hash-keys choices)) choices))))
 
 (defun projectile-rails-find-model ()
   (interactive)
@@ -373,17 +373,17 @@ Returns a hash table with keys being short names and values being relative paths
   "Returns a resource name extracted from the name of the currently visiting file"
   (let ((file-name (buffer-file-name)))
     (if file-name
-	(singularize-string
-	 (loop for re in '("app/models/\\(?:.+/\\)*\\(.+\\)\\.rb"
-			   "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
-			   "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
-			   "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
-			   "app/assets/javascripts/\\(?:.+/\\)*\\(.+\\)\\.\\(?:js\\|coffee\\)$"
-			   "app/assets/stylesheets/\\(?:.+/\\)*\\(.+\\)\\.css\\(?:\\.scss\\)$"
-			   "db/migrate/.*create_\\(.+\\)\\.rb$"
-			   "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$")
-	       until (string-match re file-name)
-	       finally return (match-string 1 file-name))))))
+        (singularize-string
+         (loop for re in '("app/models/\\(?:.+/\\)*\\(.+\\)\\.rb"
+                           "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
+                           "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
+                           "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
+                           "app/assets/javascripts/\\(?:.+/\\)*\\(.+\\)\\.\\(?:js\\|coffee\\)$"
+                           "app/assets/stylesheets/\\(?:.+/\\)*\\(.+\\)\\.css\\(?:\\.scss\\)$"
+                           "db/migrate/.*create_\\(.+\\)\\.rb$"
+                           "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$")
+               until (string-match re file-name)
+               finally return (match-string 1 file-name))))))
 
 (defun projectile-rails-list-entries (fun dir)
   (--map
@@ -394,11 +394,11 @@ Returns a hash table with keys being short names and values being relative paths
   (interactive)
   ;;logs tend to not be under scm so do not resort to projectile-dir-files
   (find-file (projectile-expand-root
-	      (concat
-	       "log/"
-	       (projectile-completing-read
-		"log: "
-		(projectile-rails-list-entries 'f-files "log/")))))
+              (concat
+               "log/"
+               (projectile-completing-read
+                "log: "
+                (projectile-rails-list-entries 'f-files "log/")))))
   (auto-revert-tail-mode +1)
   (setq-local auto-revert-verbose nil)
   (buffer-disable-undo)
@@ -421,8 +421,8 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails-pcmpl-rake-tasks ()
   "Return a list of all the rake tasks defined in the current projects."
   (--keep it
-	  (--map (if (string-match "rake \\([^ ]+\\)" it) (match-string 1 it))
-		 (split-string (projectile-rails-rake-tasks) "[\n]"))))
+          (--map (if (string-match "rake \\([^ ]+\\)" it) (match-string 1 it))
+                 (split-string (projectile-rails-rake-tasks) "[\n]"))))
 
 (defun projectile-rails-regenerate-rake ()
   "Generates rakes tasks file in the tmp within rails root directory."
@@ -433,9 +433,9 @@ Returns a hash table with keys being short names and values being relative paths
      (projectile-rails-with-root
       (shell-command-to-string
        (projectile-rails-with-preloader
-	:spring "spring rake -T -A"
-	:zeus "zeus rake -T -A"
-	:vanilla "bundle exec rake -T -A"))))))
+        :spring "spring rake -T -A"
+        :zeus "zeus rake -T -A"
+        :vanilla "bundle exec rake -T -A"))))))
 
 (defun projectile-rails-rake (task)
   (interactive
@@ -448,60 +448,60 @@ Returns a hash table with keys being short names and values being relative paths
      (compile
       (concat
        (projectile-rails-with-preloader
-	:spring "spring rake "
-	:zeus "zeus rake "
-	:vanilla "bundle exec rake ")
+        :spring "spring rake "
+        :zeus "zeus rake "
+        :vanilla "bundle exec rake ")
        (if (= 0 (length task)) "default" task))
       'projectile-rails-compilation-mode))))
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
   (ignore-errors
-      (let ((root (projectile-project-root)))
-	(when (file-exists-p (expand-file-name "config/environment.rb" root))
-	  root))))
+    (let ((root (projectile-project-root)))
+      (when (file-exists-p (expand-file-name "config/environment.rb" root))
+        root))))
 
 (defun projectile-rails-console ()
   (interactive)
   (projectile-rails-with-root
    (with-current-buffer (run-ruby
-			 (projectile-rails-with-preloader
-			  :spring "spring rails console"
-			  :zeus "zeus console"
-			  :vanilla "bundle exec rails console"))
+                         (projectile-rails-with-preloader
+                          :spring "spring rails console"
+                          :zeus "zeus console"
+                          :vanilla "bundle exec rails console"))
      (projectile-rails-mode +1))))
 
 (defun projectile-rails-expand-snippet-maybe ()
   (when (and (fboundp 'yas-expand-snippet)
-  	     (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
-	     (s-blank? (buffer-string))
-  	(projectile-rails-expand-corresponding-snippet))))
+             (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
+             (s-blank? (buffer-string))
+             (projectile-rails-expand-corresponding-snippet))))
 
 (defun projectile-rails-expand-corresponding-snippet ()
   (let ((name (buffer-file-name)))
     (yas-expand-snippet
      (cond ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
-	    (format
-	     "class %s < ${1:ApplicationController}\n$2\nend"
-	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-	   ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
-	    (format
-	     "require \"spec_helper\"\n\ndescribe %s do\n$1\nend"
-	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-	   ((string-match "app/models/\\(.+\\)\\.rb$" name)
-	    (format
-	     "class %s < ${1:ActiveRecord::Base}\n$2\nend"
-	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-	   ((string-match "lib/\\(.+\\)\\.rb$" name)
-	    (let ((parts (projectile-rails-classify (match-string 1 name))))
-	      (format
-	       (concat
-		(s-join
-		 ""
-		 (--map (s-lex-format "module ${it}\n") (butlast parts)))
-		"${1:module} %s\n$2\nend"
-		(s-join "" (make-list (1- (length parts)) "\nend")))
-	       (-last-item parts))))))))
+            (format
+             "class %s < ${1:ApplicationController}\n$2\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+           ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
+            (format
+             "require \"spec_helper\"\n\ndescribe %s do\n$1\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+           ((string-match "app/models/\\(.+\\)\\.rb$" name)
+            (format
+             "class %s < ${1:ActiveRecord::Base}\n$2\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+           ((string-match "lib/\\(.+\\)\\.rb$" name)
+            (let ((parts (projectile-rails-classify (match-string 1 name))))
+              (format
+               (concat
+                (s-join
+                 ""
+                 (--map (s-lex-format "module ${it}\n") (butlast parts)))
+                "${1:module} %s\n$2\nend"
+                (s-join "" (make-list (1- (length parts)) "\nend")))
+               (-last-item parts))))))))
 
 (defun projectile-rails-classify (name)
   "Accepts a filepath, splits it by '/' character and classifieses each of the element"
@@ -516,7 +516,7 @@ Returns a hash table with keys being short names and values being relative paths
       (replace-regexp-in-string
        " " "_"
        (replace-regexp-in-string
-	"\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" name))))))
+        "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" name))))))
 
 (defun projectile-rails-server ()
   "Runs rails server command"
@@ -525,16 +525,16 @@ Returns a hash table with keys being short names and values being relative paths
       (switch-to-buffer projectile-rails-server-buffer-name)
     (projectile-rails-with-root
      (compile (projectile-rails-with-preloader :spring "spring rails server"
-					       :zeus "zeus server"
-					       :vanilla "bundle exec rails server")
-	      'projectile-rails-server-mode))))
+                                               :zeus "zeus server"
+                                               :vanilla "bundle exec rails server")
+              'projectile-rails-server-mode))))
 
 (defun projectile-rails-generate ()
   "Runs rails generate command"
   (interactive)
   (projectile-rails-with-root
    (let ((command-prefix (projectile-rails-with-preloader
-			  :spring "spring rails generate "
+                          :spring "spring rails generate "
                           :zeus "zeus generate "
                           :vanilla "bundle exec rails generate ")))
      (compile
@@ -561,47 +561,47 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-goto-asset-at-point (dirs)
   (let ((name
-	 (projectile-rails-sanitize-name (thing-at-point 'filename))))
+         (projectile-rails-sanitize-name (thing-at-point 'filename))))
     (projectile-rails-ff
      (loop for dir in dirs
-	   for re = (s-lex-format "${dir}${name}\\..+$")
-	   for files = (projectile-dir-files (projectile-expand-root dir))
-	   for file = (--first (string-match-p re it) files)
-	   until file
-	   finally return (and file (projectile-expand-root file)))))
+           for re = (s-lex-format "${dir}${name}\\..+$")
+           for files = (projectile-dir-files (projectile-expand-root dir))
+           for file = (--first (string-match-p re it) files)
+           until file
+           finally return (and file (projectile-expand-root file)))))
   )
 
 (defun projectile-rails-goto-file-at-point ()
   "Tries to find file at point"
   (interactive)
   (let ((name (projectile-rails-name-at-point))
-	(line (projectile-rails-current-line))
-	(case-fold-search nil))
+        (line (projectile-rails-current-line))
+        (case-fold-search nil))
     (cond ((string-match-p "\\_<render\\_>" line)
-	   (projectile-rails-goto-template-at-point))
+           (projectile-rails-goto-template-at-point))
 
-	  ((string-match-p "^\\s-*//= require .+\\s-*$" line)
-	   (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs))
+          ((string-match-p "^\\s-*//= require .+\\s-*$" line)
+           (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs))
 
-	  ((string-match-p "^\\s-*\\*= require .+\\s-*$" line)
-	   (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs))
+          ((string-match-p "^\\s-*\\*= require .+\\s-*$" line)
+           (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs))
 
-	  ((string-match-p "\\_<require_relative\\_>" line)
-	   (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
+          ((string-match-p "\\_<require_relative\\_>" line)
+           (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
 
-	  ((string-match-p "\\_<require\\_>" line)
-	   (projectile-rails-goto-gem (thing-at-point 'filename)))
+          ((string-match-p "\\_<require\\_>" line)
+           (projectile-rails-goto-gem (thing-at-point 'filename)))
 
-	  ((not (string-match-p "^[A-Z]" name))
-	   (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
+          ((not (string-match-p "^[A-Z]" name))
+           (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
 
-	  ((string-match-p "^[A-Z]" name)
-	   (loop for dir in (-concat
-			     (--map
-			      (concat "app/" it)
-			      (projectile-rails-list-entries 'f-directories "app/"))
-			     '("lib/"))
-		 until (projectile-rails-sanitize-and-goto-file dir name ".rb"))))
+          ((string-match-p "^[A-Z]" name)
+           (loop for dir in (-concat
+                             (--map
+                              (concat "app/" it)
+                              (projectile-rails-list-entries 'f-directories "app/"))
+                             '("lib/"))
+                 until (projectile-rails-sanitize-and-goto-file dir name ".rb"))))
     )
   )
 
@@ -615,18 +615,18 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails-extract-region (partial-name)
   (interactive (list (read-string "The name of the partial: " default-directory)))
   (let ((projectile-rails-expand-snippet nil)
-	(snippet (cdr (assoc (f-ext partial-name) projectile-rails-extracted-region-snippet)))
-	(path (replace-regexp-in-string "\/_" "/" (s-chop-prefix
-						   (projectile-expand-root "app/views/")
-						   (first (s-slice-at "\\." partial-name))))))
-	(kill-region (region-beginning) (region-end))
-	(deactivate-mark)
-	(when (projectile-rails--view-p (buffer-file-name))
-	  (insert (format snippet path)))
-	(indent-according-to-mode)
-	(find-file partial-name)
-	(yank)
-	(indent-region (point-min) (point-max))
+        (snippet (cdr (assoc (f-ext partial-name) projectile-rails-extracted-region-snippet)))
+        (path (replace-regexp-in-string "\/_" "/" (s-chop-prefix
+                                                   (projectile-expand-root "app/views/")
+                                                   (first (s-slice-at "\\." partial-name))))))
+    (kill-region (region-beginning) (region-end))
+    (deactivate-mark)
+    (when (projectile-rails--view-p (buffer-file-name))
+      (insert (format snippet path)))
+    (indent-according-to-mode)
+    (find-file partial-name)
+    (yank)
+    (indent-region (point-min) (point-max))
     )
   )
 
@@ -635,39 +635,39 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-template-format (template)
   (let ((at-point-re "\\.\\([^.]+\\)\\.[^.]+$")
-	(at-line-re "formats\\(?:'\"\\|:\\)?\\s-*\\(?:=>\\)?\\s-*\\[[:'\"]\\([a-zA-Z0-9]+\\)['\"]?\\]"))
+        (at-line-re "formats\\(?:'\"\\|:\\)?\\s-*\\(?:=>\\)?\\s-*\\[[:'\"]\\([a-zA-Z0-9]+\\)['\"]?\\]"))
     (cond ((string-match at-point-re template)
-	   (match-string 1 template))
-	  ((string-match at-line-re (projectile-rails-current-line))
-	   (match-string 1 (projectile-rails-current-line)))
-	  (t
-	   (when (string-match at-point-re (buffer-file-name))
-	     (match-string 1 (buffer-file-name)))))))
+           (match-string 1 template))
+          ((string-match at-line-re (projectile-rails-current-line))
+           (match-string 1 (projectile-rails-current-line)))
+          (t
+           (when (string-match at-point-re (buffer-file-name))
+             (match-string 1 (buffer-file-name)))))))
 
 (defun projectile-rails-template-dir (template)
   (projectile-rails-sanitize-dir-name
    (cond ((string-match "\\(.+\\)/[^/]+$" template)
-	  (projectile-expand-root
-	   (concat "app/views/" (match-string 1 template))))
-	 ((string-match "app/controllers/\\(.+\\)_controller\\.rb$" (buffer-file-name))
-	  (projectile-expand-root
-	   (concat "app/views/" (match-string 1 (buffer-file-name)))))
-	 (t
-	  default-directory))))
+          (projectile-expand-root
+           (concat "app/views/" (match-string 1 template))))
+         ((string-match "app/controllers/\\(.+\\)_controller\\.rb$" (buffer-file-name))
+          (projectile-expand-root
+           (concat "app/views/" (match-string 1 (buffer-file-name)))))
+         (t
+          default-directory))))
 
 (defun projectile-rails-goto-template-at-point ()
   (interactive)
   (let* ((template (projectile-rails-filename-at-point))
-	 (dir (projectile-rails-template-dir template))
-	 (name (projectile-rails-template-name template))
-	 (format (projectile-rails-template-format template)))
+         (dir (projectile-rails-template-dir template))
+         (name (projectile-rails-template-name template))
+         (format (projectile-rails-template-format template)))
     (if format
-	(loop for processor in '("erb" "haml" "slim")
-	      for template = (s-lex-format "${dir}${name}.${format}.${processor}")
-	      for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
-	      until (or
-		     (projectile-rails-ff template)
-		     (projectile-rails-ff partial)))
+        (loop for processor in '("erb" "haml" "slim")
+              for template = (s-lex-format "${dir}${name}.${format}.${processor}")
+              for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
+              until (or
+                     (projectile-rails-ff template)
+                     (projectile-rails-ff partial)))
       (message "Could not recognize the template's format")
       (dired dir))))
 
@@ -692,7 +692,7 @@ Returns a hash table with keys being short names and values being relative paths
 
 If file does not exist and ASK in not nil it will ask user to proceed."
   (if (or (and path (file-exists-p path))
-	  (and ask (yes-or-no-p (s-lex-format "File does not exists. Create a new buffer ${path} ?"))))
+          (and ask (yes-or-no-p (s-lex-format "File does not exists. Create a new buffer ${path} ?"))))
       (find-file path)))
 
 (defun projectile-rails-name-at-point ()
@@ -723,7 +723,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
        'projectile-rails-generate-ff
        'follow-link
        t)))
-    )
+  )
 
 (defun projectile-rails-server-make-buttons ()
   (projectile-rails--log-buffer-make-buttons compilation-filter-start (point)))
@@ -733,9 +733,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (goto-char start)
     (while (not (= (point) end))
       (cond ((re-search-forward "Rendered \\([^ ]+\\)" (line-end-position) t)
-	     (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-template 'follow-link t))
-	    ((re-search-forward "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (line-end-position) t)
-	     (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-controller 'follow-link t)))
+             (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-template 'follow-link t))
+            ((re-search-forward "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (line-end-position) t)
+             (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-controller 'follow-link t)))
       (next-line)))
   )
 
@@ -748,8 +748,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 
 (defun projectile-rails-sanitize-name (name)
   (when (or
-	 (and (s-starts-with? "'" name) (s-ends-with? "'" name))
-	 (and (s-starts-with? "\"" name) (s-ends-with? "\"" name)))
+         (and (s-starts-with? "'" name) (s-ends-with? "'" name))
+         (and (s-starts-with? "\"" name) (s-ends-with? "\"" name)))
     (setq name (substring name 1 -1)))
   (when (s-starts-with? "./" name)
     (setq name (substring name 2)))
@@ -796,7 +796,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "p") 'projectile-rails-goto-spec-helper)
     map)
   "A goto map for `projectile-rails-mode'."
-)
+  )
 
 (defvar projectile-rails-mode-map
   (let ((map (make-sparse-keymap)))
@@ -840,12 +840,12 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (easy-menu-define projectile-rails-menu projectile-rails-mode-map
   "Menu for `projectile-rails-mode'."
   '("Rails"
-    ["Find model"		projectile-rails-find-model]
-    ["Find controller"		projectile-rails-find-controller]
-    ["Find view"		projectile-rails-find-view]
-    ["Find helper"		projectile-rails-find-helper]
-    ["Find lib"			projectile-rails-find-lib]
-    ["Find spec"		projectile-rails-find-spec]
+    ["Find model"   projectile-rails-find-model]
+    ["Find controller"    projectile-rails-find-controller]
+    ["Find view"    projectile-rails-find-view]
+    ["Find helper"    projectile-rails-find-helper]
+    ["Find lib"     projectile-rails-find-lib]
+    ["Find spec"    projectile-rails-find-spec]
     ["Find log"                 projectile-rails-find-log]
     ["Find migration"           projectile-rails-find-migration]
     ["Find javascript"          projectile-rails-find-javascript]
@@ -856,27 +856,27 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find mailer"              projectile-rails-find-mailer]
     ["Find layout"              projectile-rails-find-layout]
     "--"
-    ["Go to file at point"	projectile-rails-goto-file-at-point]
+    ["Go to file at point"  projectile-rails-goto-file-at-point]
     "--"
-    ["Go to Gemfile"	        projectile-rails-goto-gemfile]
-    ["Go to routes"	        projectile-rails-goto-routes]
-    ["Go to schema"	        projectile-rails-goto-schema]
-    ["Go to spec_helper"	projectile-rails-goto-spec-helper]
+    ["Go to Gemfile"          projectile-rails-goto-gemfile]
+    ["Go to routes"         projectile-rails-goto-routes]
+    ["Go to schema"         projectile-rails-goto-schema]
+    ["Go to spec_helper"  projectile-rails-goto-spec-helper]
     "--"
-    ["Go to current model"	projectile-rails-find-current-spec]
-    ["Go to current controller"	projectile-rails-find-current-controller]
-    ["Go to current view"	projectile-rails-find-current-view]
-    ["Go to current javascript"	projectile-rails-find-current-javascript]
-    ["Go to current stylesheet"	projectile-rails-find-current-stylesheet]
-    ["Go to current spec"	projectile-rails-find-current-spec]
-    ["Go to current migration"	projectile-rails-find-current-migration]
+    ["Go to current model"  projectile-rails-find-current-spec]
+    ["Go to current controller" projectile-rails-find-current-controller]
+    ["Go to current view" projectile-rails-find-current-view]
+    ["Go to current javascript" projectile-rails-find-current-javascript]
+    ["Go to current stylesheet" projectile-rails-find-current-stylesheet]
+    ["Go to current spec" projectile-rails-find-current-spec]
+    ["Go to current migration"  projectile-rails-find-current-migration]
     "--"
     ["Extract to partial"       projectile-rails-extract-region]
     "--"
-    ["Run console"		projectile-rails-console]
-    ["Run server"		projectile-rails-server]
-    ["Run rake"			projectile-rails-rake]
-    ["Run rails generate"	projectile-rails-generate]))
+    ["Run console"    projectile-rails-console]
+    ["Run server"   projectile-rails-server]
+    ["Run rake"     projectile-rails-rake]
+    ["Run rails generate" projectile-rails-generate]))
 
 ;;;###autoload
 (define-minor-mode projectile-rails-mode
@@ -892,8 +892,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-on ()
   "Enable `projectile-rails-mode' minor mode if this is a rails project."
   (when (and
-	 (not (projectile-rails--boring-buffer-p))
-	 (projectile-rails-root))
+         (not (projectile-rails--boring-buffer-p))
+         (projectile-rails-root))
     (projectile-rails-mode +1)))
 
 (defun projectile-rails-off ()
