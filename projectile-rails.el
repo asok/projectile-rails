@@ -515,7 +515,7 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails-server ()
   "Runs rails server command"
   (interactive)
-  (if (memq projectile-rails-server-buffer-name (mapc 'buffer-name (buffer-list)))
+  (if (member projectile-rails-server-buffer-name (mapcar 'buffer-name (buffer-list)))
       (switch-to-buffer projectile-rails-server-buffer-name)
     (projectile-rails-with-root
      (compile (projectile-rails-with-preloader :spring "spring rails server"
