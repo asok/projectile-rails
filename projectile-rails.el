@@ -216,8 +216,7 @@ The binded variables are \"singular\" and \"plural\"."
                    temporary-file-directory
                    "spring/"
                    (md5 (projectile-project-root) 0 -1)
-                   ".pid")))
-  )
+                   ".pid"))))
 
 (defun projectile-rails-zeus-p ()
   (file-exists-p (projectile-expand-root ".zeus.sock")))
@@ -556,8 +555,7 @@ Returns a hash table with keys being short names and values being relative paths
   (if (not (fboundp 'bundle-open))
       (user-error "Please install budler.el from https://github.com/tobiassvn/bundler.el")
     (message "Using bundle-open command to open the gem")
-    (bundle-open (car (s-split "/" gem))))
-  )
+    (bundle-open (car (s-split "/" gem)))))
 
 (defun projectile-rails-goto-asset-at-point (dirs)
   (let ((name
@@ -568,8 +566,7 @@ Returns a hash table with keys being short names and values being relative paths
            for files = (projectile-dir-files (projectile-expand-root dir))
            for file = (--first (string-match-p re it) files)
            until file
-           finally return (and file (projectile-expand-root file)))))
-  )
+           finally return (and file (projectile-expand-root file))))))
 
 (defun projectile-rails-goto-file-at-point ()
   "Tries to find file at point"
@@ -601,9 +598,7 @@ Returns a hash table with keys being short names and values being relative paths
                               (concat "app/" it)
                               (projectile-rails-list-entries 'f-directories "app/"))
                              '("lib/"))
-                 until (projectile-rails-sanitize-and-goto-file dir name ".rb"))))
-    )
-  )
+                 until (projectile-rails-sanitize-and-goto-file dir name ".rb"))))))
 
 (defun projectile-rails--view-p (path)
   (string-prefix-p "app/views/" (s-chop-prefix (projectile-rails-root) path)))
@@ -626,9 +621,7 @@ Returns a hash table with keys being short names and values being relative paths
     (indent-according-to-mode)
     (find-file partial-name)
     (yank)
-    (indent-region (point-min) (point-max))
-    )
-  )
+    (indent-region (point-min) (point-max))))
 
 (defun projectile-rails-template-name (template)
   (-first-item (s-split "\\." (-last-item (s-split "/" template)))))
@@ -722,8 +715,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
        'action
        'projectile-rails-generate-ff
        'follow-link
-       t)))
-  )
+       t))))
 
 (defun projectile-rails-server-make-buttons ()
   (projectile-rails--log-buffer-make-buttons compilation-filter-start (point)))
@@ -736,8 +728,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
              (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-template 'follow-link t))
             ((re-search-forward "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (line-end-position) t)
              (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-controller 'follow-link t)))
-      (next-line)))
-  )
+      (next-line))))
 
 (defun projectile-rails-server-terminate ()
   (let ((process (get-buffer-process projectile-rails-server-buffer-name)))
@@ -776,8 +767,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
    (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-javascript-dirs))
   (set
    (make-local-variable 'projectile-rails-stylesheet-dirs)
-   (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-stylesheet-dirs))
-  )
+   (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-stylesheet-dirs)))
 
 (defvar projectile-rails-mode-goto-map
   (let ((map (make-sparse-keymap)))
@@ -795,8 +785,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "h") 'projectile-rails-goto-schema)
     (define-key map (kbd "p") 'projectile-rails-goto-spec-helper)
     map)
-  "A goto map for `projectile-rails-mode'."
-  )
+  "A goto map for `projectile-rails-mode'.")
 
 (defvar projectile-rails-mode-map
   (let ((map (make-sparse-keymap)))
