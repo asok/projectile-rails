@@ -490,21 +490,21 @@ Returns a hash table with keys being short names and values being relative paths
   (let ((name (buffer-file-name)))
     (yas-expand-snippet
      (cond ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
-	    (format
-	     "class %s < ${1:ApplicationController}\n$2\nend"
-	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-	   ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
-	    (format
-	     "require \"spec_helper\"\n\ndescribe %s do\n$1\nend"
-	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-	   ((string-match "app/models/\\(.+\\)\\.rb$" name)
-	    (format
-	     "class %s < ${1:ActiveRecord::Base}\n$2\nend"
-	     (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-	   ((string-match "lib/\\(.+\\)\\.rb$" name)
-	    (projectile-rails--expand-snippet-for-module "${1:module} %s\n$2\nend"))
-	   ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
-	    (projectile-rails--expand-snippet-for-module "${1:class} %s\n$2\nend"))))))
+            (format
+             "class %s < ${1:ApplicationController}\n$2\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+           ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
+            (format
+             "require \"spec_helper\"\n\ndescribe %s do\n$1\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+           ((string-match "app/models/\\(.+\\)\\.rb$" name)
+            (format
+             "class %s < ${1:ActiveRecord::Base}\n$2\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+           ((string-match "lib/\\(.+\\)\\.rb$" name)
+            (projectile-rails--expand-snippet-for-module "${1:module} %s\n$2\nend"))
+           ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
+            (projectile-rails--expand-snippet-for-module "${1:class} %s\n$2\nend"))))))
 
 (defun projectile-rails-classify (name)
   "Accepts a filepath, splits it by '/' character and classifieses each of the element"
@@ -894,8 +894,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-on ()
   "Enable `projectile-rails-mode' minor mode if this is a rails project."
   (when (and
-	 (not (projectile-rails--ignore-buffer-p))
-	 (projectile-rails-root))
+         (not (projectile-rails--ignore-buffer-p))
+         (projectile-rails-root))
     (projectile-rails-mode +1)))
 
 (defun projectile-rails-off ()
