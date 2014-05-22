@@ -55,7 +55,7 @@ Probably you should read Projectile's [README](https://github.com/bbatsov/projec
 
 ### Customizing
 
-The mode's buffers will have the Rails keywords higlighted. To turn it off:
+The mode's buffers will have the Rails keywords highlighted. To turn it off:
 ```lisp
 (setq projectile-rails-add-keywords nil)
 ```
@@ -151,7 +151,7 @@ OS X users might want to look at [exec-path-from-shell](https://github.com/purce
 
 ## Contributors
 
-Here's a [list](https://github.com/asok/projectile-rails/graphs/contributors) of the poeple that contributed to the projects. Many thanks! :)
+Here's a [list](https://github.com/asok/projectile-rails/graphs/contributors) of the people that contributed to the projects. Many thanks! :)
 
 ## Contribution
 
