@@ -775,19 +775,11 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 
 (defvar projectile-rails-mode-goto-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "m") 'projectile-rails-find-current-model)
-    (define-key map (kbd "c") 'projectile-rails-find-current-controller)
-    (define-key map (kbd "v") 'projectile-rails-find-current-view)
-    (define-key map (kbd "j") 'projectile-rails-find-current-javascript)
-    (define-key map (kbd "s") 'projectile-rails-find-current-stylesheet)
-    (define-key map (kbd "h") 'projectile-rails-find-current-helper)
-    (define-key map (kbd "p") 'projectile-rails-find-current-spec)
-    (define-key map (kbd "n") 'projectile-rails-find-current-migration)
     (define-key map (kbd "f") 'projectile-rails-goto-file-at-point)
     (define-key map (kbd "g") 'projectile-rails-goto-gemfile)
     (define-key map (kbd "r") 'projectile-rails-goto-routes)
     (define-key map (kbd "d") 'projectile-rails-goto-schema)
-    (define-key map (kbd "l") 'projectile-rails-goto-spec-helper)
+    (define-key map (kbd "s") 'projectile-rails-goto-spec-helper)
     map)
   "A goto map for `projectile-rails-mode'.")
 
@@ -805,23 +797,31 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (let ((prefix-map (make-sparse-keymap)))
       (define-key prefix-map (kbd "m") 'projectile-rails-find-model)
       (define-key prefix-map (kbd "M") 'projectile-rails-find-current-model)
+
       (define-key prefix-map (kbd "c") 'projectile-rails-find-controller)
       (define-key prefix-map (kbd "C") 'projectile-rails-find-current-controller)
+
       (define-key prefix-map (kbd "v") 'projectile-rails-find-view)
       (define-key prefix-map (kbd "V") 'projectile-rails-find-current-view)
+
       (define-key prefix-map (kbd "j") 'projectile-rails-find-javascript)
       (define-key prefix-map (kbd "J") 'projectile-rails-find-current-javascript)
+
       (define-key prefix-map (kbd "s") 'projectile-rails-find-stylesheet)
       (define-key prefix-map (kbd "S") 'projectile-rails-find-current-stylesheet)
+
       (define-key prefix-map (kbd "h") 'projectile-rails-find-helper)
       (define-key prefix-map (kbd "H") 'projectile-rails-find-current-helper)
+
       (define-key prefix-map (kbd "p") 'projectile-rails-find-spec)
       (define-key prefix-map (kbd "P") 'projectile-rails-find-current-spec)
+
       (define-key prefix-map (kbd "n") 'projectile-rails-find-migration)
       (define-key prefix-map (kbd "N") 'projectile-rails-find-current-migration)
-      (define-key prefix-map (kbd "G") 'projectile-rails-goto-gemfile)
-      (define-key prefix-map (kbd "R") 'projectile-rails-goto-routes)
-      (define-key prefix-map (kbd "D") 'projectile-rails-goto-schema)
+
+      (define-key prefix-map (kbd "r") 'projectile-rails-console)
+      (define-key prefix-map (kbd "R") 'projectile-rails-server)
+
       (define-key prefix-map (kbd "l") 'projectile-rails-find-lib)
       (define-key prefix-map (kbd "f") 'projectile-rails-find-feature)
       (define-key prefix-map (kbd "i") 'projectile-rails-find-initializer)
@@ -832,6 +832,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "y") 'projectile-rails-find-layout)
       (define-key prefix-map (kbd "x") 'projectile-rails-extract-region)
       (define-key prefix-map (kbd "RET") 'projectile-rails-goto-file-at-point)
+
       (define-key prefix-map (kbd "g") projectile-rails-mode-goto-map)
       (define-key prefix-map (kbd "!") projectile-rails-mode-run-map)
       (define-key map projectile-rails-keymap-prefix prefix-map))
