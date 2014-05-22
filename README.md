@@ -149,6 +149,10 @@ OS X users might want to look at [exec-path-from-shell](https://github.com/purce
 
 * When `projectile-rails-console` runs rails console using a pre-loader (zeus or spring) and pry's indent correction is enabled then pry will insert some ansi codes that are misinterpreted by `comint-mode`. A workaround is to disable the indentation correction with `Pry.config.correct_indent = false`. [Reference](https://github.com/pry/pry/wiki/Customization-and-configuration#wiki-correct-indent). [Issue](https://github.com/asok/projectile-rails/issues/12).
 
+## Contributors
+
+Here's a [list](https://github.com/asok/projectile-rails/graphs/contributors) of the poeple that contributed to the projects. Many thanks! :)
+
 ## Contribution
 
 Install [cask](https://github.com/rejeep/cask.el) if you haven't already, then:
