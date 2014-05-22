@@ -1,5 +1,16 @@
 # Projectile Rails [![Build Status](https://travis-ci.org/asok/projectile-rails.png?branch=master)](https://travis-ci.org/asok/projectile-rails)
 
+## Note on the changed keybindings
+
+Please note that the keybindings had change. I know this might be very intrusive for you guys but the keybindings had to be rethought.
+You can scroll to [here](https://github.com/asok/projectile-rails#interactive-commands) to see the newest version.
+Basically the new "run" map had been added accessible through `C-c r !`. From this map you can run console/server/rake/generate commands.
+Also for the sake of ergonomy you can still run `projectile-rails-console` via `C-c r r` and `projectile-rails-server` via `C-c r R`.
+The goto have been stripped out from the `projectile-rails-find-current-.*` commands. If you want them back you can do something like this:
+```el
+(define-key projectile-rails-mode-goto-map (kbd "m") 'projectile-rails-find-current-model)
+```
+
 ## Synopsis
 
 **Projectile Rails** is a minor mode for working with the Rails project in GNU Emacs.
@@ -59,37 +70,37 @@ If you are using [yasnippet](https://github.com/capitaomorte/yasnippet) and you 
 Command                                  | Keybinding                                 | Description
 -----------------------------------------|--------------------------------------------|-------------------------------------------------------
 projectile-rails-find-model              | <kbd>C-c r m</kbd>                         | Find a model using `projectile-completion-system`.
-projectile-rails-find-current-model      | <kbd>C-c r M</kbd>, <kbd>C-c r g m</kbd>   | Go to a model connected with the current resource.
+projectile-rails-find-current-model      | <kbd>C-c r M</kbd>                         | Go to a model connected with the current resource.
 projectile-rails-find-controller         | <kbd>C-c r c</kbd>                         | Find a controller using `projectile-completion-system`.
-projectile-rails-find-current-controller | <kbd>C-c r C</kbd>, <kbd>C-c r g c</kbd>   | Go to a controller connected with the current resource.
+projectile-rails-find-current-controller | <kbd>C-c r C</kbd>                         | Go to a controller connected with the current resource.
 projectile-rails-find-view               | <kbd>C-c r v</kbd>                         | Find a template or partial using `projectile-completion-system`.
-projectile-rails-find-current-view       | <kbd>C-c r V</kbd>, <kbd>C-c r g v</kbd>   | Go to a view connected with the current resource.
+projectile-rails-find-current-view       | <kbd>C-c r V</kbd>                         | Go to a view connected with the current resource.
 projectile-rails-find-helper             | <kbd>C-c r h</kbd>                         | Find a helper using `projectile-completion-system`.
-projectile-rails-find-current-helper     | <kbd>C-c r H</kbd>, <kbd>C-c r g h</kbd>   | Go to a helper connected with the current resource.
+projectile-rails-find-current-helper     | <kbd>C-c r H</kbd>                         | Go to a helper connected with the current resource.
 projectile-rails-find-lib                | <kbd>C-c r l</kbd>                         | Find a lib using `projectile-completion-system`.
-projectile-rails-find-spec               | <kbd>C-c r s</kbd>                         | Find a spec using `projectile-completion-system`.
 projectile-rails-find-feature            | <kbd>C-c r f</kbd>                         | Find a feature using `projectile-completion-system`.
-projectile-rails-find-current-spec       | <kbd>C-c r S</kbd>, <kbd>C-c r g s</kbd>   | Go to a spec connected with the current resource.
+projectile-rails-find-spec               | <kbd>C-c r p</kbd>                         | Find a spec using `projectile-completion-system`.
+projectile-rails-find-current-spec       | <kbd>C-c r P</kbd>                         | Go to a spec connected with the current resource.
 projectile-rails-find-migration          | <kbd>C-c r n</kbd>                         | Find a migration using `projectile-completion-system`.
-projectile-rails-find-current-migration  | <kbd>C-c r N</kbd>, <kbd>C-c r g n</kbd>   | Go to a migration connected with the current resource.
+projectile-rails-find-current-migration  | <kbd>C-c r N</kbd>                         | Go to a migration connected with the current resource.
 projectile-rails-find-javascript         | <kbd>C-c r j</kbd>                         | Find a javascript using `projectile-completion-system`.
-projectile-rails-find-stylesheet         | <kbd>C-c r #</kbd>                         | Find a stylesheet using `projectile-completion-system`.
+projectile-rails-find-stylesheet         | <kbd>C-c r s</kbd>                         | Find a stylesheet using `projectile-completion-system`.
 projectile-rails-find-log                | <kbd>C-c r o</kbd>                         | Find a log file and enable `auto-revert-tail-mode` in its buffer.
 projectile-rails-find-initializer        | <kbd>C-c r i</kbd>                         | Find an initializer file using `projectile-completions-system`.
 projectile-rails-find-environment        | <kbd>C-c r e</kbd>                         | Find an environment file using `projectile-completions-system`.
 projectile-rails-find-locale             | <kbd>C-c r a</kbd>                         | Find a locale file using `projectile-completions-system`.
 projectile-rails-find-mailer             | <kbd>C-c r @</kbd>                         | Find a mailer file using `projectile-completions-system`.
 projectile-rails-find-layout             | <kbd>C-c r y</kbd>                         | Find a layout file using `projectile-completions-system`.
-projectile-rails-console                 | <kbd>C-c r r</kbd>                         | Run `rails console` command in `inf-ruby` buffer.
-projectile-rails-server                  | <kbd>C-c r R</kbd>                         | Run `rails server`.
-projectile-rails-rake                    | <kbd>C-c r k</kbd>                         | Select a rake task to run using `projectile-completion-system`.
-projectile-rails-generate                | <kbd>C-c r t</kbd>                         | Run `rails generate` command.
+projectile-rails-console                 | <kbd>C-c r ! c</kbd>, <kbd>C-c r r</kbd>   | Run `rails console` command in `inf-ruby` buffer.
+projectile-rails-server                  | <kbd>C-c r ! s</kbd>, <kbd>C-c r R</kbd>   | Run `rails server`.
+projectile-rails-rake                    | <kbd>C-c r ! r</kbd>                       | Select a rake task to run using `projectile-completion-system`.
+projectile-rails-generate                | <kbd>C-c r ! g</kbd>                       | Run `rails generate` command.
 projectile-rails-extract-region          | <kbd>C-c r x</kbd>                         | Extract the selected region to a partial.
 projectile-rails-goto-file-at-point      | <kbd>C-c r RET</kbd>, <kbd>C-c r g f</kbd> | Go to a file at point. Depending on the context that might be a constant, template or partial, or a gem.
 projectile-rails-goto-gemfile            | <kbd>C-c r g g</kbd>                       | Go to `Gemfile` file.
 projectile-rails-goto-routes             | <kbd>C-c r g r</kbd>                       | Go to `config/routes.rb` file.
-projectile-rails-goto-schema             | <kbd>C-c r g h</kbd>                       | Go to `db/schema.rb` file.
-projectile-rails-goto-spec-helper        | <kbd>C-c r g p</kbd>                       | Go to `spec/spec_helper.rb` file.
+projectile-rails-goto-schema             | <kbd>C-c r g d</kbd>                       | Go to `db/schema.rb` file.
+projectile-rails-goto-spec-helper        | <kbd>C-c r g l</kbd>                       | Go to `spec/spec_helper.rb` file.
 
 You might want to create your own keybinding for your favorite commands. For example:
 
