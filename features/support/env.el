@@ -31,8 +31,8 @@
   (let ((fullpath (expand-file-name filepath projectile-rails-test-app-path)))
     (unless (file-exists-p fullpath)
       (if (s-ends-with? "/" fullpath)
-	  (make-directory fullpath)
-	(f-touch fullpath)))))
+    (make-directory fullpath)
+  (f-touch fullpath)))))
 
 (defun projectile-rails-test-create-foo-gem (dir)
   (make-directory (concat projectile-rails-test-app-path dir))
@@ -51,47 +51,47 @@ end")
 (Setup
  (make-temp-file projectile-rails-test-app-path t)
  (loop for path in `("app/"
-		     "app/assets/"
-		     "app/assets/javascripts/"
-		     "app/assets/stylesheets/"
-		     "app/models/"
-		     "app/models/admin/"
-		     "app/controllers/"
-		     "app/controllers/admin/"
-		     "app/helpers/"
-		     "app/views/"
-		     "app/views/users/"
-		     "app/views/admin/"
-		     "app/views/admin/users/"
-		     "app/views/layouts/"
-		     "app/jobs/"
-		     "app/jobs/admin/"
-		     "app/mailers/"
-		     "config/"
-		     "config/environments/"
-		     "config/initializers/"
-		     "config/locales/"
-		     "db/"
-		     "db/migrate/"
-		     "lib/"
-		     "lib/admin/"
-		     "lib/assets/"
-		     "lib/assets/javascripts/"
-		     "lib/assets/stylesheets/"
-		     "public/"
-		     "public/javascripts/"
-		     "log/"
-		     "spec/"
-		     "spec/lib/"
-		     "spec/models/"
-		     "spec/controllers/"
-		     "spec/controllers/admin/"
-		     "features/"
-		     "tmp/"
-		     "vendor/"
-		     "Gemfile"
-		     "config/environment.rb"
-		     ,(concat temporary-file-directory "spring/"))
+         "app/assets/"
+         "app/assets/javascripts/"
+         "app/assets/stylesheets/"
+         "app/models/"
+         "app/models/admin/"
+         "app/controllers/"
+         "app/controllers/admin/"
+         "app/helpers/"
+         "app/views/"
+         "app/views/users/"
+         "app/views/admin/"
+         "app/views/admin/users/"
+         "app/views/layouts/"
+         "app/jobs/"
+         "app/jobs/admin/"
+         "app/mailers/"
+         "config/"
+         "config/environments/"
+         "config/initializers/"
+         "config/locales/"
+         "db/"
+         "db/migrate/"
+         "lib/"
+         "lib/admin/"
+         "lib/assets/"
+         "lib/assets/javascripts/"
+         "lib/assets/stylesheets/"
+         "public/"
+         "public/javascripts/"
+         "log/"
+         "spec/"
+         "spec/lib/"
+         "spec/models/"
+         "spec/controllers/"
+         "spec/controllers/admin/"
+         "features/"
+         "tmp/"
+         "vendor/"
+         "Gemfile"
+         "config/environment.rb"
+         ,(concat temporary-file-directory "spring/"))
        do (projectile-rails-test-touch-file path))
 
  (require 'yasnippet)
@@ -111,8 +111,8 @@ end")
 
 (Before
  (loop for file in (list projectile-rails-test-spring-pid-file
-			 projectile-rails-test-zeus-pid-file
-			 projectile-rails-test-rake-cache-file)
+       projectile-rails-test-zeus-pid-file
+       projectile-rails-test-rake-cache-file)
        do (when (f-exists? file) (f-delete file)))
  )
 
