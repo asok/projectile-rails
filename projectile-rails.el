@@ -136,7 +136,7 @@
   :group 'projectile-rails
   :type '(repeat string))
 
-(defcustom projectile-rails-font-lock-face-name 'font-lock-keyword-face
+(defcustom projectile-rails-font-lock-face-name 'font-lock-function-name-face
   "Face to be used for higlighting rails the keywords")
 
 (defcustom projectile-rails-views-re
@@ -625,7 +625,7 @@ Returns a hash table with keys being short names and values being relative paths
     (kill-region (region-beginning) (region-end))
     (deactivate-mark)
     (when (projectile-rails--view-p (buffer-file-name))
-      (insert (format snippet path)) 
+      (insert (format snippet path))
       (indent-according-to-mode)
       (when (not (looking-at-p "\n"))
         (insert "\n")))
