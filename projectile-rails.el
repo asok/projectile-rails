@@ -929,13 +929,13 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 Killing the buffer will terminate to server's process."
   (set (make-local-variable 'compilation-error-regexp-alist) (list 'ruby-Test::Unit))
   (add-hook 'compilation-filter-hook 'projectile-rails-server-make-buttons nil t)
+  (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t)
   (add-hook 'kill-buffer-hook 'projectile-rails-server-terminate t t)
   (add-hook 'kill-emacs-hook 'projectile-rails-server-terminate t t)
   (projectile-rails-mode +1))
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode used by `projectile-rails'."
-  (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t)
   (projectile-rails-mode +1))
 
 (define-derived-mode projectile-rails-generate-mode projectile-rails-compilation-mode "Projectile Rails Generate"
