@@ -938,6 +938,7 @@ Killing the buffer will terminate to server's process."
     (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t))
   (add-hook 'kill-buffer-hook 'projectile-rails-server-terminate t t)
   (add-hook 'kill-emacs-hook 'projectile-rails-server-terminate t t)
+  (setq-local compilation-scroll-output t)
   (projectile-rails-mode +1))
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
