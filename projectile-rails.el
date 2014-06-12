@@ -180,6 +180,11 @@
   :group 'projectile-rails
   :type 'string)
 
+(defcustom projectile-rails-server-mode-ansi-colors t
+  "If not nil `projectile-rails-server-mode' will apply the ansi colors in its buffer."
+  :group 'projectile-rails
+  :type 'boolean)
+
 (defvar projectile-rails-extracted-region-snippet
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
@@ -929,7 +934,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 Killing the buffer will terminate to server's process."
   (set (make-local-variable 'compilation-error-regexp-alist) (list 'ruby-Test::Unit))
   (add-hook 'compilation-filter-hook 'projectile-rails-server-make-buttons nil t)
-  (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t)
+  (when projectile-rails-server-mode-ansi-colors
+    (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t))
   (add-hook 'kill-buffer-hook 'projectile-rails-server-terminate t t)
   (add-hook 'kill-emacs-hook 'projectile-rails-server-terminate t t)
   (projectile-rails-mode +1))

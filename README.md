@@ -65,6 +65,11 @@ If you are using [yasnippet](https://github.com/capitaomorte/yasnippet) and you 
 (setq projectile-rails-expand-snippet nil)
 ```
 
+By default the buffer of the `projectile-rails-server-mode` is applying the ansi colors. If you find it slow you can disable it with:
+```lisp
+(setq projectile-rails-server-mode-ansi-colors nil)
+```
+
 ### Interactive commands
 
 Command                                  | Keybinding                                 | Description
