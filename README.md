@@ -46,7 +46,7 @@ Once you have setup [Melpa](http://melpa.milkbox.net/#/getting-started) you can 
 
 To make it start alongside `projectile-mode`:
 
-```lisp
+```el
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
 ```
 That will start it only if the current project is a Rails project.
@@ -56,17 +56,17 @@ Probably you should read Projectile's [README](https://github.com/bbatsov/projec
 ### Customizing
 
 The mode's buffers will have the Rails keywords highlighted. To turn it off:
-```lisp
+```el
 (setq projectile-rails-add-keywords nil)
 ```
 
 If you are using [yasnippet](https://github.com/capitaomorte/yasnippet) and you open a new file it will be filled with a skeleton class. To turn it off:
-```lisp
+```el
 (setq projectile-rails-expand-snippet nil)
 ```
 
 By default the buffer of the `projectile-rails-server-mode` is applying the ansi colors. If you find it slow you can disable it with:
-```lisp
+```el
 (setq projectile-rails-server-mode-ansi-colors nil)
 ```
 
@@ -109,7 +109,7 @@ projectile-rails-goto-spec-helper        | <kbd>C-c r g l</kbd>                 
 
 You might want to create your own keybinding for your favorite commands. For example:
 
-```lisp
+```el
 (define-key projectile-rails-mode-map (kbd "s-m")   'projectile-rails-find-model)
 (define-key projectile-rails-mode-map (kbd "s-c")   'projectile-rails-find-controller)
 (define-key projectile-rails-mode-map (kbd "s-v")   'projectile-rails-find-view)
