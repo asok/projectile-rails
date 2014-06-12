@@ -185,6 +185,9 @@
   :group 'projectile-rails
   :type 'boolean)
 
+(defcustom projectile-rails-discover-bind "s-r"
+  "The :bind option that will be passed `discover-add-context-menu' if available")
+
 (defvar projectile-rails-extracted-region-snippet
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
@@ -955,6 +958,90 @@ Killing the buffer will terminate to server's process."
   "Mode for output of rails generate."
   (add-hook 'compilation-finish-functions 'projectile-rails--generate-buffer-make-buttons nil t)
   (projectile-rails-mode +1))
+
+(when (functionp 'discover-add-context-menu)
+
+  (defun projectile-rails--discover-find-submenu ()
+    (interactive)
+    (call-interactively
+     (discover-get-context-menu-command-name 'projectile-rails-find)))
+
+  (defun projectile-rails--discover-goto-submenu ()
+    (interactive)
+    (call-interactively
+     (discover-get-context-menu-command-name 'projectile-rails-goto)))
+
+  (defun projectile-rails--discover-run-submenu ()
+    (interactive)
+    (call-interactively
+     (discover-get-context-menu-command-name 'projectile-rails-run)))
+
+  (discover-add-context-menu
+   :context-menu '(projectile-rails-mode
+                  (description "Mode for Rails projects")
+                  (actions
+                   ("Available"
+                    ("f" "find resources"   projectile-rails--discover-find-submenu)
+                    ("g" "goto resources"   projectile-rails--discover-goto-submenu)
+                    ("r" "run and interact" projectile-rails--discover-run-submenu))))
+   :bind projectile-rails-discover-bind
+   :mode 'projectile-rails
+   :mode-hook 'projectile-rails-mode-hook)
+
+  (discover-add-context-menu
+   :context-menu '(projectile-rails-find
+                   (description "Find resources")
+                   (actions
+                    ("Find a resource"
+                     ("m" "model"       projectile-rails-find-model)
+                     ("v" "view"        projectile-rails-find-view)
+                     ("c" "controller"  projectile-rails-find-controller)
+                     ("h" "helper"      projectile-rails-find-helper)
+                     ("l" "lib"         projectile-rails-find-lib)
+                     ("j" "javascript"  projectile-rails-find-javascript)
+                     ("s" "stylesheet"  projectile-rails-find-stylesheet)
+                     ("p" "spec"        projectile-rails-find-spec)
+                     ("f" "feature"     projectile-rails-find-feature)
+                     ("i" "initializer" projectile-rails-find-initializer)
+                     ("o" "log"         projectile-rails-find-log)
+                     ("@" "mailer"      projectile-rails-find-mailer)
+                     ("y" "layout"      projectile-rails-find-layout)
+                     ("n" "migration"   projectile-rails-find-migration))
+                    ("Find an associated resource"
+                     ("M" "model"       projectile-rails-find-current-model)
+                     ("V" "view"        projectile-rails-find-current-view)
+                     ("C" "controller"  projectile-rails-find-current-controller)
+                     ("H" "helper"      projectile-rails-find-current-helper)
+                     ("J" "javascript"  projectile-rails-find-current-javascript)
+                     ("S" "stylesheet"  projectile-rails-find-current-stylesheet)
+                     ("P" "spec"        projectile-rails-find-current-spec)
+                     ("N" "migration"   projectile-rails-find-current-migration))))
+   :bind "") ;;accessible only from the main context menu
+
+  (discover-add-context-menu
+   :context-menu '(projectile-rails-goto
+                   (description "Go to a specific file")
+                   (actions
+                    ("Go to"
+                     ("f" "file at point" projectile-rails-goto-file-at-point)
+                     ("g" "Gemfile"       projectile-rails-goto-gemfile)
+                     ("r" "routes"        projectile-rails-goto-routes)
+                     ("d" "schema"        projectile-rails-goto-schema)
+                     ("s" "spec helper"   projectile-rails-goto-spec-helper))))
+   :bind "") ;;accessible only from the main context menu
+
+  (discover-add-context-menu
+   :context-menu '(projectile-rails-run
+                   (description "Run and interact")
+                   (actions
+                    ("Run external command"
+                     ("c" "console"        projectile-rails-console)
+                     ("s" "server"         projectile-rails-server)
+                     ("g" "generate"       projectile-rails-generate))
+                    ("Interact"
+                     ("x" "extract region" projectile-rails-extract-region))))
+   :bind "") ;;accessible only from the main context menu
+  )
 
 (provide 'projectile-rails)
 

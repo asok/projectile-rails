@@ -117,6 +117,12 @@ You might want to create your own keybinding for your favorite commands. For exa
 (define-key projectile-rails-mode-map (kbd "C-c g")  projectile-rails-mode-goto-map)
 ```
 
+### Discover
+
+There's also integration with [discover.el](https://github.com/mickeynp/discover.el). The key that trigger the menu is `s-r` (the "s" stands for Win/Command key).
+
+![Screenshot](https://github.com/asok/projectile-rails/raw/master/screenshots/discover.png)
+
 ## Beyond
 
 Consider installing other Emacs packages that can help you working specifically with Rails projects.
