@@ -56,3 +56,10 @@ Feature: Finding current resource
     And I turn on projectile-mode
     When I run "projectile-rails-find-current-model"
     Then I am in file "app/models/user.rb"
+
+  Scenario: Finding current model when there is no model for current resource
+    Given file "app/models/user.rb" exists
+    And I open the app file "app/controllers/foos_controller.rb"
+    And I turn on projectile-mode
+    When I run command "projectile-rails-find-current-model" selecting "user"
+    Then I am in file "app/models/user.rb"

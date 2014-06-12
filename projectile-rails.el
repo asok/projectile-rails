@@ -200,7 +200,7 @@
   `(let ((default-directory (projectile-rails-root)))
      ,body-form))
 
-(defmacro projectile-rails-find-current-resource (dir re)
+(defmacro projectile-rails-find-current-resource (dir re fallback)
   "RE will be the argument to `s-lex-format'.
 
 The binded variables are \"singular\" and \"plural\"."
@@ -209,10 +209,12 @@ The binded variables are \"singular\" and \"plural\"."
           (files (--filter
                   (string-match-p (s-lex-format ,re) it)
                   (projectile-dir-files (projectile-expand-root ,dir)))))
-     (projectile-rails-goto-file
-      (if (= (length files) 1)
-          (-first-item files)
-        (projectile-completing-read "Which exactly: " files)))))
+     (if (eq files '())
+         (funcall ,fallback)
+       (projectile-rails-goto-file
+        (if (= (length files) 1)
+            (-first-item files)
+          (projectile-completing-read "Which exactly: " files))))))
 
 (defun projectile-rails-spring-p ()
   (file-exists-p (f-canonical
@@ -339,27 +341,39 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-find-current-model ()
   (interactive)
-  (projectile-rails-find-current-resource "app/models/" "/${singular}\\.rb$"))
+  (projectile-rails-find-current-resource "app/models/"
+                                          "/${singular}\\.rb$"
+                                          'projectile-rails-find-model))
 
 (defun projectile-rails-find-current-controller ()
   (interactive)
-  (projectile-rails-find-current-resource "app/controllers/" "/${plural}_controller\\.rb$"))
+  (projectile-rails-find-current-resource "app/controllers/"
+                                          "/${plural}_controller\\.rb$"
+                                          'projectile-rails-find-controller))
 
 (defun projectile-rails-find-current-view ()
   (interactive)
-  (projectile-rails-find-current-resource "app/views/" "/${plural}/.+$"))
+  (projectile-rails-find-current-resource "app/views/"
+                                          "/${plural}/.+$"
+                                          'projectile-rails-find-views))
 
 (defun projectile-rails-find-current-helper ()
   (interactive)
-  (projectile-rails-find-current-resource "app/helpers/" "/${plural}_helper\\.rb$"))
+  (projectile-rails-find-current-resource "app/helpers/"
+                                          "/${plural}_helper\\.rb$"
+                                          'projectile-rails-find-helper))
 
 (defun projectile-rails-find-current-javascript ()
   (interactive)
-  (projectile-rails-find-current-resource "app/assets/javascripts/" "/\\(?:.+/\\)*${plural}\\.\\(?:js\\|coffee\\)$"))
+  (projectile-rails-find-current-resource "app/assets/javascripts/"
+                                          "/\\(?:.+/\\)*${plural}\\.\\(?:js\\|coffee\\)$"
+                                          'projectile-rails-find-javascript))
 
 (defun projectile-rails-find-current-stylesheet ()
   (interactive)
-  (projectile-rails-find-current-resource "app/assets/stylesheets/" "/\\(?:.+/\\)*${plural}\\.css\\(?:\\.scss\\)?$"))
+  (projectile-rails-find-current-resource "app/assets/stylesheets/"
+                                          "/\\(?:.+/\\)*${plural}\\.css\\(?:\\.scss\\)?$"
+                                          'projectile-rails-find-stylesheet))
 
 (defun projectile-rails-find-current-spec ()
   (interactive)
@@ -369,8 +383,9 @@ Returns a hash table with keys being short names and values being relative paths
 
 (defun projectile-rails-find-current-migration ()
   (interactive)
-  (projectile-rails-find-current-resource
-   "db/migrate/" "/[0-9]\\{14\\}.*_\\(${plural}\\|${singular}\\).*\\.rb$"))
+  (projectile-rails-find-current-resource "db/migrate/"
+                                          "/[0-9]\\{14\\}.*_\\(${plural}\\|${singular}\\).*\\.rb$"
+                                          'projectile-rails-find-migration))
 
 (defun projectile-rails-current-resource-name ()
   "Returns a resource name extracted from the name of the currently visiting file"
@@ -625,7 +640,7 @@ Returns a hash table with keys being short names and values being relative paths
     (kill-region (region-beginning) (region-end))
     (deactivate-mark)
     (when (projectile-rails--view-p (buffer-file-name))
-      (insert (format snippet path)) 
+      (insert (format snippet path))
       (indent-according-to-mode)
       (when (not (looking-at-p "\n"))
         (insert "\n")))
