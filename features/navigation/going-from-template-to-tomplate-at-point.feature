@@ -63,3 +63,15 @@ Scenario: Going from: render 'user'
   And I place the cursor between "use" and "r"
   When I run "projectile-rails-goto-file-at-point"
   Then I am in file "app/views/users/_user.html.erb"
+
+Scenario: Going to a template in application/ dir from: render 'user'
+  Given file "app/views/application/_foo.html.erb" exists
+  And I open the app file "app/views/users/new.html.erb"
+  And I turn on projectile-mode
+  And I clear the buffer and insert:
+  """
+  render 'foo'
+  """
+  When I place the cursor between "fo" and "o"
+  And I run "projectile-rails-goto-file-at-point"
+  Then I am in file "app/views/application/_foo.html.erb"

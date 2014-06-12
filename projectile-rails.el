@@ -678,6 +678,14 @@ Returns a hash table with keys being short names and values being relative paths
          (t
           default-directory))))
 
+(defun projectile-rails--goto-template-at-point (dir name format)
+  (loop for processor in '("erb" "haml" "slim")
+        for template = (s-lex-format "${dir}${name}.${format}.${processor}")
+        for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
+        until (or
+               (projectile-rails-ff template)
+               (projectile-rails-ff partial))))
+
 (defun projectile-rails-goto-template-at-point ()
   (interactive)
   (let* ((template (projectile-rails-filename-at-point))
@@ -685,12 +693,10 @@ Returns a hash table with keys being short names and values being relative paths
          (name (projectile-rails-template-name template))
          (format (projectile-rails-template-format template)))
     (if format
-        (loop for processor in '("erb" "haml" "slim")
-              for template = (s-lex-format "${dir}${name}.${format}.${processor}")
-              for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
-              until (or
-                     (projectile-rails-ff template)
-                     (projectile-rails-ff partial)))
+        (or (projectile-rails--goto-template-at-point dir name format)
+            (projectile-rails--goto-template-at-point (projectile-expand-root "app/views/application/")
+                                                      name
+                                                      format))
       (message "Could not recognize the template's format")
       (dired dir))))
 
