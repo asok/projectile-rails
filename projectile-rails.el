@@ -214,10 +214,15 @@
 The binded variables are \"singular\" and \"plural\"."
   `(let* ((singular (projectile-rails-current-resource-name))
           (plural (pluralize-string singular))
+          (abs-current-file (buffer-file-name (current-buffer)))
+          (current-file (if abs-current-file
+                            (file-relative-name abs-current-file
+                                                (projectile-project-root))))
           (files (--filter
-                  (string-match-p (s-lex-format ,re) it)
+                  (and (string-match-p (s-lex-format ,re) it)
+                       (not (string= current-file it)))
                   (projectile-dir-files (projectile-expand-root ,dir)))))
-     (if (eq files '())
+     (if (null files)
          (funcall ,fallback)
        (projectile-rails-goto-file
         (if (= (length files) 1)
