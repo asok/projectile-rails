@@ -822,6 +822,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "s") 'projectile-rails-goto-spec-helper)
     map)
   "A goto map for `projectile-rails-mode'.")
+(fset 'projectile-rails-mode-goto-map projectile-rails-mode-goto-map)
 
 (defvar projectile-rails-mode-run-map
   (let ((map (make-sparse-keymap)))
@@ -831,6 +832,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "g") 'projectile-rails-generate)
     map)
   "A run map for `projectile-rails-mode'.")
+(fset 'projectile-rails-mode-run-map projectile-rails-mode-run-map)
 
 (defvar projectile-rails-mode-map
   (let ((map (make-sparse-keymap)))
@@ -873,8 +875,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (define-key prefix-map (kbd "x") 'projectile-rails-extract-region)
       (define-key prefix-map (kbd "RET") 'projectile-rails-goto-file-at-point)
 
-      (define-key prefix-map (kbd "g") projectile-rails-mode-goto-map)
-      (define-key prefix-map (kbd "!") projectile-rails-mode-run-map)
+      (define-key prefix-map (kbd "g") 'projectile-rails-mode-goto-map)
+      (define-key prefix-map (kbd "!") 'projectile-rails-mode-run-map)
       (define-key map projectile-rails-keymap-prefix prefix-map))
     map)
   "Keymap for `projectile-rails-mode'.")
