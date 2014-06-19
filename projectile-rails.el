@@ -834,50 +834,55 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   "A run map for `projectile-rails-mode'.")
 (fset 'projectile-rails-mode-run-map projectile-rails-mode-run-map)
 
+(defvar projectile-rails-command-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "m") 'projectile-rails-find-model)
+    (define-key map (kbd "M") 'projectile-rails-find-current-model)
+
+    (define-key map (kbd "c") 'projectile-rails-find-controller)
+    (define-key map (kbd "C") 'projectile-rails-find-current-controller)
+
+    (define-key map (kbd "v") 'projectile-rails-find-view)
+    (define-key map (kbd "V") 'projectile-rails-find-current-view)
+
+    (define-key map (kbd "j") 'projectile-rails-find-javascript)
+    (define-key map (kbd "J") 'projectile-rails-find-current-javascript)
+
+    (define-key map (kbd "s") 'projectile-rails-find-stylesheet)
+    (define-key map (kbd "S") 'projectile-rails-find-current-stylesheet)
+
+    (define-key map (kbd "h") 'projectile-rails-find-helper)
+    (define-key map (kbd "H") 'projectile-rails-find-current-helper)
+
+    (define-key map (kbd "p") 'projectile-rails-find-spec)
+    (define-key map (kbd "P") 'projectile-rails-find-current-spec)
+
+    (define-key map (kbd "n") 'projectile-rails-find-migration)
+    (define-key map (kbd "N") 'projectile-rails-find-current-migration)
+
+    (define-key map (kbd "r") 'projectile-rails-console)
+    (define-key map (kbd "R") 'projectile-rails-server)
+
+    (define-key map (kbd "l") 'projectile-rails-find-lib)
+    (define-key map (kbd "f") 'projectile-rails-find-feature)
+    (define-key map (kbd "i") 'projectile-rails-find-initializer)
+    (define-key map (kbd "o") 'projectile-rails-find-log)
+    (define-key map (kbd "e") 'projectile-rails-find-environment)
+    (define-key map (kbd "a") 'projectile-rails-find-locale)
+    (define-key map (kbd "@") 'projectile-rails-find-mailer)
+    (define-key map (kbd "y") 'projectile-rails-find-layout)
+    (define-key map (kbd "x") 'projectile-rails-extract-region)
+    (define-key map (kbd "RET") 'projectile-rails-goto-file-at-point)
+
+    (define-key map (kbd "g") 'projectile-rails-mode-goto-map)
+    (define-key map (kbd "!") 'projectile-rails-mode-run-map)
+    map)
+  "Keymap after `projectile-rails-keymap-prefix'.")
+(fset 'projectile-rails-command-map projectile-rails-command-map)
+
 (defvar projectile-rails-mode-map
   (let ((map (make-sparse-keymap)))
-    (let ((prefix-map (make-sparse-keymap)))
-      (define-key prefix-map (kbd "m") 'projectile-rails-find-model)
-      (define-key prefix-map (kbd "M") 'projectile-rails-find-current-model)
-
-      (define-key prefix-map (kbd "c") 'projectile-rails-find-controller)
-      (define-key prefix-map (kbd "C") 'projectile-rails-find-current-controller)
-
-      (define-key prefix-map (kbd "v") 'projectile-rails-find-view)
-      (define-key prefix-map (kbd "V") 'projectile-rails-find-current-view)
-
-      (define-key prefix-map (kbd "j") 'projectile-rails-find-javascript)
-      (define-key prefix-map (kbd "J") 'projectile-rails-find-current-javascript)
-
-      (define-key prefix-map (kbd "s") 'projectile-rails-find-stylesheet)
-      (define-key prefix-map (kbd "S") 'projectile-rails-find-current-stylesheet)
-
-      (define-key prefix-map (kbd "h") 'projectile-rails-find-helper)
-      (define-key prefix-map (kbd "H") 'projectile-rails-find-current-helper)
-
-      (define-key prefix-map (kbd "p") 'projectile-rails-find-spec)
-      (define-key prefix-map (kbd "P") 'projectile-rails-find-current-spec)
-
-      (define-key prefix-map (kbd "n") 'projectile-rails-find-migration)
-      (define-key prefix-map (kbd "N") 'projectile-rails-find-current-migration)
-
-      (define-key prefix-map (kbd "r") 'projectile-rails-console)
-      (define-key prefix-map (kbd "R") 'projectile-rails-server)
-
-      (define-key prefix-map (kbd "l") 'projectile-rails-find-lib)
-      (define-key prefix-map (kbd "f") 'projectile-rails-find-feature)
-      (define-key prefix-map (kbd "i") 'projectile-rails-find-initializer)
-      (define-key prefix-map (kbd "o") 'projectile-rails-find-log)
-      (define-key prefix-map (kbd "e") 'projectile-rails-find-environment)
-      (define-key prefix-map (kbd "a") 'projectile-rails-find-locale)
-      (define-key prefix-map (kbd "@") 'projectile-rails-find-mailer)
-      (define-key prefix-map (kbd "y") 'projectile-rails-find-layout)
-      (define-key prefix-map (kbd "x") 'projectile-rails-extract-region)
-      (define-key prefix-map (kbd "RET") 'projectile-rails-goto-file-at-point)
-
-      (define-key prefix-map (kbd "g") 'projectile-rails-mode-goto-map)
-      (define-key prefix-map (kbd "!") 'projectile-rails-mode-run-map)
-      (define-key map projectile-rails-keymap-prefix prefix-map))
+    (define-key map projectile-rails-keymap-prefix 'projectile-rails-command-map)
     map)
   "Keymap for `projectile-rails-mode'.")
 
