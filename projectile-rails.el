@@ -368,7 +368,7 @@ Returns a hash table with keys being short names and values being relative paths
   (interactive)
   (projectile-rails-find-current-resource "app/views/"
                                           "/${plural}/.+$"
-                                          'projectile-rails-find-views))
+                                          'projectile-rails-find-view))
 
 (defun projectile-rails-find-current-helper ()
   (interactive)
