@@ -1047,6 +1047,7 @@ Killing the buffer will terminate to server's process."
                    (description "Run and interact")
                    (actions
                     ("Run external command"
+                     ("r" "rake"           projectile-rails-rake)
                      ("c" "console"        projectile-rails-console)
                      ("s" "server"         projectile-rails-server)
                      ("g" "generate"       projectile-rails-generate))
