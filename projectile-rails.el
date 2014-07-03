@@ -589,7 +589,7 @@ Returns a hash table with keys being short names and values being relative paths
 (defun projectile-rails-goto-gem (gem)
   "Uses `bundle-open' to open GEM. If the function is not defined notifies user."
   (if (not (fboundp 'bundle-open))
-      (user-error "Please install budler.el from https://github.com/tobiassvn/bundler.el")
+      (user-error "Please install bundler.el from https://github.com/tobiassvn/bundler.el")
     (message "Using bundle-open command to open the gem")
     (bundle-open (car (s-split "/" gem)))))
 
