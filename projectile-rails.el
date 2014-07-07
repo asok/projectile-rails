@@ -644,7 +644,7 @@ Returns a hash table with keys being short names and values being relative paths
   (string-match-p "\\*\\(Minibuf-[0-9]+\\|helm mini\\)\\*" (buffer-name)))
 
 (defun projectile-rails-extract-region (partial-name)
-  (interactive (list (read-string "The name of the partial: " default-directory)))
+  (interactive (list (file-truename (read-file-name "The name of the partial: " default-directory))))
   (let ((projectile-rails-expand-snippet nil)
         (snippet (cdr (assoc (f-ext partial-name) projectile-rails-extracted-region-snippet)))
         (path (replace-regexp-in-string "\/_" "/" (s-chop-prefix
