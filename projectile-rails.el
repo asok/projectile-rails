@@ -964,6 +964,7 @@ Killing the buffer will terminate to server's process."
 
 (define-derived-mode projectile-rails-compilation-mode compilation-mode "Projectile Rails Compilation"
   "Compilation mode used by `projectile-rails'."
+  (add-hook 'compilation-filter-hook 'projectile-rails-apply-ansi-color nil t)
   (projectile-rails-mode +1))
 
 (define-derived-mode projectile-rails-generate-mode projectile-rails-compilation-mode "Projectile Rails Generate"
