@@ -474,16 +474,15 @@ Returns a hash table with keys being short names and values being relative paths
     (projectile-completing-read
      "Rake (default: default): "
      (projectile-rails-pcmpl-rake-tasks))))
-  (let ((default-directory (projectile-rails-root)))
-    (projectile-rails-with-root
-     (compile
-      (concat
-       (projectile-rails-with-preloader
-        :spring "spring rake "
-        :zeus "zeus rake "
-        :vanilla "bundle exec rake ")
-       (if (= 0 (length task)) "default" task))
-      'projectile-rails-compilation-mode))))
+  (projectile-rails-with-root
+   (compile
+    (concat
+     (projectile-rails-with-preloader
+      :spring "spring rake "
+      :zeus "zeus rake "
+      :vanilla "bundle exec rake ")
+     (if (= 0 (length task)) "default" task))
+    'projectile-rails-compilation-mode)))
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
