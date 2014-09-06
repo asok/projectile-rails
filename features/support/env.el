@@ -112,8 +112,7 @@ end")
 
 (Before
  (loop for file in (list projectile-rails-test-spring-pid-file
-       projectile-rails-test-zeus-pid-file
-       projectile-rails-test-rake-cache-file)
+       projectile-rails-test-zeus-pid-file)
        do (when (f-exists? file) (f-delete file)))
  )
 
