@@ -22,6 +22,17 @@
   (And (s-lex-format "I type \"${argument}\""))
   (And "I execute the action chain")))
 
+(When "^I run command \"\\(.+\\)\" \\(?:selecting\\|inputting\\) \"\\(.+\\)\" and confirm$"
+      (lambda (command argument)
+        (When "I start an action chain")
+        (When "I press \"M-x\"")
+        (And (s-lex-format "I type \"${command}\""))
+        (When "I press \"RET\"")
+        (And (s-lex-format "I type \"${argument}\""))
+        (When "I press \"RET\"")
+        (And (s-lex-format "I type \"yes\""))
+        (And "I execute the action chain")))
+
 (When "^I force font lock refresh"
       (lambda()
   (font-lock-fontify-buffer)))

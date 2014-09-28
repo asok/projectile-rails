@@ -276,10 +276,21 @@ Returns a hash table with keys being short names and values being relative paths
     (maphash (lambda (key value) (setq keys (cons key keys))) hash)
     keys))
 
+(defun projectile-rails--construct-path (filepath dirs)
+  (s-prepend
+   (car (car dirs))
+   (if (string-match-p "\\.rb$" filepath) filepath (s-append ".rb" filepath))))
+
 (defun projectile-rails-find-resource (prompt dirs)
-  (let ((choices (projectile-rails-choices dirs)))
-    (projectile-rails-goto-file
-     (gethash (projectile-completing-read prompt (projectile-rails-hash-keys choices)) choices))))
+  (let* ((choices (projectile-rails-choices dirs))
+         (filepath-read (or
+                         (projectile-completing-read
+                          prompt
+                          (projectile-rails-hash-keys choices))
+                         (user-error "The completion system you're using does not allow inputting arbitrary value.")))
+         (filepath (or (gethash filepath-read choices)
+                       (projectile-rails--construct-path filepath-read dirs))))
+    (projectile-rails-goto-file filepath t)))
 
 (defun projectile-rails-find-model ()
   (interactive)
@@ -581,9 +592,9 @@ Returns a hash table with keys being short names and values being relative paths
    (concat
     (projectile-rails-sanitize-dir-name dir) (projectile-rails-declassify name) ext)))
 
-(defun projectile-rails-goto-file (filepath)
+(defun projectile-rails-goto-file (filepath &optional ask)
   "Finds the FILEPATH after expanding root."
-  (projectile-rails-ff (projectile-expand-root filepath)))
+  (projectile-rails-ff (projectile-expand-root filepath) ask))
 
 (defun projectile-rails-goto-gem (gem)
   "Uses `bundle-open' to open GEM. If the function is not defined notifies user."
