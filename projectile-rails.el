@@ -922,7 +922,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Go to schema"             projectile-rails-goto-schema]
     ["Go to spec helper"        projectile-rails-goto-spec-helper]
     "--"
-    ["Go to current model"      projectile-rails-find-current-spec]
+    ["Go to current model"      projectile-rails-find-current-model]
     ["Go to current controller" projectile-rails-find-current-controller]
     ["Go to current view"       projectile-rails-find-current-view]
     ["Go to current javascript" projectile-rails-find-current-javascript]
