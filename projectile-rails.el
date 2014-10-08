@@ -563,7 +563,7 @@ The binded variable is \"filename\"."
     (yas-expand-snippet
      (cond ((string-match "app/[^/]+/concerns/\\(.+\\)\\.rb$" name)
             (format
-             "module %s\nextend ActiveSupport::Concern\n$1\nend"
+             "module %s\n  extend ActiveSupport::Concern\n$1\nend"
              (s-join "::" (projectile-rails-classify (match-string 1 name)))))
            ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
             (format
