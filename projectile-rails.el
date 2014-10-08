@@ -561,7 +561,11 @@ The binded variable is \"filename\"."
 (defun projectile-rails-expand-corresponding-snippet ()
   (let ((name (buffer-file-name)))
     (yas-expand-snippet
-     (cond ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
+     (cond ((string-match "app/[^/]+/concerns/\\(.+\\)\\.rb$" name)
+            (format
+             "module %s\nextend ActiveSupport::Concern\n$1\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+           ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
             (format
              "class %s < ${1:ApplicationController}\n$2\nend"
              (s-join "::" (projectile-rails-classify (match-string 1 name)))))
