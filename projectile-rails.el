@@ -668,6 +668,9 @@ The binded variable is \"filename\"."
 
           ((string-match-p "\\_<require\\_>" line)
            (projectile-rails-goto-gem (thing-at-point 'filename)))
+          
+          ((string-match-p "\\_<gem\\_>" line)
+           (projectile-rails-goto-gem (thing-at-point 'filename)))
 
           ((not (string-match-p "^[A-Z]" name))
            (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
