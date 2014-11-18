@@ -449,6 +449,10 @@ The binded variable is \"filename\"."
       (rspec-toggle-spec-and-target)
     (projectile-find-test-file)))
 
+(defun projectile-rails-find-current-test ()
+  (interactive)
+  (projectile-toggle-between-implementation-and-test))
+
 (defun projectile-rails-find-current-fixture ()
   (interactive)
   (projectile-rails-find-current-resource
@@ -927,6 +931,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "P") 'projectile-rails-find-current-spec)
 
     (define-key map (kbd "t") 'projectile-rails-find-test)
+    (define-key map (kbd "T") 'projectile-rails-find-current-test)
 
     (define-key map (kbd "n") 'projectile-rails-find-migration)
     (define-key map (kbd "N") 'projectile-rails-find-current-migration)
