@@ -7,7 +7,7 @@
 
 (When "^I turn on projectile-mode"
       (lambda ()
-  (projectile-on)))
+        (projectile-mode)))
 
 (When "^I turn off projectile-rails-mode"
       (lambda ()
