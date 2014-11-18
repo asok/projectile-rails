@@ -353,7 +353,7 @@ The binded variable is \"filename\"."
   (interactive)
   (projectile-rails-find-resource
    "fixture: "
-   `(("test/fixtures/" ,"test/fixtures/\\(.+\\)\\.yml$"))
+   `(("test/fixtures/" "test/fixtures/\\(.+\\)\\.yml$"))
    "test/fixtures/${filename}.yml"))
 
 (defun projectile-rails-find-feature ()
@@ -694,7 +694,7 @@ The binded variable is \"filename\"."
 
           ((string-match-p "\\_<require\\_>" line)
            (projectile-rails-goto-gem (thing-at-point 'filename)))
-          
+
           ((string-match-p "\\_<gem\\_>" line)
            (projectile-rails-goto-gem (thing-at-point 'filename)))
 
