@@ -14,7 +14,7 @@ The goto have been stripped out from the `projectile-rails-find-current-.*` comm
 ## Synopsis
 
 **Projectile Rails** is a minor mode for working with the Rails project in GNU Emacs.
-Internally it based on [Projectile](https://github.com/bbatsov/projectile).
+Internally it is based on [Projectile](https://github.com/bbatsov/projectile).
 
 It means that you can use Projectile's commands for greping (or acking) files, run tests, switch between projects, etc.
 
