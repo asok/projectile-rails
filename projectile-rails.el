@@ -646,6 +646,18 @@ The binded variable is \"filename\"."
       (concat command-prefix (read-string command-prefix))
       'projectile-rails-generate-mode))))
 
+(defun projectile-rails-destroy ()
+  "Runs rails destroy command."
+  (interactive)
+  (projectile-rails-with-root
+   (let ((command-prefix (projectile-rails-with-preloader
+                          :spring "spring rails destroy "
+                          :zeus "zeus destroy "
+                          :vanilla "bundle exec rails destroy ")))
+     (compile
+      (concat command-prefix (read-string command-prefix))
+      'projectile-rails-compilation-mode))))
+
 (defun projectile-rails-sanitize-and-goto-file (dir name &optional ext)
   "Calls `projectile-rails-goto-file' with passed arguments sanitizing them before."
   (projectile-rails-goto-file
@@ -903,6 +915,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "s") 'projectile-rails-server)
     (define-key map (kbd "r") 'projectile-rails-rake)
     (define-key map (kbd "g") 'projectile-rails-generate)
+    (define-key map (kbd "d") 'projectile-rails-destroy)
     map)
   "A run map for `projectile-rails-mode'.")
 (fset 'projectile-rails-mode-run-map projectile-rails-mode-run-map)
@@ -1002,7 +1015,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Run console"              projectile-rails-console]
     ["Run server"               projectile-rails-server]
     ["Run rake"                 projectile-rails-rake]
-    ["Run rails generate"       projectile-rails-generate]))
+    ["Run rails generate"       projectile-rails-generate]
+    ["Run rails destroy"        projectile-rails-destroy]))
 
 ;;;###autoload
 (define-minor-mode projectile-rails-mode
@@ -1128,7 +1142,8 @@ Killing the buffer will terminate to server's process."
                      ("r" "rake"           projectile-rails-rake)
                      ("c" "console"        projectile-rails-console)
                      ("s" "server"         projectile-rails-server)
-                     ("g" "generate"       projectile-rails-generate))
+                     ("g" "generate"       projectile-rails-generate)
+                     ("d" "destroy"        projectile-rails-destroy))
                     ("Interact"
                      ("x" "extract region" projectile-rails-extract-region))))
    :bind "") ;;accessible only from the main context menu
