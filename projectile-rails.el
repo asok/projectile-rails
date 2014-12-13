@@ -1120,6 +1120,7 @@ Killing the buffer will terminate to server's process."
                      ("J" "javascript"  projectile-rails-find-current-javascript)
                      ("S" "stylesheet"  projectile-rails-find-current-stylesheet)
                      ("P" "spec"        projectile-rails-find-current-spec)
+                     ("T" "test"        projectile-rails-find-current-test)
                      ("N" "migration"   projectile-rails-find-current-migration))))
    :bind "") ;;accessible only from the main context menu
 
