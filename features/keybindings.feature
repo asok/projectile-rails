@@ -13,6 +13,8 @@ Feature: Keybindings
     And  key "C-c r H" should be mapped to "projectile-rails-find-current-helper"
     And  key "C-c r l" should be mapped to "projectile-rails-find-lib"
     And  key "C-c r f" should be mapped to "projectile-rails-find-feature"
+    And  key "C-c r u" should be mapped to "projectile-rails-find-fixture"
+    And  key "C-c r U" should be mapped to "projectile-rails-find-current-fixture"
     And  key "C-c r p" should be mapped to "projectile-rails-find-spec"
     And  key "C-c r P" should be mapped to "projectile-rails-find-current-spec"
     And  key "C-c r t" should be mapped to "projectile-rails-find-test"

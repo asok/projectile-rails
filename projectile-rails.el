@@ -952,6 +952,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "r") 'projectile-rails-console)
     (define-key map (kbd "R") 'projectile-rails-server)
 
+    (define-key map (kbd "u") 'projectile-rails-find-fixture)
+    (define-key map (kbd "U") 'projectile-rails-find-current-fixture)
+
     (define-key map (kbd "l") 'projectile-rails-find-lib)
     (define-key map (kbd "f") 'projectile-rails-find-feature)
     (define-key map (kbd "i") 'projectile-rails-find-initializer)
