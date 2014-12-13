@@ -137,7 +137,7 @@
   :type '(repeat string))
 
 (defcustom projectile-rails-font-lock-face-name 'font-lock-keyword-face
-  "Face to be used for higlighting rails the keywords")
+  "Face to be used for higlighting the rails keywords")
 
 (defcustom projectile-rails-views-re
   "\\.\\(?:html\\|erb\\|haml\\|js\\|slim\\|json\\|coffee\\|css\\|j?builder\\)$"
