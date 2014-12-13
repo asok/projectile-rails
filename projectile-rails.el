@@ -1082,12 +1082,12 @@ Killing the buffer will terminate to server's process."
 
   (discover-add-context-menu
    :context-menu '(projectile-rails-mode
-                  (description "Mode for Rails projects")
-                  (actions
-                   ("Available"
-                    ("f" "find resources"   projectile-rails--discover-find-submenu)
-                    ("g" "goto resources"   projectile-rails--discover-goto-submenu)
-                    ("r" "run and interact" projectile-rails--discover-run-submenu))))
+                   (description "Mode for Rails projects")
+                   (actions
+                    ("Available"
+                     ("f" "find resources"   projectile-rails--discover-find-submenu)
+                     ("g" "goto resources"   projectile-rails--discover-goto-submenu)
+                     ("r" "run and interact" projectile-rails--discover-run-submenu))))
    :bind projectile-rails-discover-bind
    :mode 'projectile-rails
    :mode-hook 'projectile-rails-mode-hook)
@@ -1105,6 +1105,7 @@ Killing the buffer will terminate to server's process."
                      ("j" "javascript"  projectile-rails-find-javascript)
                      ("s" "stylesheet"  projectile-rails-find-stylesheet)
                      ("p" "spec"        projectile-rails-find-spec)
+                     ("t" "test"        projectile-rails-find-test)
                      ("f" "feature"     projectile-rails-find-feature)
                      ("i" "initializer" projectile-rails-find-initializer)
                      ("o" "log"         projectile-rails-find-log)

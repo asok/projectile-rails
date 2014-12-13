@@ -15,6 +15,7 @@ Feature: Keybindings
     And  key "C-c r f" should be mapped to "projectile-rails-find-feature"
     And  key "C-c r p" should be mapped to "projectile-rails-find-spec"
     And  key "C-c r P" should be mapped to "projectile-rails-find-current-spec"
+    And  key "C-c r t" should be mapped to "projectile-rails-find-test"
     And  key "C-c r n" should be mapped to "projectile-rails-find-migration"
     And  key "C-c r N" should be mapped to "projectile-rails-find-current-migration"
     And  key "C-c r i" should be mapped to "projectile-rails-find-initializer"
