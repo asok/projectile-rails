@@ -86,8 +86,12 @@ projectile-rails-find-lib                | <kbd>C-c r l</kbd>                   
 projectile-rails-find-feature            | <kbd>C-c r f</kbd>                         | Find a feature using `projectile-completion-system`.
 projectile-rails-find-spec               | <kbd>C-c r p</kbd>                         | Find a spec using `projectile-completion-system`.
 projectile-rails-find-current-spec       | <kbd>C-c r P</kbd>                         | Go to a spec connected with the current resource.
+projectile-rails-find-test               | <kbd>C-c r t</kbd>                         | Find a test using `projectile-completion-system`.
+projectile-rails-find-current-test       | <kbd>C-c r T</kbd>                         | Go to a test connected with the current resource.
 projectile-rails-find-migration          | <kbd>C-c r n</kbd>                         | Find a migration using `projectile-completion-system`.
 projectile-rails-find-current-migration  | <kbd>C-c r N</kbd>                         | Go to a migration connected with the current resource.
+projectile-rails-find-fixture            | <kbd>C-c r u</kbd>                         | Find a fixture using `projectile-completion-system`.
+projectile-rails-find-current-fixture    | <kbd>C-c r U</kbd>                         | Go to a fixture connected with the current resource.
 projectile-rails-find-javascript         | <kbd>C-c r j</kbd>                         | Find a javascript using `projectile-completion-system`.
 projectile-rails-find-stylesheet         | <kbd>C-c r s</kbd>                         | Find a stylesheet using `projectile-completion-system`.
 projectile-rails-find-log                | <kbd>C-c r o</kbd>                         | Find a log file and enable `auto-revert-tail-mode` in its buffer.
