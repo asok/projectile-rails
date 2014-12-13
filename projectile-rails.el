@@ -986,7 +986,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find helper"              projectile-rails-find-helper]
     ["Find spec"                projectile-rails-find-spec]
     ["Find test"                projectile-rails-find-test]
+    ["Find feature"             projectile-rails-find-feature]
     ["Find migration"           projectile-rails-find-migration]
+    ["Find fixture"             projectile-rails-find-fixture]
     ["Find lib"                 projectile-rails-find-lib]
     ["Find initializer"         projectile-rails-find-initializer]
     ["Find environment"         projectile-rails-find-environment]
@@ -1008,7 +1010,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Go to current javascript" projectile-rails-find-current-javascript]
     ["Go to current stylesheet" projectile-rails-find-current-stylesheet]
     ["Go to current spec"       projectile-rails-find-current-spec]
+    ["Go to current test"       projectile-rails-find-current-test]
     ["Go to current migration"  projectile-rails-find-current-migration]
+    ["Go to current fixture"    projectile-rails-find-current-fixture]
     "--"
     ["Extract to partial"       projectile-rails-extract-region]
     "--"
