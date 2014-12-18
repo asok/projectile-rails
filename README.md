@@ -121,6 +121,18 @@ You might want to create your own keybinding for your favorite commands. For exa
 (define-key projectile-rails-mode-map (kbd "C-c g")  projectile-rails-mode-goto-map)
 ```
 
+### Defining the keymap prefix
+
+Similar to Projectile Rails there is a variable exposed for defining the prefix for the mode's keymap.
+The name of the variable is `projectile-rails-keymap-prefix`.
+To attach the `projectile-rails` keymap to the `projectiles` keymap one can do:
+
+```el
+(setq projectile-rails-keymap-prefix (kbd "C-c p C-r"))
+```
+
+Please note though that in order for this code to work it has to be called before the mode is required/loaded.
+
 ### Discover
 
 There's also integration with [discover.el](https://github.com/mickeynp/discover.el). The key that trigger the menu is `s-r` (the "s" stands for Win/Command key).
