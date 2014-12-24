@@ -801,6 +801,10 @@ The binded variable is \"filename\"."
   (interactive)
   (projectile-rails-goto-file "db/schema.rb"))
 
+(defun projectile-rails-goto-seeds ()
+  (interactive)
+  (projectile-rails-goto-file "db/seeds.rb"))
+
 (defun projectile-rails-goto-routes ()
   (interactive)
   (projectile-rails-goto-file "config/routes.rb"))
@@ -904,6 +908,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "g") 'projectile-rails-goto-gemfile)
     (define-key map (kbd "r") 'projectile-rails-goto-routes)
     (define-key map (kbd "d") 'projectile-rails-goto-schema)
+    (define-key map (kbd "e") 'projectile-rails-goto-seeds) ; Which kbd should come with seeds?
     (define-key map (kbd "s") 'projectile-rails-goto-spec-helper)
     map)
   "A goto map for `projectile-rails-mode'.")
@@ -1005,6 +1010,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Go to Gemfile"            projectile-rails-goto-gemfile]
     ["Go to routes"             projectile-rails-goto-routes]
     ["Go to schema"             projectile-rails-goto-schema]
+    ["Go to seeds"              projectile-rails-goto-seeds]
     ["Go to spec helper"        projectile-rails-goto-spec-helper]
     "--"
     ["Go to current model"      projectile-rails-find-current-model]
@@ -1140,6 +1146,7 @@ Killing the buffer will terminate to server's process."
                      ("g" "Gemfile"       projectile-rails-goto-gemfile)
                      ("r" "routes"        projectile-rails-goto-routes)
                      ("d" "schema"        projectile-rails-goto-schema)
+                     ("e" "seeds"        projectile-rails-goto-seeds) ; Which letter should we use?
                      ("s" "spec helper"   projectile-rails-goto-spec-helper))))
    :bind "") ;;accessible only from the main context menu
 
