@@ -908,8 +908,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "g") 'projectile-rails-goto-gemfile)
     (define-key map (kbd "r") 'projectile-rails-goto-routes)
     (define-key map (kbd "d") 'projectile-rails-goto-schema)
-    (define-key map (kbd "e") 'projectile-rails-goto-seeds) ; Which kbd should come with seeds?
-    (define-key map (kbd "s") 'projectile-rails-goto-spec-helper)
+    (define-key map (kbd "s") 'projectile-rails-goto-seeds)
+    (define-key map (kbd "h") 'projectile-rails-goto-spec-helper)
     map)
   "A goto map for `projectile-rails-mode'.")
 (fset 'projectile-rails-mode-goto-map projectile-rails-mode-goto-map)
@@ -1146,8 +1146,8 @@ Killing the buffer will terminate to server's process."
                      ("g" "Gemfile"       projectile-rails-goto-gemfile)
                      ("r" "routes"        projectile-rails-goto-routes)
                      ("d" "schema"        projectile-rails-goto-schema)
-                     ("e" "seeds"        projectile-rails-goto-seeds) ; Which letter should we use?
-                     ("s" "spec helper"   projectile-rails-goto-spec-helper))))
+                     ("s" "seeds"        projectile-rails-goto-seeds)
+                     ("h" "spec helper"   projectile-rails-goto-spec-helper))))
    :bind "") ;;accessible only from the main context menu
 
   (discover-add-context-menu
