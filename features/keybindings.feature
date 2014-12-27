@@ -47,4 +47,5 @@ Feature: Keybindings
     And  key "C-c r g f" should be mapped to "projectile-rails-goto-file-at-point"
     And  key "C-c r g g" should be mapped to "projectile-rails-goto-gemfile"
     And  key "C-c r g r" should be mapped to "projectile-rails-goto-routes"
-    And  key "C-c r g s" should be mapped to "projectile-rails-goto-spec-helper"
+    And  key "C-c r g s" should be mapped to "projectile-rails-goto-seeds"
+    And  key "C-c r g h" should be mapped to "projectile-rails-goto-spec-helper"
