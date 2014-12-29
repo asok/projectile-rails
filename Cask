@@ -5,6 +5,7 @@
 (depends-on "projectile")
 (depends-on "inf-ruby")
 (depends-on "inflections")
+(depends-on "rake")
 
 (development
  (depends-on "yasnippet")

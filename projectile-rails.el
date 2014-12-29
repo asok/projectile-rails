@@ -6,7 +6,7 @@
 ;; URL:               https://github.com/asok/projectile-rails
 ;; Version:           0.5.0
 ;; Keywords:          rails, projectile
-;; Package-Requires:  ((projectile "1.0.0-cvs") (inflections "1.1") (inf-ruby "2.2.6") (f "0.13.0"))
+;; Package-Requires:  ((projectile "1.0.0-cvs") (inflections "1.1") (inf-ruby "2.2.6") (f "0.13.0") (rake "0.2.0"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -39,6 +39,7 @@
 (require 'inf-ruby)
 (require 'inflections)
 (require 'f)
+(require 'rake)
 
 (defgroup projectile-rails nil
   "Rails mode based on projectile"
@@ -502,54 +503,9 @@ The binded variable is \"filename\"."
   (buffer-disable-undo)
   (projectile-rails-on))
 
-(defun projectile-rails-rake-tmp-file ()
-  (projectile-expand-root "tmp/rake-output"))
-
-(defun projectile-rails-rake-tasks ()
-  "Returns a content of tmp file with rake tasks."
-  (if (file-exists-p (projectile-rails-rake-tmp-file))
-      (with-temp-buffer
-        (insert-file-contents (projectile-rails-rake-tmp-file))
-        (buffer-string))
-    (projectile-rails-regenerate-rake)
-    (projectile-rails-rake-tasks)))
-
-;; Shamelessly stolen from ruby-starter-kit.el:
-;; https://github.com/technomancy/emacs-starter-kit/blob/v2/modules/starter-kit-ruby.el
-(defun projectile-rails-pcmpl-rake-tasks ()
-  "Return a list of all the rake tasks defined in the current projects."
-  (--keep it
-          (--map (if (string-match "rake \\([^ ]+\\)" it) (match-string 1 it))
-                 (split-string (projectile-rails-rake-tasks) "[\n]"))))
-
-(defun projectile-rails-regenerate-rake ()
-  "Generates rakes tasks file in the tmp within rails root directory."
-  (interactive)
-  (if (file-exists-p (projectile-rails-rake-tmp-file)) (delete-file (projectile-rails-rake-tmp-file)))
-  (with-temp-file (projectile-rails-rake-tmp-file)
-    (insert
-     (projectile-rails-with-root
-      (shell-command-to-string
-       (projectile-rails-with-preloader
-        :spring "spring rake -T -A"
-        :zeus "zeus rake -T -A"
-        :vanilla "bundle exec rake -T -A"))))))
-
-(defun projectile-rails-rake (task)
-  (interactive
-   (list
-    (projectile-completing-read
-     "Rake (default: default): "
-     (projectile-rails-pcmpl-rake-tasks))))
-  (projectile-rails-with-root
-   (compile
-    (concat
-     (projectile-rails-with-preloader
-      :spring "spring rake "
-      :zeus "zeus rake "
-      :vanilla "bundle exec rake ")
-     (if (= 0 (length task)) "default" task))
-    'projectile-rails-compilation-mode)))
+(defun projectile-rails-rake (arg)
+  (interactive "P")
+  (rake arg 'projectile-rails-compilation-mode))
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
