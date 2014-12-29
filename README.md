@@ -109,8 +109,8 @@ projectile-rails-goto-file-at-point      | <kbd>C-c r RET</kbd>, <kbd>C-c r g f<
 projectile-rails-goto-gemfile            | <kbd>C-c r g g</kbd>                       | Go to `Gemfile` file.
 projectile-rails-goto-routes             | <kbd>C-c r g r</kbd>                       | Go to `config/routes.rb` file.
 projectile-rails-goto-schema             | <kbd>C-c r g d</kbd>                       | Go to `db/schema.rb` file.
-projectile-rails-goto-seeds              | <kbd>C-c r g e</kbd>                       | Go to `db/seeds.rb` file.
-projectile-rails-goto-spec-helper        | <kbd>C-c r g l</kbd>                       | Go to `spec/spec_helper.rb` file.
+projectile-rails-goto-seeds              | <kbd>C-c r g s</kbd>                       | Go to `db/seeds.rb` file.
+projectile-rails-goto-spec-helper        | <kbd>C-c r g h</kbd>                       | Go to `spec/spec_helper.rb` file.
 
 You might want to create your own keybinding for your favorite commands. For example:
 
