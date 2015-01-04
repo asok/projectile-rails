@@ -1102,7 +1102,7 @@ Killing the buffer will terminate to server's process."
                      ("g" "Gemfile"       projectile-rails-goto-gemfile)
                      ("r" "routes"        projectile-rails-goto-routes)
                      ("d" "schema"        projectile-rails-goto-schema)
-                     ("s" "seeds"        projectile-rails-goto-seeds)
+                     ("s" "seeds"         projectile-rails-goto-seeds)
                      ("h" "spec helper"   projectile-rails-goto-spec-helper))))
    :bind "") ;;accessible only from the main context menu
 
