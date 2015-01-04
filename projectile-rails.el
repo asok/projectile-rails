@@ -6,7 +6,7 @@
 ;; URL:               https://github.com/asok/projectile-rails
 ;; Version:           0.5.0
 ;; Keywords:          rails, projectile
-;; Package-Requires:  ((projectile "1.0.0-cvs") (inflections "1.1") (inf-ruby "2.2.6") (f "0.13.0") (rake "0.2.0"))
+;; Package-Requires:  ((projectile "1.0.0-cvs") (inflections "1.1") (inf-ruby "2.2.6") (f "0.13.0") (rake "0.3.0"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -321,6 +321,10 @@ The binded variable is \"filename\"."
    "layout: "
    `(("app/views/layouts/" ,(concat "app/views/layouts/\\(.+\\)" projectile-rails-views-re)))
    "app/views/layouts/${filename}"))
+
+(defun projectile-rails-find-rake-task (arg)
+  (interactive "P")
+  (rake-find-task arg))
 
 (defun projectile-rails-find-helper ()
   (interactive)
@@ -924,6 +928,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "a") 'projectile-rails-find-locale)
     (define-key map (kbd "@") 'projectile-rails-find-mailer)
     (define-key map (kbd "y") 'projectile-rails-find-layout)
+    (define-key map (kbd "k") 'projectile-rails-find-rake-task)
+
     (define-key map (kbd "x") 'projectile-rails-extract-region)
     (define-key map (kbd "RET") 'projectile-rails-goto-file-at-point)
 
@@ -960,6 +966,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find locale"              projectile-rails-find-locale]
     ["Find mailer"              projectile-rails-find-mailer]
     ["Find layout"              projectile-rails-find-layout]
+    ["Find rake task"           projectile-rails-find-rake-task]
     "--"
     ["Go to file at point"      projectile-rails-goto-file-at-point]
     "--"
@@ -1080,7 +1087,8 @@ Killing the buffer will terminate to server's process."
                      ("o" "log"         projectile-rails-find-log)
                      ("@" "mailer"      projectile-rails-find-mailer)
                      ("y" "layout"      projectile-rails-find-layout)
-                     ("n" "migration"   projectile-rails-find-migration))
+                     ("n" "migration"   projectile-rails-find-migration)
+                     ("k" "rake task"   projectile-rails-find-rake-task))
                     ("Find an associated resource"
                      ("M" "model"       projectile-rails-find-current-model)
                      ("V" "view"        projectile-rails-find-current-view)
