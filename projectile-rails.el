@@ -212,7 +212,7 @@
 (defmacro projectile-rails-find-current-resource (dir re fallback)
   "RE will be the argument to `s-lex-format'.
 
-The binded variables are \"singular\" and \"plural\"."
+The bound variables are \"singular\" and \"plural\"."
   `(let* ((singular (projectile-rails-current-resource-name))
           (plural (pluralize-string singular))
           (abs-current-file (buffer-file-name (current-buffer)))
@@ -283,7 +283,7 @@ Returns a hash table with keys being short names and values being relative paths
 If users chooses a non existant file and NEWFILE-TEMPLATE is not nil
 it will use that variable to interpolate the name for the new file.
 NEWFILE-TEMPLATE will be the argument for `s-lex-format'.
-The binded variable is \"filename\"."
+The bound variable is \"filename\"."
   `(let* ((choices (projectile-rails-choices ,dirs))
          (filename (or
                     (projectile-completing-read ,prompt (projectile-rails-hash-keys choices))

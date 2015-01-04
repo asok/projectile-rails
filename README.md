@@ -95,12 +95,12 @@ projectile-rails-find-current-fixture    | <kbd>C-c r U</kbd>                   
 projectile-rails-find-javascript         | <kbd>C-c r j</kbd>                         | Find a javascript using `projectile-completion-system`.
 projectile-rails-find-stylesheet         | <kbd>C-c r s</kbd>                         | Find a stylesheet using `projectile-completion-system`.
 projectile-rails-find-log                | <kbd>C-c r o</kbd>                         | Find a log file and enable `auto-revert-tail-mode` in its buffer.
-projectile-rails-find-initializer        | <kbd>C-c r i</kbd>                         | Find an initializer file using `projectile-completions-system`.
-projectile-rails-find-environment        | <kbd>C-c r e</kbd>                         | Find an environment file using `projectile-completions-system`.
-projectile-rails-find-locale             | <kbd>C-c r a</kbd>                         | Find a locale file using `projectile-completions-system`.
-projectile-rails-find-mailer             | <kbd>C-c r @</kbd>                         | Find a mailer file using `projectile-completions-system`.
-projectile-rails-find-layout             | <kbd>C-c r y</kbd>                         | Find a layout file using `projectile-completions-system`.
-projectile-rails-find-rake-task          | <kbd>C-c r k</kbd>                         | Find a rake task file using `rake-completions-system`.
+projectile-rails-find-initializer        | <kbd>C-c r i</kbd>                         | Find an initializer file using `projectile-completion-system`.
+projectile-rails-find-environment        | <kbd>C-c r e</kbd>                         | Find an environment file using `projectile-completion-system`.
+projectile-rails-find-locale             | <kbd>C-c r a</kbd>                         | Find a locale file using `projectile-completion-system`.
+projectile-rails-find-mailer             | <kbd>C-c r @</kbd>                         | Find a mailer file using `projectile-completion-system`.
+projectile-rails-find-layout             | <kbd>C-c r y</kbd>                         | Find a layout file using `projectile-completion-system`.
+projectile-rails-find-rake-task          | <kbd>C-c r k</kbd>                         | Find a rake task file using `rake-completion-system`.
 projectile-rails-console                 | <kbd>C-c r ! c</kbd>, <kbd>C-c r r</kbd>   | Run `rails console` command in `inf-ruby` buffer.
 projectile-rails-server                  | <kbd>C-c r ! s</kbd>, <kbd>C-c r R</kbd>   | Run `rails server`.
 projectile-rails-rake                    | <kbd>C-c r ! r</kbd>                       | Select a rake task to run using `projectile-completion-system`.
