@@ -231,12 +231,13 @@ The bound variables are \"singular\" and \"plural\"."
           (projectile-completing-read "Which exactly: " files))))))
 
 (defun projectile-rails-spring-p ()
-  (file-exists-p (f-canonical
-                  (concat
-                   temporary-file-directory
-                   "spring/"
-                   (md5 (projectile-project-root) 0 -1)
-                   ".pid"))))
+  (let ((path (concat temporary-file-directory "spring/%s"))
+        (ruby-version (shell-command-to-string "ruby -e 'print RUBY_VERSION'")))
+    (or
+     (file-exists-p (f-canonical
+                     (format path (concat (md5 (projectile-project-root) 0 -1) ".pid"))))
+     (file-exists-p (f-canonical
+                     (format path (md5 (concat ruby-version (projectile-project-root)) 0 -1)))))))
 
 (defun projectile-rails-zeus-p ()
   (file-exists-p (projectile-expand-root ".zeus.sock")))
