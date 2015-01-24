@@ -524,7 +524,7 @@ The bound variable is \"filename\"."
   (projectile-rails-with-root
    (with-current-buffer (run-ruby
                          (projectile-rails-with-preloader
-                          :spring "spring rails console"
+                          :spring "bundle exec spring rails console"
                           :zeus "zeus console"
                           :vanilla "bundle exec rails console"))
      (projectile-rails-mode +1))))
@@ -590,7 +590,7 @@ The bound variable is \"filename\"."
   (if (member projectile-rails-server-buffer-name (mapcar 'buffer-name (buffer-list)))
       (switch-to-buffer projectile-rails-server-buffer-name)
     (projectile-rails-with-root
-     (compile (projectile-rails-with-preloader :spring "spring rails server"
+     (compile (projectile-rails-with-preloader :spring "bundle exec spring rails server"
                                                :zeus "zeus server"
                                                :vanilla "bundle exec rails server")
               'projectile-rails-server-mode))))
@@ -600,7 +600,7 @@ The bound variable is \"filename\"."
   (interactive)
   (projectile-rails-with-root
    (let ((command-prefix (projectile-rails-with-preloader
-                          :spring "spring rails generate "
+                          :spring "bundle exec spring rails generate "
                           :zeus "zeus generate "
                           :vanilla "bundle exec rails generate ")))
      (compile
@@ -612,7 +612,7 @@ The bound variable is \"filename\"."
   (interactive)
   (projectile-rails-with-root
    (let ((command-prefix (projectile-rails-with-preloader
-                          :spring "spring rails destroy "
+                          :spring "bundle exec spring rails destroy "
                           :zeus "zeus destroy "
                           :vanilla "bundle exec rails destroy ")))
      (compile
