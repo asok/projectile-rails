@@ -70,9 +70,15 @@
   (lambda ()
     (f-touch projectile-rails-test-spring-pid-file)))
 
-(Given "^zeus is running"
+(Given "^zeus is running with the default location for the socket file"
   (lambda ()
     (f-touch projectile-rails-test-zeus-pid-file)))
+
+(Given "^zeus is running with the non-default location for the socket file"
+  (lambda ()
+    (let ((sock-file (concat projectile-rails-test-zeus-pid-file "s")))
+      (setenv "ZEUSSOCK" sock-file)
+      (f-touch sock-file))))
 
 (Given "the cache file with projectile-rails task exists"
   (lambda ()

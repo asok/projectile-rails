@@ -18,7 +18,14 @@ Scenario: Running generate rspec:install when spring is running
   Then I should see "spring rails generate rspec:install"
 
 Scenario: Running generate rspec:install when zeus is running
-  And zeus is running
+  And zeus is running with the default location for the socket file
+  And I turn on projectile-mode
+  When I run command "projectile-rails-generate" inputting "rspec:install"
+  And I switch to buffer "*projectile-rails-generate*"
+  Then I should see "zeus generate rspec:install"
+
+Scenario: Running generate rspec:install when zeus is running
+  And zeus is running with the non-default location for the socket file
   And I turn on projectile-mode
   When I run command "projectile-rails-generate" inputting "rspec:install"
   And I switch to buffer "*projectile-rails-generate*"

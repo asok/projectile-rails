@@ -197,6 +197,9 @@
 
 (defvar projectile-rails-server-buffer-name "*projectile-rails-server*")
 
+(defvar-local projectile-rails-zeus-sock nil
+  "The path to the Zeus socket file")
+
 (defmacro projectile-rails-with-preloader (&rest cases)
   `(cond ((projectile-rails-spring-p)
           ,(plist-get cases :spring))
@@ -240,7 +243,11 @@ The bound variables are \"singular\" and \"plural\"."
                      (format path (md5 (concat ruby-version (projectile-project-root)) 0 -1)))))))
 
 (defun projectile-rails-zeus-p ()
-  (file-exists-p (projectile-expand-root ".zeus.sock")))
+  (unless projectile-rails-zeus-sock
+    (setq
+     projectile-rails-zeus-sock
+     (or (getenv "ZEUSSOCK") (projectile-expand-root ".zeus.sock"))))
+  (file-exists-p projectile-rails-zeus-sock))
 
 (defun projectile-rails-highlight-keywords (keywords)
   "Highlight the passed KEYWORDS in current buffer."

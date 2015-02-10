@@ -18,7 +18,14 @@ Scenario: Running destroy model airplane when spring is running
   Then I should see "spring rails destroy model airplane"
 
 Scenario: Running destroy model airplane when zeus is running
-  And zeus is running
+  And zeus is running with the default location for the socket file
+  And I turn on projectile-mode
+  When I run command "projectile-rails-destroy" inputting "model airplane"
+  And I switch to buffer "*projectile-rails-compilation*"
+  Then I should see "zeus destroy model airplane"
+
+Scenario: Running destroy model airplane when zeus is running
+  And zeus is running with the non-default location for the socket file
   And I turn on projectile-mode
   When I run command "projectile-rails-destroy" inputting "model airplane"
   And I switch to buffer "*projectile-rails-compilation*"

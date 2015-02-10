@@ -118,6 +118,7 @@ end")
  (loop for file in (list projectile-rails-test-spring-pid-file
        projectile-rails-test-zeus-pid-file)
        do (when (f-exists? file) (f-delete file)))
+ (setenv "ZEUSSOCK" nil)
  )
 
 (After
