@@ -863,11 +863,11 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (buffer-substring-no-properties beg (point)))))
 
 (defun projectile-rails-set-assets-dirs ()
-  (set
-   (make-local-variable 'projectile-rails-javascript-dirs)
+  (setq-local
+   projectile-rails-javascript-dirs
    (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-javascript-dirs))
-  (set
-   (make-local-variable 'projectile-rails-stylesheet-dirs)
+  (setq-local
+   projectile-rails-stylesheet-dirs
    (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-stylesheet-dirs)))
 
 (defvar projectile-rails-mode-goto-map
