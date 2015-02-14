@@ -189,6 +189,11 @@
 (defcustom projectile-rails-discover-bind "s-r"
   "The :bind option that will be passed `discover-add-context-menu' if available")
 
+(defcustom projectile-rails-use-factory-girl nil
+  "if not nil `projectile-rails-find-fixture' will find factory_girl factories instead."
+  :group 'projectile-rails
+  :type 'boolean)
+
 (defvar projectile-rails-extracted-region-snippet
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
@@ -364,10 +369,15 @@ The bound variable is \"filename\"."
 
 (defun projectile-rails-find-fixture ()
   (interactive)
-  (projectile-rails-find-resource
-   "fixture: "
-   `(("test/fixtures/" "test/fixtures/\\(.+\\)\\.yml$"))
-   "test/fixtures/${filename}.yml"))
+  (if projectile-rails-use-factory-girl
+      (projectile-rails-find-resource
+       "factory: "
+       `(("spec/factories/" "spec/factories/\\(.+\\)\\.rb$"))
+       "spec/factories/${filename}.rb")
+    (projectile-rails-find-resource
+     "fixture: "
+     `(("test/fixtures/" "test/fixtures/\\(.+\\)\\.yml$"))
+     "test/fixtures/${filename}.yml")))
 
 (defun projectile-rails-find-feature ()
   (interactive)
@@ -468,10 +478,15 @@ The bound variable is \"filename\"."
 
 (defun projectile-rails-find-current-fixture ()
   (interactive)
-  (projectile-rails-find-current-resource
-   "test/fixtures/"
-   "/${plural}\\.yml$"
-   'projectile-rails-find-fixture))
+  (if projectile-rails-use-factory-girl
+      (projectile-rails-find-current-resource
+       "spec/factories/"
+       "/${plural}\\.rb$"
+       'projectile-rails-find-fixture)
+    (projectile-rails-find-current-resource
+     "test/fixtures/"
+     "/${plural}\\.yml$"
+     'projectile-rails-find-fixture)))
 
 (defun projectile-rails-find-current-migration ()
   (interactive)
@@ -492,7 +507,8 @@ The bound variable is \"filename\"."
                            "app/assets/stylesheets/\\(?:.+/\\)*\\(.+\\)\\.css\\(?:\\.scss\\)$"
                            "db/migrate/.*create_\\(.+\\)\\.rb$"
                            "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$"
-                           "test/fixtures/\\(.+\\)\\.yml$")
+                           "test/fixtures/\\(.+\\)\\.yml$"
+                           "spec/factories/\\(.+\\)\\.rb$")
                until (string-match re file-name)
                finally return (match-string 1 file-name))))))
 
