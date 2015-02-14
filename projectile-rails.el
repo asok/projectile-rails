@@ -189,11 +189,6 @@
 (defcustom projectile-rails-discover-bind "s-r"
   "The :bind option that will be passed `discover-add-context-menu' if available")
 
-(defcustom projectile-rails-use-factory-girl nil
-  "if not nil `projectile-rails-find-fixture' will find factory_girl factories instead."
-  :group 'projectile-rails
-  :type 'boolean)
-
 (defvar projectile-rails-extracted-region-snippet
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
@@ -367,17 +362,28 @@ The bound variable is \"filename\"."
    '(("test/" "test/\\(.+\\)_test\\.rb$"))
    "test/${filename}_test.rb"))
 
+(defvar projectile-rails-factory-dirs
+  '(("fixture: " "test/fixtures/" "test/fixtures/\\(.+\\)\\.yml$"
+     "test/fixtures/${filename}.yml")
+    ("fixture: " "spec/fixtures/" "spec/fixtures/\\(.+\\).yml$"
+     "spec/fixtures/${filename}.yml")
+    ("factory: " "test/factories/" "test/factories/\\(.+\\)\\.rb$"
+     "test/factories/${filename}.rb")
+    ("factory: " "spec/factories/" "sepc/factories/\\(.+\\)\\.rb$"
+     "spec/factories/${filename}.rb")
+    ("fabrication: " "test/fabricators/" "test/fabricators/\\(.+\\)\\.rb$"
+     "test/fabricators/${filename}.rb")
+    ("fabrication: " "spec/fabricators/" "spec/fabricators/\\(.+\\)\\.rb$"
+     "spec/fabricators/${filename}.rb")))
+
+
 (defun projectile-rails-find-fixture ()
   (interactive)
-  (if projectile-rails-use-factory-girl
-      (projectile-rails-find-resource
-       "factory: "
-       `(("spec/factories/" "spec/factories/\\(.+\\)\\.rb$"))
-       "spec/factories/${filename}.rb")
+  (let ((fixture-dir (first projectile-rails-factory-dirs)))
     (projectile-rails-find-resource
-     "fixture: "
-     `(("test/fixtures/" "test/fixtures/\\(.+\\)\\.yml$"))
-     "test/fixtures/${filename}.yml")))
+     (nth 0 fixture-dir)
+     (list (-select-by-indices '(1 2) fixture-dir))
+     (nth 3 fixture-dir))))
 
 (defun projectile-rails-find-feature ()
   (interactive)
@@ -885,6 +891,12 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   (setq-local
    projectile-rails-stylesheet-dirs
    (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-stylesheet-dirs)))
+
+
+(defun projectile-rails-set-factory-dir ()
+  (setq-local
+   projectile-rails-factory-dir
+   (--filter (file-exists-p (projectile-expand-root (nth 1 it))) projectile-rails-factory-dirs)))
 
 (defvar projectile-rails-mode-goto-map
   (let ((map (make-sparse-keymap)))
