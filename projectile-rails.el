@@ -670,6 +670,9 @@ The bound variable is \"filename\"."
           ((string-match-p "^\\s-*//= require .+\\s-*$" line)
            (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs))
 
+          ((string-match-p "^\\s-*\\#= require .+\\s-*$" line)
+           (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs))
+
           ((string-match-p "^\\s-*\\*= require .+\\s-*$" line)
            (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs))
 
