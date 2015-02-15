@@ -44,6 +44,14 @@ end")
   (save-buffer)
   )
 
+(defun delete-fixture-files ()
+  (let* ((files '("spec/fixtures/" "spec/factories/" "spec/fabricators/"
+                 "test/fixtures/" "test/factories/" "test/fabricators/"))
+         (fullpath (--map (f-expand it projectile-rails-test-app-path) files))
+         (file-in-directory (first (--filter (f-exists? it) fullpath))))
+    (when file-in-directory
+      (f-delete file-in-directory t))))
+
 (require 'projectile-rails)
 (require 'espuds)
 (require 'ert)
@@ -88,7 +96,6 @@ end")
                      "spec/controllers/"
                      "spec/controllers/admin/"
                      "test/"
-                     "test/fixtures/"
                      "test/controllers/"
                      "features/"
                      "tmp/"
@@ -135,3 +142,7 @@ end")
  (start-process-shell-command "spring" nil "spring stop")
  (delete-directory projectile-rails-test-app-path t)
  )
+
+(After "@finding-fixtures"
+       (delete-fixture-files)
+)
