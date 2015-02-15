@@ -197,6 +197,10 @@
 
 (defvar projectile-rails-server-buffer-name "*projectile-rails-server*")
 
+(defvar projectile-rails-fixture-dirs
+  '("test/fixtures/" "test/factories/" "test/fabricators/"
+    "spec/fixtures/" "spec/factories/" "spec/fabricators/"))
+
 (defvar-local projectile-rails-zeus-sock nil
   "The path to the Zeus socket file")
 
@@ -366,8 +370,8 @@ The bound variable is \"filename\"."
   (interactive)
   (projectile-rails-find-resource
    "fixture: "
-   `(("test/fixtures/" "test/fixtures/\\(.+\\)\\.yml$"))
-   "test/fixtures/${filename}.yml"))
+   (--map (list it (concat it "\\(.+?\\)\\(?:_fabricator\\)?\\.\\(?:rb\\|yml\\)$"))
+          projectile-rails-fixture-dirs)))
 
 (defun projectile-rails-find-feature ()
   (interactive)
@@ -469,8 +473,8 @@ The bound variable is \"filename\"."
 (defun projectile-rails-find-current-fixture ()
   (interactive)
   (projectile-rails-find-current-resource
-   "test/fixtures/"
-   "/${plural}\\.yml$"
+   (first projectile-rails-fixture-dirs)
+   "\\(?:test\\|spec\\)/\\(?:fixtures\\|factories\\|fabricators\\)/\\(?:${singular}\\(?:_fabricator\\)?\\|${plural}\\)\\.\\(?:yml\\|rb\\)"
    'projectile-rails-find-fixture))
 
 (defun projectile-rails-find-current-migration ()
@@ -492,7 +496,7 @@ The bound variable is \"filename\"."
                            "app/assets/stylesheets/\\(?:.+/\\)*\\(.+\\)\\.css\\(?:\\.scss\\)$"
                            "db/migrate/.*create_\\(.+\\)\\.rb$"
                            "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$"
-                           "test/fixtures/\\(.+\\)\\.yml$")
+                           "\\(?:test\\|spec\\)/\\(?:fixtures\\|factories\\|fabricators\\)/\\(.+?\\)\\(?:_fabricator\\)?\\.\\(?:yml\\|rb\\)$")
                until (string-match re file-name)
                finally return (match-string 1 file-name))))))
 
@@ -873,6 +877,12 @@ If file does not exist and ASK in not nil it will ask user to proceed."
    projectile-rails-stylesheet-dirs
    (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-stylesheet-dirs)))
 
+
+(defun projectile-rails-set-fixture-dirs ()
+  (setq-local
+   projectile-rails-fixture-dirs
+   (--filter (file-exists-p (projectile-expand-root it)) projectile-rails-fixture-dirs)))
+
 (defvar projectile-rails-mode-goto-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "f") 'projectile-rails-goto-file-at-point)
@@ -1013,7 +1023,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   (when projectile-rails-mode
     (and projectile-rails-expand-snippet (projectile-rails-expand-snippet-maybe))
     (and projectile-rails-add-keywords (projectile-rails-add-keywords-for-file-type))
-    (projectile-rails-set-assets-dirs)))
+    (projectile-rails-set-assets-dirs)
+    (projectile-rails-set-fixture-dirs)))
 
 ;;;###autoload
 (defun projectile-rails-on ()
