@@ -676,6 +676,9 @@ The bound variable is \"filename\"."
           ((string-match-p "^\\s-*\\*= require .+\\s-*$" line)
            (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs))
 
+          ((string-match-p "^\\s-*\\@import .+\\s-*$" line)
+           (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs))
+
           ((string-match-p "\\_<require_relative\\_>" line)
            (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
 
