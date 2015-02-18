@@ -1112,6 +1112,7 @@ Killing the buffer will terminate to server's process."
                      ("j" "javascript"  projectile-rails-find-javascript)
                      ("s" "stylesheet"  projectile-rails-find-stylesheet)
                      ("p" "spec"        projectile-rails-find-spec)
+                     ("u" "fixture"     projectile-rails-find-fixture)
                      ("t" "test"        projectile-rails-find-test)
                      ("f" "feature"     projectile-rails-find-feature)
                      ("i" "initializer" projectile-rails-find-initializer)
@@ -1128,6 +1129,7 @@ Killing the buffer will terminate to server's process."
                      ("J" "javascript"  projectile-rails-find-current-javascript)
                      ("S" "stylesheet"  projectile-rails-find-current-stylesheet)
                      ("P" "spec"        projectile-rails-find-current-spec)
+                     ("U" "fixture"     projectile-rails-find-current-fixture)
                      ("T" "test"        projectile-rails-find-current-test)
                      ("N" "migration"   projectile-rails-find-current-migration))))
    :bind "") ;;accessible only from the main context menu
