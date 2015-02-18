@@ -37,13 +37,6 @@
   (lambda()
     (font-lock-fontify-buffer)))
 
-(Given "^I am using a test completion system$"
-  (lambda ()
-    (setq projectile-completion-system
-          (lambda (prompt choices)
-            (with-current-buffer (get-buffer-create projectile-rails-test-completion-buffer)
-              (insert (s-join "\n" choices)))))))
-
 (Given "^I turn on snippet expansion"
   (lambda ()
     (setq projectile-rails-expand-snippet t)))
