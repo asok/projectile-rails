@@ -205,7 +205,8 @@
   "The path to the Zeus socket file")
 
 (defvar projectile-rails-generators
-  '(("assets" (("app/assets/javascripts/" "app/assets/javascripts/\\(.+\\)\\.coffee$")))
+  '(("assets" (("app/assets/"
+                "app/assets/\\(?:stylesheets\\|javascripts\\)/\\(.+?\\)\\..+$")))
     ("controller" (("app/controllers/" "app/controllers/\\(.+\\)_controller\\.rb$")))
     ("generator" (("lib/generator/" "lib/generators/\\(.+\\)$")))
     ("helper" (("app/helpers/" "app/helpers/\\(.+\\)_helper.rb$")))
