@@ -30,3 +30,11 @@ Scenario: Running destroy model airplane when zeus is running
   When I run command "projectile-rails-destroy" inputting "model airplane"
   And I switch to buffer "*projectile-rails-compilation*"
   Then I should see "zeus destroy model airplane"
+
+Scenario: Running destroy model airplane with completion
+  Given I open the app file "app/models/user.rb"
+  And I turn on projectile-mode
+  When I run projectile-rails-destroy inputting "mo" and selecting "airplane"
+  And I switch to buffer "*projectile-rails-compilation*"
+  Then I should see "bundle exec rails destroy model airplane"
+

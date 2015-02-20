@@ -204,6 +204,20 @@
 (defvar-local projectile-rails-zeus-sock nil
   "The path to the Zeus socket file")
 
+(defvar projectile-rails-generators
+  '(("assets" (("app/assets/javascripts/" "app/assets/javascripts/\\(.+\\)\\.coffee$")))
+    ("controller" (("app/controllers/" "app/controllers/\\(.+\\)_controller\\.rb$")))
+    ("generator" (("lib/generator/" "lib/generators/\\(.+\\)$")))
+    ("helper" (("app/helpers/" "app/helpers/\\(.+\\)_helper.rb$")))
+    ("integration_test" (("test/integration/" "test/integration/\\(.+\\)_test\\.rb$")))
+    ("job" (("app/jobs/" "app/jobs/\\(.+\\)_job\\.rb$")))
+    ("mailer" (("app/mailers/" "app/mailers/\\(.+\\)\\.rb$")))
+    ("migration" (("db/migrate/" "db/migrate/[0-9]+_\\(.+\\)\\.rb$")))
+    ("model" (("app/models/" "app/models/\\(.+\\)\\.rb$")))
+    ("resource" (("app/models/" "app/models/\\(.+\\)\\.rb$")))
+    ("scaffold" (("app/models/" "app/models/\\(.+\\)\\.rb$")))
+    ("task" (("lib/tasks/" "lib/tasks/\\(.+\\)\\.rake$")))))
+
 (defmacro projectile-rails-with-preloader (&rest cases)
   `(cond ((projectile-rails-spring-p)
           ,(plist-get cases :spring))
@@ -606,6 +620,18 @@ The bound variable is \"filename\"."
                                                :vanilla "bundle exec rails server")
               'projectile-rails-server-mode))))
 
+(defun projectile-rails--completion-in-region ()
+  (interactive)
+  (let ((generators (--map (concat (car it) " ") projectile-rails-generators)))
+    (when (<= (minibuffer-prompt-end) (point))
+      (completion-in-region (minibuffer-prompt-end) (point-max)
+                            generators))))
+
+(defun projectile-rails--generate-with-completion (command)
+  (let ((keymap (copy-keymap minibuffer-local-map)))
+    (define-key keymap (kbd "<tab>") 'projectile-rails--completion-in-region)
+    (concat command (read-from-minibuffer command nil keymap))))
+
 (defun projectile-rails-generate ()
   "Runs rails generate command"
   (interactive)
@@ -615,8 +641,27 @@ The bound variable is \"filename\"."
                           :zeus "zeus generate "
                           :vanilla "bundle exec rails generate ")))
      (compile
-      (concat command-prefix (read-string command-prefix))
+      (projectile-rails--generate-with-completion command-prefix)
       'projectile-rails-generate-mode))))
+
+(defun projectile-rails--destroy-read (command)
+  (let ((keymap (copy-keymap minibuffer-local-map)))
+    (define-key keymap (kbd "<tab>") 'exit-minibuffer)
+    (read-from-minibuffer command nil keymap)))
+
+(defun projectile-rails--destroy-with-completion (command)
+  (let* ((user-input (projectile-rails--destroy-read command))
+         (completion (try-completion user-input
+                                     projectile-rails-generators))
+         (dirs (cdr (-flatten-n 2 (--filter (string= completion (car it))
+                                            projectile-rails-generators))))
+         (prompt (concat command completion " ")))
+    (if completion
+        (concat prompt
+                (projectile-completing-read
+                 prompt
+                 (projectile-rails-hash-keys (projectile-rails-choices dirs))))
+      (concat command user-input))))
 
 (defun projectile-rails-destroy ()
   "Runs rails destroy command."
@@ -627,7 +672,7 @@ The bound variable is \"filename\"."
                           :zeus "zeus destroy "
                           :vanilla "bundle exec rails destroy ")))
      (compile
-      (concat command-prefix (read-string command-prefix))
+      (projectile-rails--destroy-with-completion command-prefix)
       'projectile-rails-compilation-mode))))
 
 (defun projectile-rails-sanitize-and-goto-file (dir name &optional ext)

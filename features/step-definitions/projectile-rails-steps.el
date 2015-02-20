@@ -22,6 +22,32 @@
     (And (s-lex-format "I type \"${argument}\""))
     (And "I execute the action chain")))
 
+
+(When "^I run projectile-rails-destroy inputting \"\\(.+\\)\" and selecting \"\\(.+\\)\""
+  (lambda (partial-input selection)
+    (When "I start an action chain")
+    (When "I press \"M-x\"")
+    (And "I type \"projectile-rails-destroy\"")
+    (When "I press \"<return>\"")
+    (And (s-lex-format "I type \"${partial-input}\""))
+    (When "I press \"<tab>\"")
+    (And (s-lex-format "I type \"${selection}\""))
+    (When "I press \"<return>\"")
+    (And "I execute the action chain")))
+
+(When "^I run projectile-rails-generate inputting \"\\(.+\\)\" and the name \"\\(.+\\)\""
+  (lambda (partial-input name)
+    (When "I start an action chain")
+    (When "I press \"M-x\"")
+    (And "I type \"projectile-rails-generate\"")
+    (When "I press \"<return>\"")
+    (And (s-lex-format "I type \"${partial-input}\""))
+    (When "I press \"<tab>\"")
+    (And (s-lex-format "I type \"${name}\""))
+    (When "I press \"<return>\"")
+    (When "I execute the action chain")))
+
+
 (When "^I run command \"\\(.+\\)\" \\(?:selecting\\|inputting\\) \"\\(.+\\)\" and confirm$"
   (lambda (command argument)
     (When "I start an action chain")
