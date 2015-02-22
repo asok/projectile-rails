@@ -300,9 +300,11 @@ Returns a hash table with keys being short names and values being relative paths
     hash))
 
 (defun projectile-rails-hash-keys (hash)
-  (let (keys)
-    (maphash (lambda (key value) (setq keys (cons key keys))) hash)
-    keys))
+  (if (boundp 'hash-table-keys)
+      (hash-table-keys hash)
+    (let (keys)
+      (maphash (lambda (key value) (setq keys (cons key keys))) hash)
+      keys)))
 
 (defmacro projectile-rails-find-resource (prompt dirs &optional newfile-template)
   "Presents files from DIRS to the user using `projectile-completing-read'.
