@@ -241,16 +241,16 @@ The bound variables are \"singular\" and \"plural\"."
           (current-file (if abs-current-file
                             (file-relative-name abs-current-file
                                                 (projectile-project-root))))
-          (files (--filter
-                  (and (string-match-p (s-lex-format ,re) it)
-                       (not (string= current-file it)))
-                  (projectile-dir-files (projectile-expand-root ,dir)))))
-     (if (null files)
+          (choices (projectile-rails-choices
+                    (list (list ,dir (s-lex-format ,re)))))
+          (files (projectile-rails-hash-keys choices)))
+     (if (eq files ())
          (funcall ,fallback)
        (projectile-rails-goto-file
         (if (= (length files) 1)
-            (-first-item files)
-          (projectile-completing-read "Which exactly: " files))))))
+            (gethash (-first-item files) choices)
+          (gethash (projectile-completing-read "Which exactly: " files)
+                   choices))))))
 
 (defun projectile-rails-spring-p ()
   (let ((path (concat temporary-file-directory "spring/%s"))
@@ -312,14 +312,14 @@ it will use that variable to interpolate the name for the new file.
 NEWFILE-TEMPLATE will be the argument for `s-lex-format'.
 The bound variable is \"filename\"."
   `(let* ((choices (projectile-rails-choices ,dirs))
-         (filename (or
-                    (projectile-completing-read ,prompt (projectile-rails-hash-keys choices))
-                    (user-error "The completion system you're using does not allow inputting arbitrary value.")))
-         (filepath (gethash filename choices)))
-         (if filepath
-             (projectile-rails-goto-file filepath)
-           (when ,newfile-template
-               (projectile-rails-goto-file (s-lex-format ,newfile-template) t)))))
+          (filename (or
+                     (projectile-completing-read ,prompt (projectile-rails-hash-keys choices))
+                     (user-error "The completion system you're using does not allow inputting arbitrary value.")))
+          (filepath (gethash filename choices)))
+     (if filepath
+         (projectile-rails-goto-file filepath)
+       (when ,newfile-template
+         (projectile-rails-goto-file (s-lex-format ,newfile-template) t)))))
 
 (defun projectile-rails-find-model ()
   (interactive)
@@ -448,31 +448,31 @@ The bound variable is \"filename\"."
 (defun projectile-rails-find-current-controller ()
   (interactive)
   (projectile-rails-find-current-resource "app/controllers/"
-                                          "/${plural}_controller\\.rb$"
+                                          "app/controllers/\\(.*${plural}\\)_controller\\.rb$"
                                           'projectile-rails-find-controller))
 
 (defun projectile-rails-find-current-view ()
   (interactive)
   (projectile-rails-find-current-resource "app/views/"
-                                          "/${plural}/.+$"
+                                          "/${plural}/\\(.+\\)$"
                                           'projectile-rails-find-view))
 
 (defun projectile-rails-find-current-helper ()
   (interactive)
   (projectile-rails-find-current-resource "app/helpers/"
-                                          "/${plural}_helper\\.rb$"
+                                          "/\\(${plural}_helper\\)\\.rb$"
                                           'projectile-rails-find-helper))
 
 (defun projectile-rails-find-current-javascript ()
   (interactive)
   (projectile-rails-find-current-resource "app/assets/javascripts/"
-                                          "/\\(?:.+/\\)*${plural}\\.\\(?:js\\|coffee\\)$"
+                                          "/\\(?:.+/\\)\\(*${plural}\\)\\.\\(?:js\\|coffee\\)$"
                                           'projectile-rails-find-javascript))
 
 (defun projectile-rails-find-current-stylesheet ()
   (interactive)
   (projectile-rails-find-current-resource "app/assets/stylesheets/"
-                                          "/\\(?:.+/\\)*${plural}\\.css\\(?:\\.scss\\)?$"
+                                          "/\\(?:.+/\\)\\(*${plural}\\)\\.css\\(?:\\.scss\\)?$"
                                           'projectile-rails-find-stylesheet))
 
 (defun projectile-rails-find-current-spec ()

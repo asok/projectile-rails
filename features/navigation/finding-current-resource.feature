@@ -15,7 +15,7 @@ Feature: Finding current resource
     And file "app/controllers/admin/users_controller.rb" exists
     And I open the app file "app/models/user.rb"
     And I turn on projectile-mode
-    When I run command "projectile-rails-find-current-controller" selecting "users_controller.rb"
+    When I run command "projectile-rails-find-current-controller" selecting "users"
     Then I am in file "app/controllers/users_controller.rb"
 
   Scenario: Finding current view
@@ -23,7 +23,7 @@ Feature: Finding current resource
     And file "app/views/users/new.html.erb" exists
     And I open the app file "app/models/user.rb"
     And I turn on projectile-mode
-    When I run command "projectile-rails-find-current-view" selecting "users/new.html.erb"
+    When I run command "projectile-rails-find-current-view" selecting "new.html.erb"
     Then I am in file "app/views/users/new.html.erb"
 
   Scenario: Finding current helper
