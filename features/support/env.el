@@ -114,7 +114,7 @@ end")
  (add-hook 'projectile-mode-hook 'projectile-rails-on)
 
  (setq kill-buffer-query-functions nil
-       projectile-completion-system 'ido
+       projectile-completion-system 'default
        projectile-indexing-method 'native
        projectile-rails-expand-snippet nil)
 
