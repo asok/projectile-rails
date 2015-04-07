@@ -67,8 +67,9 @@
 
 (defcustom projectile-rails-migration-keywords
   '("create_table" "change_table" "drop_table" "rename_table" "add_column"
-    "rename_column" "change_column" "change_column_default" "remove_column"
-    "add_index" "remove_index" "rename_index" "execute")
+    "rename_column" "change_column" "change_column_default" "change_column_null"
+    "remove_column" "add_index" "remove_index" "rename_index" "execute"
+    "reversible" "revert" "announce")
   "List of keywords to highlight for migrations"
   :group 'projectile-rails
   :type '(repeat string))
@@ -87,7 +88,8 @@
     "validates_confirmation_of" "validates_each" "validates_exclusion_of"
     "validates_format_of" "validates_inclusion_of" "validates_length_of"
     "validates_numericality_of" "validates_presence_of" "validates_size_of"
-    "validates_existence_of" "validates_uniqueness_of" "validates_with")
+    "validates_existence_of" "validates_uniqueness_of" "validates_with"
+    "enum")
   "List of keywords to highlight for models"
   :group 'projectile-rails
   :type '(repeat string))
