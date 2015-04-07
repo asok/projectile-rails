@@ -146,31 +146,31 @@
   "\\.\\(?:html\\|erb\\|haml\\|js\\|slim\\|json\\|coffee\\|css\\|j?builder\\)$"
   "Regexp for filtering for view files"
   :group 'projectile-rails
-  :type 'string)
+  :type 'regexp)
 
 (defcustom projectile-rails-javascript-re
   "\\.js\\(?:\\.\\(?:coffee\\|ts\\)\\)?\\'"
   "Regexp for filtering for Javascript/altJS files."
   :group 'projectile-rails
-  :type 'string)
+  :type 'regexp)
 
 (defcustom projectile-rails-stylesheet-re
   "\\.css\\(?:\\.\\(?:scss\\|sass\\|less\\)\\)?\\'"
   "Regexp for filtering for stylesheet files."
   :group 'projectile-rails
-  :type 'string)
+  :type 'regexp)
 
 (defcustom projectile-rails-errors-re
   "\\([0-9A-Za-z@_./\:-]+\\.rb\\):?\\([0-9]+\\)?"
   "The regex used to find errors with file paths."
   :group 'projectile-rails
-  :type 'string)
+  :type 'regexp)
 
 (defcustom projectile-rails-generate-filepath-re
   "^\\s-+\\(?:create\\|exists\\|conflict\\|skip\\)\\s-+\\(.+\\)$"
   "The regex used to find file paths in `projectile-rails-generate-mode'."
   :group 'projectile-rails
-  :type 'string)
+  :type 'regexp)
 
 (defcustom projectile-rails-javascript-dirs
   '("app/assets/javascripts/" "lib/assets/javascripts/" "public/javascripts/")
