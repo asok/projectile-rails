@@ -143,8 +143,12 @@
   "Face to be used for higlighting the rails keywords")
 
 (defcustom projectile-rails-views-re
-  "\\.\\(?:html\\|erb\\|haml\\|js\\|slim\\|json\\|coffee\\|css\\|j?builder\\)$"
-  "Regexp for filtering for view files"
+  (concat "\\."
+          (regexp-opt '("html" "erb" "haml" "slim"
+                        "js" "coffee" "ts"
+                        "css" "scss" "less"
+                        "json" "builder" "jbuilder" "rabl")))
+  "Regexp for filtering for view files."
   :group 'projectile-rails
   :type 'regexp)
 
