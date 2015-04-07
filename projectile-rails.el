@@ -148,6 +148,18 @@
   :group 'projectile-rails
   :type 'string)
 
+(defcustom projectile-rails-javascript-re
+  "\\.js\\(?:\\.\\(?:coffee\\|ts\\)\\)?\\'"
+  "Regexp for filtering for Javascript/altJS files."
+  :group 'projectile-rails
+  :type 'string)
+
+(defcustom projectile-rails-stylesheet-re
+  "\\.css\\(?:\\.\\(?:scss\\|sass\\|less\\)\\)?\\'"
+  "Regexp for filtering for stylesheet files."
+  :group 'projectile-rails
+  :type 'string)
+
 (defcustom projectile-rails-errors-re
   "\\([0-9A-Za-z@_./\:-]+\\.rb\\):?\\([0-9]+\\)?"
   "The regex used to find errors with file paths."
@@ -470,13 +482,13 @@ The bound variable is \"filename\"."
 (defun projectile-rails-find-current-javascript ()
   (interactive)
   (projectile-rails-find-current-resource "app/assets/javascripts/"
-                                          "/\\(?:.+/\\)\\(*${plural}\\)\\.\\(?:js\\|coffee\\)$"
+                                          "/\\(?:.+/\\)\\(.*${plural}\\)${projectile-rails-javascript-re}"
                                           'projectile-rails-find-javascript))
 
 (defun projectile-rails-find-current-stylesheet ()
   (interactive)
   (projectile-rails-find-current-resource "app/assets/stylesheets/"
-                                          "/\\(?:.+/\\)\\(*${plural}\\)\\.css\\(?:\\.scss\\)?$"
+                                          "/\\(?:.+/\\)\\(.*${plural}\\)${projectile-rails-stylesheet-re}"
                                           'projectile-rails-find-stylesheet))
 
 (defun projectile-rails-find-current-spec ()
@@ -507,15 +519,15 @@ The bound variable is \"filename\"."
   (let ((file-name (buffer-file-name)))
     (if file-name
         (singularize-string
-         (loop for re in '("app/models/\\(?:.+/\\)*\\(.+\\)\\.rb"
-                           "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
-                           "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
-                           "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
-                           "app/assets/javascripts/\\(?:.+/\\)*\\(.+\\)\\.\\(?:js\\|coffee\\)$"
-                           "app/assets/stylesheets/\\(?:.+/\\)*\\(.+\\)\\.css\\(?:\\.scss\\)$"
-                           "db/migrate/.*create_\\(.+\\)\\.rb$"
-                           "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$"
-                           "\\(?:test\\|spec\\)/\\(?:fixtures\\|factories\\|fabricators\\)/\\(.+?\\)\\(?:_fabricator\\)?\\.\\(?:yml\\|rb\\)$")
+         (loop for re in (list "app/models/\\(?:.+/\\)*\\(.+\\)\\.rb"
+                               "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
+                               "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
+                               "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
+                               (concat "app/assets/javascripts/\\(?:.+/\\)*\\(.+\\)" projectile-rails-javascript-re)
+                               (concat "app/assets/stylesheets/\\(?:.+/\\)*\\(.+\\)" projectile-rails-stylesheet-re)
+                               "db/migrate/.*create_\\(.+\\)\\.rb$"
+                               "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$"
+                               "\\(?:test\\|spec\\)/\\(?:fixtures\\|factories\\|fabricators\\)/\\(.+?\\)\\(?:_fabricator\\)?\\.\\(?:yml\\|rb\\)$")
                until (string-match re file-name)
                finally return (match-string 1 file-name))))))
 
