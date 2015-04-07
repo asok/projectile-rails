@@ -459,6 +459,20 @@ The bound variable is \"filename\"."
    '(("app/mailers/" "app/mailers/\\(.+\\)\\.rb$"))
    "app/mailer/${filename}.rb"))
 
+(defun projectile-rails-find-validator ()
+  (interactive)
+  (projectile-rails-find-resource
+   "validator: "
+   '(("app/validators/" "/validators/\\(.+?\\)\\(_validator\\)?\\.rb\\'"))
+   "app/validators/${filename}_validator.rb"))
+
+(defun projectile-rails-find-job ()
+  (interactive)
+  (projectile-rails-find-resource
+   "job: "
+   '(("app/jobs/" "/jobs/\\(.+?\\)\\(_job\\)?\\.rb\\'"))
+   "app/jobs/${filename}_job.rb"))
+
 (defun projectile-rails-find-current-model ()
   (interactive)
   (projectile-rails-find-current-resource "app/models/"
@@ -1025,6 +1039,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "@") 'projectile-rails-find-mailer)
     (define-key map (kbd "y") 'projectile-rails-find-layout)
     (define-key map (kbd "k") 'projectile-rails-find-rake-task)
+    (define-key map (kbd "b") 'projectile-rails-find-job)
+    ;; (define-key map (kbd "?") 'projectile-rails-find-validator)
 
     (define-key map (kbd "x") 'projectile-rails-extract-region)
     (define-key map (kbd "RET") 'projectile-rails-goto-file-at-point)
@@ -1061,8 +1077,10 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find log"                 projectile-rails-find-log]
     ["Find locale"              projectile-rails-find-locale]
     ["Find mailer"              projectile-rails-find-mailer]
+    ["Find validator"           projectile-rails-find-validator]
     ["Find layout"              projectile-rails-find-layout]
     ["Find rake task"           projectile-rails-find-rake-task]
+    ["Find job"                 projectile-rails-find-job]
     "--"
     ["Go to file at point"      projectile-rails-goto-file-at-point]
     "--"
@@ -1184,9 +1202,11 @@ Killing the buffer will terminate to server's process."
                      ("i" "initializer" projectile-rails-find-initializer)
                      ("o" "log"         projectile-rails-find-log)
                      ("@" "mailer"      projectile-rails-find-mailer)
+                     (""  "validator"   projectile-rails-find-validator)
                      ("y" "layout"      projectile-rails-find-layout)
                      ("n" "migration"   projectile-rails-find-migration)
-                     ("k" "rake task"   projectile-rails-find-rake-task))
+                     ("k" "rake task"   projectile-rails-find-rake-task)
+                     ("b" "job"         projectile-rails-find-job))
                     ("Find an associated resource"
                      ("M" "model"       projectile-rails-find-current-model)
                      ("V" "view"        projectile-rails-find-current-view)
