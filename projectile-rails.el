@@ -459,6 +459,20 @@ The bound variable is \"filename\"."
    '(("app/mailers/" "app/mailers/\\(.+\\)\\.rb$"))
    "app/mailer/${filename}.rb"))
 
+(defun projectile-rails-find-validator ()
+  (interactive)
+  (projectile-rails-find-resource
+   "validator: "
+   '(("app/validators/" "/validators/\\(.+?\\)\\(_validator\\)?\\.rb\\'"))
+   "app/validators/${filename}_validator.rb"))
+
+(defun projectile-rails-find-job ()
+  (interactive)
+  (projectile-rails-find-resource
+   "job: "
+   '(("app/jobs/" "/jobs/\\(.+?\\)\\(_job\\)?\\.rb\\'"))
+   "app/jobs/${filename}_job.rb"))
+
 (defun projectile-rails-find-current-model ()
   (interactive)
   (projectile-rails-find-current-resource "app/models/"
@@ -518,22 +532,29 @@ The bound variable is \"filename\"."
                                           "/[0-9]\\{14\\}.*_\\(${plural}\\|${singular}\\).*\\.rb$"
                                           'projectile-rails-find-migration))
 
+(defcustom projectile-rails-resource-name-re-list
+  `("/app/models/\\(?:.+/\\)?\\(.+\\)\\.rb\\'"
+    "/app/controllers/\\(?:.+/\\)?\\(.+\\)_controller\\.rb\\'"
+    "/app/views/\\(?:.+/\\)?\\([^/]+\\)/[^/]+\\'"
+    "/app/helpers/\\(?:.+/\\)?\\(.+\\)_helper\\.rb\\'"
+    ,(concat "/app/assets/javascripts/\\(?:.+/\\)?\\(.+\\)" projectile-rails-javascript-re)
+    ,(concat "/app/assets/stylesheets/\\(?:.+/\\)?\\(.+\\)" projectile-rails-stylesheet-re)
+    "/db/migrate/.*create_\\(.+\\)\\.rb\\'"
+    "/spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb\\'"
+    "/\\(?:test\\|spec\\)/\\(?:fixtures\\|factories\\|fabricators\\)/\\(.+?\\)\\(?:_fabricator\\)?\\.\\(?:yml\\|rb\\)\\'")
+  "List of regexps for extracting a resource name from a buffer file name."
+  :group 'projectile-rails
+  :type '(repeat regexp))
+
 (defun projectile-rails-current-resource-name ()
-  "Returns a resource name extracted from the name of the currently visiting file"
-  (let ((file-name (buffer-file-name)))
-    (if file-name
-        (singularize-string
-         (loop for re in (list "app/models/\\(?:.+/\\)*\\(.+\\)\\.rb"
-                               "app/controllers/\\(?:.+/\\)*\\(.+\\)_controller\\.rb$"
-                               "app/views/\\(?:.+/\\)*\\(.+\\)/[^/]+$"
-                               "app/helpers/\\(?:.+/\\)*\\(.+\\)_helper\\.rb$"
-                               (concat "app/assets/javascripts/\\(?:.+/\\)*\\(.+\\)" projectile-rails-javascript-re)
-                               (concat "app/assets/stylesheets/\\(?:.+/\\)*\\(.+\\)" projectile-rails-stylesheet-re)
-                               "db/migrate/.*create_\\(.+\\)\\.rb$"
-                               "spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb$"
-                               "\\(?:test\\|spec\\)/\\(?:fixtures\\|factories\\|fabricators\\)/\\(.+?\\)\\(?:_fabricator\\)?\\.\\(?:yml\\|rb\\)$")
-               until (string-match re file-name)
-               finally return (match-string 1 file-name))))))
+  "Return a resource name extracted from the name of the currently visiting file."
+  (let* ((file-name (buffer-file-name))
+         (name (and file-name
+                    (loop for re in projectile-rails-resource-name-re-list
+                          do (if (string-match re file-name)
+                                 (return (match-string 1 file-name)))))))
+    (and name
+         (singularize-string name))))
 
 (defun projectile-rails-list-entries (fun dir)
   (--map
@@ -1025,6 +1046,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "@") 'projectile-rails-find-mailer)
     (define-key map (kbd "y") 'projectile-rails-find-layout)
     (define-key map (kbd "k") 'projectile-rails-find-rake-task)
+    (define-key map (kbd "b") 'projectile-rails-find-job)
+    ;; (define-key map (kbd "?") 'projectile-rails-find-validator)
 
     (define-key map (kbd "x") 'projectile-rails-extract-region)
     (define-key map (kbd "RET") 'projectile-rails-goto-file-at-point)
@@ -1061,8 +1084,10 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find log"                 projectile-rails-find-log]
     ["Find locale"              projectile-rails-find-locale]
     ["Find mailer"              projectile-rails-find-mailer]
+    ["Find validator"           projectile-rails-find-validator]
     ["Find layout"              projectile-rails-find-layout]
     ["Find rake task"           projectile-rails-find-rake-task]
+    ["Find job"                 projectile-rails-find-job]
     "--"
     ["Go to file at point"      projectile-rails-goto-file-at-point]
     "--"
@@ -1184,9 +1209,11 @@ Killing the buffer will terminate to server's process."
                      ("i" "initializer" projectile-rails-find-initializer)
                      ("o" "log"         projectile-rails-find-log)
                      ("@" "mailer"      projectile-rails-find-mailer)
+                     (""  "validator"   projectile-rails-find-validator)
                      ("y" "layout"      projectile-rails-find-layout)
                      ("n" "migration"   projectile-rails-find-migration)
-                     ("k" "rake task"   projectile-rails-find-rake-task))
+                     ("k" "rake task"   projectile-rails-find-rake-task)
+                     ("b" "job"         projectile-rails-find-job))
                     ("Find an associated resource"
                      ("M" "model"       projectile-rails-find-current-model)
                      ("V" "view"        projectile-rails-find-current-view)
