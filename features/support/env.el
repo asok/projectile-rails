@@ -117,6 +117,7 @@ end")
        projectile-completion-system 'default
        projectile-indexing-method 'native
        projectile-rails-expand-snippet nil)
+ (yas-global-mode)
 
  (cd projectile-rails-test-app-path)
  )
