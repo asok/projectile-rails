@@ -1,16 +1,5 @@
 # Projectile Rails [![Build Status](https://travis-ci.org/asok/projectile-rails.png?branch=master)](https://travis-ci.org/asok/projectile-rails)
 
-## Note on the changed keybindings
-
-Please note that the keybindings had change. I know this might be very intrusive for you guys but the keybindings had to be rethought.
-You can scroll to [here](https://github.com/asok/projectile-rails#interactive-commands) to see the newest version.
-Basically the new "run" map had been added accessible through `C-c r !`. From this map you can run console/server/rake/generate commands.
-Also for the sake of ergonomy you can still run `projectile-rails-console` via `C-c r r` and `projectile-rails-server` via `C-c r R`.
-The goto have been stripped out from the `projectile-rails-find-current-.*` commands. If you want them back you can do something like this:
-```el
-(define-key projectile-rails-mode-goto-map (kbd "m") 'projectile-rails-find-current-model)
-```
-
 ## Synopsis
 
 **Projectile Rails** is a minor mode for working with the Rails project in GNU Emacs.
