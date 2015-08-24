@@ -137,6 +137,17 @@ There's also integration with [discover.el](https://github.com/mickeynp/discover
 
 ![Screenshot](https://github.com/asok/projectile-rails/raw/master/screenshots/discover.png)
 
+### Hydra
+
+There's also integration with [hydra](https://github.com/abo-abo/hydra).
+The name of the hydra `hydra-projectile-rails`. In order to bind it you can something like this:
+
+```el
+(define-key projectile-rails-mode-map (kbd "s-r") 'hydra-projectile-rails/body)
+```
+
+![Screenshot](https://github.com/asok/projectile-rails/raw/master/screenshots/hydra.png)
+
 ## Beyond
 
 Consider installing other Emacs packages that can help you working specifically with Rails projects.
