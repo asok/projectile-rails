@@ -93,7 +93,7 @@ projectile-rails-find-initializer        | <kbd>C-c r i</kbd>                   
 projectile-rails-find-environment        | <kbd>C-c r e</kbd>                         | Find an environment file using `projectile-completion-system`.
 projectile-rails-find-locale             | <kbd>C-c r a</kbd>                         | Find a locale file using `projectile-completion-system`.
 projectile-rails-find-mailer             | <kbd>C-c r @</kbd>                         | Find a mailer file using `projectile-completion-system`.
-projectile-rails-find-validator          | (Unbound)                                  | Find a validator file using `projectile-completion-system`.
+projectile-rails-find-validator          | <kbd>C-c r !</kbd>                         | Find a validator file using `projectile-completion-system`.
 projectile-rails-find-layout             | <kbd>C-c r y</kbd>                         | Find a layout file using `projectile-completion-system`.
 projectile-rails-find-rake-task          | <kbd>C-c r k</kbd>                         | Find a rake task file using `rake-completion-system`.
 projectile-rails-find-job                | <kbd>C-c r y</kbd>                         | Find a job file using `projectile-completion-system`.
