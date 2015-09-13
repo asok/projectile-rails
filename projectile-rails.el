@@ -267,8 +267,10 @@ The bound variables are \"singular\" and \"plural\"."
        (projectile-rails-goto-file
         (if (= (length files) 1)
             (gethash (-first-item files) choices)
-          (gethash (projectile-completing-read "Which exactly: " files)
-                   choices))))))
+          (concat
+           (f-dirname (gethash (-first-item files) choices))
+           (projectile-completing-read "Which exactly: " files)))
+        t))))
 
 (defun projectile-rails-spring-p ()
   (let ((path (concat temporary-file-directory "spring/%s"))
