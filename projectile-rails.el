@@ -1216,7 +1216,8 @@ Killing the buffer will terminate to server's process."
                      ("y" "layout"      projectile-rails-find-layout)
                      ("n" "migration"   projectile-rails-find-migration)
                      ("k" "rake task"   projectile-rails-find-rake-task)
-                     ("b" "job"         projectile-rails-find-job))
+                     ("b" "job"         projectile-rails-find-job)
+                     ("a" "locale"      projectile-rails-find-locale))
                     ("Find an associated resource"
                      ("M" "model"       projectile-rails-find-current-model)
                      ("V" "view"        projectile-rails-find-current-view)
