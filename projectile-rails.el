@@ -960,7 +960,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
              (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-template 'follow-link t))
             ((re-search-forward "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (line-end-position) t)
              (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-controller 'follow-link t)))
-      (next-line))))
+      (forward-line))))
 
 (defun projectile-rails-server-terminate ()
   (let ((process (get-buffer-process projectile-rails-server-buffer-name)))
