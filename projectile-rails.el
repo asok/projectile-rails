@@ -357,6 +357,13 @@ The bound variable is \"filename\"."
    '(("app/controllers/" "/controllers/\\(.+\\)_controller\\.rb$"))
    "app/controllers/${filename}_controller.rb"))
 
+(defun projectile-rails-find-serializer ()
+  (interactive)
+  (projectile-rails-find-resource
+   "serializer: "
+   '(("app/serializers/" "/serializers/\\(.+\\)_serializer\\.rb$"))
+   "app/serializers/${filename}_serializer.rb"))
+
 (defun projectile-rails-find-view ()
   (interactive)
   (projectile-rails-find-resource
@@ -486,6 +493,12 @@ The bound variable is \"filename\"."
   (projectile-rails-find-current-resource "app/controllers/"
                                           "app/controllers/\\(.*${plural}\\)_controller\\.rb$"
                                           'projectile-rails-find-controller))
+
+(defun projectile-rails-find-current-serializer ()
+  (interactive)
+  (projectile-rails-find-current-resource "app/serializers/"
+                                          "app/serializers/\\(.*${singular}\\)_serializer\\.rb$"
+                                          'projectile-rails-find-serializer))
 
 (defun projectile-rails-find-current-view ()
   (interactive)
