@@ -1072,6 +1072,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "y") 'projectile-rails-find-layout)
     (define-key map (kbd "k") 'projectile-rails-find-rake-task)
     (define-key map (kbd "b") 'projectile-rails-find-job)
+
+    (define-key map (kbd "z") 'projectile-rails-find-serializer)
+    (define-key map (kbd "Z") 'projectile-rails-find-current-serializer)
     ;; (define-key map (kbd "?") 'projectile-rails-find-validator)
 
     (define-key map (kbd "x") 'projectile-rails-extract-region)
@@ -1113,6 +1116,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Find layout"              projectile-rails-find-layout]
     ["Find rake task"           projectile-rails-find-rake-task]
     ["Find job"                 projectile-rails-find-job]
+    ["Find serializer"          projectile-rails-find-serializer]
     "--"
     ["Go to file at point"      projectile-rails-goto-file-at-point]
     "--"
@@ -1131,6 +1135,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Go to current test"       projectile-rails-find-current-test]
     ["Go to current migration"  projectile-rails-find-current-migration]
     ["Go to current fixture"    projectile-rails-find-current-fixture]
+    ["Go to current serializer" projectile-rails-find-current-serializer]
     "--"
     ["Extract to partial"       projectile-rails-extract-region]
     "--"
@@ -1239,6 +1244,7 @@ Killing the buffer will terminate to server's process."
                      ("n" "migration"   projectile-rails-find-migration)
                      ("k" "rake task"   projectile-rails-find-rake-task)
                      ("b" "job"         projectile-rails-find-job)
+                     ("z" "serializer"  projectile-rails-find-serializer)
                      ("a" "locale"      projectile-rails-find-locale))
                     ("Find an associated resource"
                      ("M" "model"       projectile-rails-find-current-model)
@@ -1250,7 +1256,8 @@ Killing the buffer will terminate to server's process."
                      ("P" "spec"        projectile-rails-find-current-spec)
                      ("U" "fixture"     projectile-rails-find-current-fixture)
                      ("T" "test"        projectile-rails-find-current-test)
-                     ("N" "migration"   projectile-rails-find-current-migration))))
+                     ("N" "migration"   projectile-rails-find-current-migration)
+                     ("Z" "serializer"  projectile-rails-find-current-serializer))))
    :bind "") ;;accessible only from the main context menu
 
   (discover-add-context-menu
@@ -1304,6 +1311,7 @@ Killing the buffer will terminate to server's process."
         ("n" projectile-rails-find-migration   "migration")
         ("k" projectile-rails-find-rake-task   "rake task")
         ("b" projectile-rails-find-job         "job")
+        ("z" projectile-rails-find-serializer  "serializer")
 
         ("M" projectile-rails-find-current-model      "current model")
         ("V" projectile-rails-find-current-view       "current view")
@@ -1314,7 +1322,8 @@ Killing the buffer will terminate to server's process."
         ("P" projectile-rails-find-current-spec       "current spec")
         ("U" projectile-rails-find-current-fixture    "current fixture")
         ("T" projectile-rails-find-current-test       "current test")
-        ("N" projectile-rails-find-current-migration  "current migration"))
+        ("N" projectile-rails-find-current-migration  "current migration")
+        ("Z" projectile-rails-find-current-serializer "current serializer"))
 
       (defhydra hydra-projectile-rails-goto (:color blue :columns 8)
         "Go to"
