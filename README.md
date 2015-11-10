@@ -27,7 +27,7 @@ It can be a replacement for [rinari](https://github.com/eschulte/rinari).
 
 #### Melpa
 
-Once you have setup [Melpa](http://melpa.milkbox.net/#/getting-started) you can use `package-install` command to install Projectile Rails. The package name is `projectile-rails`.
+Once you have setup [Melpa](https://melpa.org/#/getting-started) you can use `package-install` command to install Projectile Rails. The package name is `projectile-rails`.
 
 
 #### el-get
