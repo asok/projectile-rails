@@ -31,8 +31,8 @@
   (let ((fullpath (expand-file-name filepath projectile-rails-test-app-path)))
     (unless (file-exists-p fullpath)
       (if (s-ends-with? "/" fullpath)
-    (make-directory fullpath)
-  (f-touch fullpath)))))
+          (make-directory fullpath)
+        (f-touch fullpath)))))
 
 (defun projectile-rails-test-create-foo-gem (dir)
   (make-directory (concat projectile-rails-test-app-path dir))
@@ -46,7 +46,7 @@ end")
 
 (defun delete-fixture-files ()
   (let* ((files '("spec/fixtures/" "spec/factories/" "spec/fabricators/"
-                 "test/fixtures/" "test/factories/" "test/fabricators/"))
+                  "test/fixtures/" "test/factories/" "test/fabricators/"))
          (fullpath (--map (f-expand it projectile-rails-test-app-path) files))
          (file-in-directory (first (--filter (f-exists? it) fullpath))))
     (when file-in-directory
@@ -124,7 +124,7 @@ end")
 
 (Before
  (loop for file in (list projectile-rails-test-spring-pid-file
-       projectile-rails-test-zeus-pid-file)
+                         projectile-rails-test-zeus-pid-file)
        do (when (f-exists? file) (f-delete file)))
  (setenv "ZEUSSOCK" nil)
  )
@@ -146,4 +146,4 @@ end")
 
 (After "@finding-fixtures"
        (delete-fixture-files)
-)
+       )
