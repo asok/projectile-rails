@@ -19,8 +19,7 @@
        (expect "index"
                (projectile-rails-template-name "admin/users/index.html"))
        (expect "index"
-               (projectile-rails-template-name "admin/users/index.html.erb"))
-       )
+               (projectile-rails-template-name "admin/users/index.html.erb")))
 
  (desc "projectile-rails-template-format"
        (expect nil
@@ -58,8 +57,7 @@
        (expect "json"
                (with-mock
                 (stub projectile-rails-current-line => "render 'users/index', :formats => [\"json\"]")
-                (projectile-rails-template-format "users/index")))
-       )
+                (projectile-rails-template-format "users/index"))))
 
  (desc "projectile-rails-template-dir"
        (expect "/path/to/project/app/views/admin/users/"
@@ -76,6 +74,4 @@
                  (with-mock
                   (stub buffer-file-name => "/path/to/project/app/views/admin/users/index.html.erb")
                   (stub projectile-project-root => "/path/to/project/")
-                  (projectile-rails-template-dir "index"))))
-       )
- )
+                  (projectile-rails-template-dir "index"))))))

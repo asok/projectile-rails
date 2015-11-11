@@ -41,7 +41,4 @@
                                                 "/path/spec/controllers/users_controller_spec.rb"
                                                 "/path/spec/spec_helper"))
                 (projectile-rails-hash-keys
-                 (projectile-rails-choices '(("/path/spec/" "/spec/\\(.+\\)_spec\\.rb$"))))))
-
-       )
- )
+                 (projectile-rails-choices '(("/path/spec/" "/spec/\\(.+\\)_spec\\.rb$"))))))))

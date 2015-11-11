@@ -628,8 +628,7 @@ The bound variable is \"filename\"."
       (s-join "" (--map (s-lex-format "module ${it}\n") (butlast parts)))
       last-part
       (s-join "" (make-list (1- (length parts)) "\nend")))
-     (-last-item parts)))
-  )
+     (-last-item parts))))
 
 (defun projectile-rails--expand-snippet (snippet)
   (yas-minor-mode-on)
@@ -1289,8 +1288,7 @@ Killing the buffer will terminate to server's process."
                      ("d" "destroy"        projectile-rails-destroy))
                     ("Interact"
                      ("x" "extract region" projectile-rails-extract-region))))
-   :bind "") ;;accessible only from the main context menu
-  )
+   :bind "")) ;;accessible only from the main context menu
 
 (condition-case nil
     (progn

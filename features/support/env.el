@@ -41,8 +41,7 @@
   spec.name          = 'foo'
   spec.version       = '0.0.0'
 end")
-  (save-buffer)
-  )
+  (save-buffer))
 
 (defun delete-fixture-files ()
   (let* ((files '("spec/fixtures/" "spec/factories/" "spec/fabricators/"
@@ -119,31 +118,26 @@ end")
        projectile-rails-expand-snippet nil)
  (yas-global-mode)
 
- (cd projectile-rails-test-app-path)
- )
+ (cd projectile-rails-test-app-path))
 
 (Before
  (loop for file in (list projectile-rails-test-spring-pid-file
                          projectile-rails-test-zeus-pid-file)
        do (when (f-exists? file) (f-delete file)))
- (setenv "ZEUSSOCK" nil)
- )
+ (setenv "ZEUSSOCK" nil))
 
 (After
  (yas-exit-all-snippets)
  (--each (buffer-list)
    (with-current-buffer it
      (when projectile-rails-mode
-       (kill-buffer))))
- )
+       (kill-buffer)))))
 
 (Teardown
  ;;todo: come up with something that works
  ;;some scenario is hanging when spring executable is present
  (start-process-shell-command "spring" nil "spring stop")
- (delete-directory projectile-rails-test-app-path t)
- )
+ (delete-directory projectile-rails-test-app-path t))
 
 (After "@finding-fixtures"
-       (delete-fixture-files)
-       )
+       (delete-fixture-files))
