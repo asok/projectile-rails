@@ -137,7 +137,7 @@
       (lambda (name)
         (should (string=
                  (dired-current-directory)
-                 (projectile-expand-root name)))))
+                 (projectile-rails-expand-root name)))))
 
 (And "I wait for \\([0-9]+\\) seconds"
      (lambda (seconds)
