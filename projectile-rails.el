@@ -830,12 +830,15 @@ The bound variable is \"filename\"."
            (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
 
           ((string-match-p "^[A-Z]" name)
-           (loop for dir in (-concat
-                             (--map
-                              (concat "app/" it)
-                              (projectile-rails-list-entries 'f-directories "app/"))
-                             '("lib/"))
+           (loop for dir in (projectile-rails--code-directories)
                  until (projectile-rails-sanitize-and-goto-file dir name ".rb"))))))
+
+(defun projectile-rails--code-directories ()
+  (let ((app-dirs (projectile-rails-list-entries 'f-directories "app/")))
+    (-concat
+     (--map (concat "app/" it "/") app-dirs)
+     (--map (concat "app/" it "/concerns/") app-dirs)
+     '("lib/"))))
 
 (defun projectile-rails--view-p (path)
   (string-prefix-p "app/views/" (s-chop-prefix (projectile-rails-root) path)))

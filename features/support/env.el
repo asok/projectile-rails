@@ -65,6 +65,7 @@ end")
                      "app/models/admin/"
                      "app/controllers/"
                      "app/controllers/admin/"
+                     "app/controllers/concerns/"
                      "app/helpers/"
                      "app/views/"
                      "app/views/users/"
