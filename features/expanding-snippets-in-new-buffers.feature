@@ -77,10 +77,10 @@ Scenario: Opening a new spec
   And I turn on projectile-mode
   Then I should see:
   """
-  require "spec_helper"
-
-  describe Bar do
-    
+  require "rails_helper"
+  
+  RSpec.describe Bar do
+    rails_helper
   end
   """
 
