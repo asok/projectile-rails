@@ -207,6 +207,16 @@
 (defcustom projectile-rails-discover-bind "s-r"
   "The :bind option that will be passed `discover-add-context-menu' if available")
 
+(defcustom projectile-rails-rails-command "bundle exec rails"
+  "The command for rails"
+  :group 'projectile-rails
+  :type 'string)
+
+(defcustom projectile-rails-spring-command "bundle exec spring"
+  "The command for spring"
+  :group 'projectile-rails
+  :type 'string)
+
 (defvar projectile-rails-extracted-region-snippet
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
@@ -628,9 +638,9 @@ The bound variable is \"filename\"."
   (projectile-rails-with-root
    (with-current-buffer (run-ruby
                          (projectile-rails-with-preloader
-                          :spring "bundle exec spring rails console"
+                          :spring (concat projectile-rails-spring-command " rails console")
                           :zeus "zeus console"
-                          :vanilla "bundle exec rails console"))
+                          :vanilla (concat projectile-rails-rails-command " console")))
      (projectile-rails-mode +1))))
 
 (defun projectile-rails-expand-snippet-maybe ()
@@ -702,9 +712,9 @@ The bound variable is \"filename\"."
   (if (member projectile-rails-server-buffer-name (mapcar 'buffer-name (buffer-list)))
       (switch-to-buffer projectile-rails-server-buffer-name)
     (projectile-rails-with-root
-     (compile (projectile-rails-with-preloader :spring "bundle exec spring rails server"
+     (compile (projectile-rails-with-preloader :spring (concat projectile-rails-spring-command " rails server")
                                                :zeus "zeus server"
-                                               :vanilla "bundle exec rails server")
+                                               :vanilla (concat projectile-rails-rails-command " server"))
               'projectile-rails-server-mode))))
 
 (defun projectile-rails--completion-in-region ()
