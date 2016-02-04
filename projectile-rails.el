@@ -217,6 +217,11 @@
   :group 'projectile-rails
   :type 'string)
 
+(defcustom projectile-rails-zeus-command "zeus"
+  "The command for zeus"
+  :group 'projectile-rails
+  :type 'string)
+
 (defvar projectile-rails-extracted-region-snippet
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
@@ -713,7 +718,7 @@ The bound variable is \"filename\"."
       (switch-to-buffer projectile-rails-server-buffer-name)
     (projectile-rails-with-root
      (compile (projectile-rails-with-preloader :spring (concat projectile-rails-spring-command " rails server")
-                                               :zeus "zeus server"
+                                               :zeus (concat projectile-rails-zeus-command " server")
                                                :vanilla (concat projectile-rails-rails-command " server"))
               'projectile-rails-server-mode))))
 
@@ -734,9 +739,9 @@ The bound variable is \"filename\"."
   (interactive)
   (projectile-rails-with-root
    (let ((command-prefix (projectile-rails-with-preloader
-                          :spring "bundle exec spring rails generate "
-                          :zeus "zeus generate "
-                          :vanilla "bundle exec rails generate ")))
+                          :spring (concat projectile-rails-spring-command " rails generate ")
+                          :zeus (concat projectile-rails-zeus-command " generate ")
+                          :vanilla (concat projectile-rails-rails-command " generate "))))
      (compile
       (projectile-rails--generate-with-completion command-prefix)
       'projectile-rails-generate-mode))))
@@ -765,9 +770,9 @@ The bound variable is \"filename\"."
   (interactive)
   (projectile-rails-with-root
    (let ((command-prefix (projectile-rails-with-preloader
-                          :spring "bundle exec spring rails destroy "
-                          :zeus "zeus destroy "
-                          :vanilla "bundle exec rails destroy ")))
+                          :spring (concat projectile-rails-spring-command " rails destroy ")
+                          :zeus (concat projectile-rails-zeus-command " destroy ")
+                          :vanilla (concat projectile-rails-rails-command " destroy "))))
      (compile
       (projectile-rails--destroy-with-completion command-prefix)
       'projectile-rails-compilation-mode))))
