@@ -207,7 +207,7 @@
 (defcustom projectile-rails-discover-bind "s-r"
   "The :bind option that will be passed `discover-add-context-menu' if available")
 
-(defcustom projectile-rails-rails-command "bundle exec rails"
+(defcustom projectile-rails-vanilla-command "bundle exec rails"
   "The command for rails"
   :group 'projectile-rails
   :type 'string)
@@ -645,7 +645,7 @@ The bound variable is \"filename\"."
                          (projectile-rails-with-preloader
                           :spring (concat projectile-rails-spring-command " rails console")
                           :zeus "zeus console"
-                          :vanilla (concat projectile-rails-rails-command " console")))
+                          :vanilla (concat projectile-rails-vanilla-command " console")))
      (projectile-rails-mode +1))))
 
 (defun projectile-rails-expand-snippet-maybe ()
@@ -719,7 +719,7 @@ The bound variable is \"filename\"."
     (projectile-rails-with-root
      (compile (projectile-rails-with-preloader :spring (concat projectile-rails-spring-command " rails server")
                                                :zeus (concat projectile-rails-zeus-command " server")
-                                               :vanilla (concat projectile-rails-rails-command " server"))
+                                               :vanilla (concat projectile-rails-vanilla-command " server"))
               'projectile-rails-server-mode))))
 
 (defun projectile-rails--completion-in-region ()
@@ -741,7 +741,7 @@ The bound variable is \"filename\"."
    (let ((command-prefix (projectile-rails-with-preloader
                           :spring (concat projectile-rails-spring-command " rails generate ")
                           :zeus (concat projectile-rails-zeus-command " generate ")
-                          :vanilla (concat projectile-rails-rails-command " generate "))))
+                          :vanilla (concat projectile-rails-vanilla-command " generate "))))
      (compile
       (projectile-rails--generate-with-completion command-prefix)
       'projectile-rails-generate-mode))))
@@ -772,7 +772,7 @@ The bound variable is \"filename\"."
    (let ((command-prefix (projectile-rails-with-preloader
                           :spring (concat projectile-rails-spring-command " rails destroy ")
                           :zeus (concat projectile-rails-zeus-command " destroy ")
-                          :vanilla (concat projectile-rails-rails-command " destroy "))))
+                          :vanilla (concat projectile-rails-vanilla-command " destroy "))))
      (compile
       (projectile-rails--destroy-with-completion command-prefix)
       'projectile-rails-compilation-mode))))
