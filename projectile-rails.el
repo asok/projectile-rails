@@ -364,7 +364,7 @@ The bound variable is \"filename\"."
   (interactive)
   (projectile-rails-find-resource
    "controller: "
-   '(("app/controllers/" "/controllers/\\(.+\\)_controller\\.rb$"))
+   '(("app/controllers/" "/controllers/\\(.+?\\)\\(_controller\\)?\\.rb$"))
    "app/controllers/${filename}_controller.rb"))
 
 (defun projectile-rails-find-serializer ()
