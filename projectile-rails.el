@@ -638,15 +638,18 @@ The bound variable is \"filename\"."
   "Like `projectile-expand-root' but consider `projectile-rails-root'."
   (projectile-expand-root (concat (projectile-rails-root) dir)))
 
-(defun projectile-rails-console ()
-  (interactive)
+(defun projectile-rails-console (arg)
+  (interactive "P")
   (projectile-rails-with-root
-   (with-current-buffer (run-ruby
-                         (projectile-rails-with-preloader
-                          :spring (concat projectile-rails-spring-command " rails console")
-                          :zeus "zeus console"
-                          :vanilla (concat projectile-rails-vanilla-command " console")))
-     (projectile-rails-mode +1))))
+   (let ((rails-console-command (projectile-rails-with-preloader
+                                 :spring (concat projectile-rails-spring-command " rails console")
+                                 :zeus "zeus console"
+                                 :vanilla (concat projectile-rails-vanilla-command " console"))))
+     (with-current-buffer (run-ruby
+                           (if (>= (or (car arg) 0) 4)
+                               (read-string "rails console: " rails-console-command)
+                             rails-console-command))
+       (projectile-rails-mode +1)))))
 
 (defun projectile-rails-expand-snippet-maybe ()
   (when (and (fboundp 'yas-expand-snippet)
