@@ -187,7 +187,7 @@ OS X users might want to look at [exec-path-from-shell](https://github.com/purce
 ## Caveat
 
 ### Running pry instead of irb
-* Pry's paging is not working in emacs. It should be disabled with `Pry.config.pager = false`. [Reference](https://github.com/pry/pry/wiki/Customization-and-configuration#wiki-pager).
+* Pry's paging is not working in emacs. It should be disabled with `Pry.config.pager = false if ENV["INSIDE_EMACS"]`. [Reference](https://github.com/pry/pry/wiki/Customization-and-configuration#wiki-pager).
 
 * When `projectile-rails-console` runs rails console using a pre-loader (zeus or spring) and pry's indent correction is enabled then pry will insert some ansi codes that are misinterpreted by `comint-mode`. A workaround is to disable the indentation correction with `Pry.config.correct_indent = false`. [Reference](https://github.com/pry/pry/wiki/Customization-and-configuration#wiki-correct-indent). [Issue](https://github.com/asok/projectile-rails/issues/12).
 
