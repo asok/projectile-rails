@@ -12,10 +12,22 @@ Feature: Finding resources
     When I run command "projectile-rails-find-model" selecting "group"
     Then I am in file "app/models/group.rb"
 
+  Scenario: Finding model
+    And file "app/models/group.rb" exists
+    And file "app/models/concerns/mixin.rb" exists
+    When I run command "projectile-rails-find-model" selecting "concerns/mixin"
+    Then I am in file "app/models/concerns/mixin.rb"
+
   Scenario: Finding controller
     And file "app/controllers/groups_controller.rb" exists
     When I run command "projectile-rails-find-controller" selecting "groups"
     Then I am in file "app/controllers/groups_controller.rb"
+
+  Scenario: Finding a controller's mixin
+    And file "app/controllers/groups_controller.rb" exists
+    And file "app/controllers/concerns/mixin.rb" exists
+    When I run command "projectile-rails-find-controller" selecting "concerns/mixin"
+    Then I am in file "app/controllers/concerns/mixin.rb"
 
   Scenario: Finding view
     And file "app/views/users/index.html.erb" exists

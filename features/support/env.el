@@ -65,6 +65,7 @@ end")
                      "app/assets/stylesheets/"
                      "app/models/"
                      "app/models/admin/"
+                     "app/models/concerns/"
                      "app/controllers/"
                      "app/controllers/admin/"
                      "app/controllers/concerns/"
