@@ -39,6 +39,8 @@
   (find-file (concat projectile-rails-test-app-path dir "foo.gemspec"))
   (insert "Gem::Specification.new do |spec|
   spec.name          = 'foo'
+  spec.summary       = 'Bar'
+  spec.authors       = 'baz'
   spec.version       = '0.0.0'
 end")
   (save-buffer))

@@ -32,7 +32,7 @@ Scenario: Going to gem at line: require 'foo'
   And I open the app file "Gemfile"
   And I clear the buffer and insert:
   """
-  gem 'foo', path: './vendor/foo'
+  gem 'foo', '0.0.0', path: './vendor/foo'
   """
   And I save the buffer
   And I open the app file "app/models/user.rb"
