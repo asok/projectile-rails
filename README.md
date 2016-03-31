@@ -105,7 +105,7 @@ projectile-rails-find-rake-task          | <kbd>C-c r k</kbd>                   
 projectile-rails-find-job                | <kbd>C-c r b</kbd>                         | Find a job file using `projectile-completion-system`.
 projectile-rails-console                 | <kbd>C-c r ! c</kbd>, <kbd>C-c r r</kbd>   | Run `rails console` command in `inf-ruby` buffer.
 projectile-rails-server                  | <kbd>C-c r ! s</kbd>, <kbd>C-c r R</kbd>   | Run `rails server`.
-projectile-rails-rake                    | <kbd>C-c r ! r</kbd>                       | Select a rake task to run using `projectile-completion-system`.
+projectile-rails-rake                    | <kbd>C-c r ! r</kbd>                       | Select a rake task to run using `rake-completion-system`.
 projectile-rails-generate                | <kbd>C-c r ! g</kbd>                       | Run `rails generate` command.
 projectile-rails-extract-region          | <kbd>C-c r x</kbd>                         | Extract the selected region to a partial.
 projectile-rails-goto-file-at-point      | <kbd>C-c r RET</kbd>, <kbd>C-c r g f</kbd> | Go to a file at point. Depending on the context that might be a constant, template or partial, or a gem.
