@@ -173,6 +173,7 @@ Some of the Projectile Rails functions run `rake` or `rails` executables. If you
 
 * [rvm.el](https://github.com/senny/rvm.el)
 * [rbenv.el](https://github.com/senny/rbenv.el)
+* [chruby.el](https://github.com/plexus/chruby.el)
 
 OS X users might want to look at [exec-path-from-shell](https://github.com/purcell/exec-path-from-shell).
 
