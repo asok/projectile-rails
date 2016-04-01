@@ -80,7 +80,7 @@ Scenario: Opening a new spec
   require "rails_helper"
   
   RSpec.describe Bar do
-    rails_helper
+    
   end
   """
 
