@@ -667,7 +667,7 @@ The bound variable is \"filename\"."
      (-last-item parts))))
 
 (defun projectile-rails--expand-snippet (snippet)
-  (yas-minor-mode-on)
+  (yas-minor-mode +1)
   (yas-expand-snippet snippet))
 
 (defun projectile-rails-expand-corresponding-snippet ()
