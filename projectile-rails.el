@@ -685,7 +685,7 @@ The bound variable is \"filename\"."
           ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
            (projectile-rails--expand-snippet
             (format
-             "require \"${1:rails_helper}\"\n\nRSpec.describe %s do\n$1\nend"
+             "require \"${1:rails_helper}\"\n\nRSpec.describe %s do\n  $0\nend"
              (s-join "::" (projectile-rails-classify (match-string 1 name))))))
           ((string-match "app/models/\\(.+\\)\\.rb$" name)
            (projectile-rails--expand-snippet
