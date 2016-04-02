@@ -84,6 +84,17 @@ Scenario: Opening a new spec
   end
   """
 
+Scenario: Opening a new concern
+  When I open the app file "app/models/concerns/foo.rb"
+  And I turn on projectile-mode
+  Then I should see:
+  """
+  module Foo
+    extend ActiveSupport::Concern
+    
+  end
+  """
+
 Scenario: Opening a new spec and the buffer is not empty
   When I open the app file "spec/models/bar_spec.rb"
   And I insert:

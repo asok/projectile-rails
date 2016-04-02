@@ -675,7 +675,7 @@ The bound variable is \"filename\"."
     (cond ((string-match "app/[^/]+/concerns/\\(.+\\)\\.rb$" name)
            (projectile-rails--expand-snippet
             (format
-             "module %s\n  extend ActiveSupport::Concern\n$1\nend"
+             "module %s\n  extend ActiveSupport::Concern\n  $0\nend"
              (s-join "::" (projectile-rails-classify (match-string 1 name))))))
           ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
            (projectile-rails--expand-snippet
