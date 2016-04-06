@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-**Projectile Rails** is a minor mode for working with the Rails project in GNU Emacs.
+**Projectile Rails** is a minor mode for working with [Ruby on Rails](http://rubyonrails.org/) applications and engines in GNU Emacs.
 Internally it is based on [Projectile](https://github.com/bbatsov/projectile).
 
 It means that you can use Projectile's commands for greping (or acking) files, run tests, switch between projects, etc.
@@ -29,7 +29,6 @@ It can be a replacement for [rinari](https://github.com/eschulte/rinari).
 
 Once you have setup [Melpa](https://melpa.org/#/getting-started) you can use `package-install` command to install Projectile Rails. The package name is `projectile-rails`.
 
-
 #### el-get
 
 The package name for [el-get](https://github.com/dimitri/el-get) is `projectile-rails`.
@@ -43,7 +42,7 @@ To make it start alongside `projectile-mode`:
 ```el
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
 ```
-That will start it only if the current project is a Rails project.
+That will start it only if the current project is a Rails project (either application or an engine).
 
 Probably you should read Projectile's [README](https://github.com/bbatsov/projectile) on setting up the completion system, caching and indexing files. Although the default settings are quite sensible and you should be ready to go without much tweaking.
 
