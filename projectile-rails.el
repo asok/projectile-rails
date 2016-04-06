@@ -623,7 +623,7 @@ The bound variable is \"filename\"."
   "Returns rails root directory if this file is a part of a Rails application else nil"
   (ignore-errors
     (let ((root (projectile-locate-dominating-file default-directory "Gemfile")))
-      (when (file-exists-p (expand-file-name "config/environment.rb" root))
+      (when (file-exists-p (expand-file-name "config/routes.rb" root))
         root))))
 
 (defun projectile-rails-root-relative-to-project-root ()

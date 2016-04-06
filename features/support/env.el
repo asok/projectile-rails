@@ -103,9 +103,10 @@ end")
                      "features/"
                      "tmp/"
                      "vendor/"
+                     "vendor/engine/"
                      "Gemfile"
                      "Rakefile"
-                     "config/environment.rb"
+                     "config/routes.rb"
                      ,(concat temporary-file-directory "spring/"))
        do (projectile-rails-test-touch-file path))
 
