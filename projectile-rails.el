@@ -603,17 +603,24 @@ The bound variable is \"filename\"."
 
 (defun projectile-rails-find-log ()
   (interactive)
-  ;;logs tend to not be under scm so do not resort to projectile-dir-files
-  (find-file (projectile-rails-expand-root
-              (concat
-               "log/"
-               (projectile-completing-read
-                "log: "
-                (projectile-rails-list-entries 'f-files "log/")))))
-  (auto-revert-tail-mode +1)
-  (setq-local auto-revert-verbose nil)
-  (buffer-disable-undo)
-  (projectile-rails-on))
+  (let ((logs-dir (loop for dir in '("log/" "spec/dummy/log/" "test/dummy/log/")
+                       until (projectile-rails--file-exists-p dir)
+                       finally return dir)))
+
+        (unless logs-dir
+          (user-error "No log directory found"))
+
+        ;;logs tend to not be under scm so do not resort to projectile-dir-files
+        (find-file (projectile-rails-expand-root
+                    (concat
+                     logs-dir
+                     (projectile-completing-read
+                      "log: "
+                      (projectile-rails-list-entries 'f-files logs-dir)))))
+        (auto-revert-tail-mode +1)
+        (setq-local auto-revert-verbose nil)
+        (buffer-disable-undo)
+        (projectile-rails-on)))
 
 (defun projectile-rails-rake (arg)
   (interactive "P")
@@ -637,6 +644,9 @@ The bound variable is \"filename\"."
 (defun projectile-rails-expand-root (dir)
   "Like `projectile-expand-root' but consider `projectile-rails-root'."
   (projectile-expand-root (concat (projectile-rails-root) dir)))
+
+(defun projectile-rails--file-exists-p (filepath)
+  (file-exists-p (projectile-expand-root filepath)))
 
 (defun projectile-rails-console (arg)
   (interactive "P")
@@ -717,6 +727,8 @@ The bound variable is \"filename\"."
 (defun projectile-rails-server ()
   "Runs rails server command"
   (interactive)
+  (when (not (projectile-rails--file-exists-p "config/environment.rb"))
+    (user-error "You're not running it from a rails application."))
   (if (member projectile-rails-server-buffer-name (mapcar 'buffer-name (buffer-list)))
       (switch-to-buffer projectile-rails-server-buffer-name)
     (projectile-rails-with-root
@@ -1034,10 +1046,10 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-set-assets-dirs ()
   (setq-local
    projectile-rails-javascript-dirs
-   (--filter (file-exists-p (projectile-rails-expand-root it)) projectile-rails-javascript-dirs))
+   (--filter (projectile-rails--file-exists-p it) projectile-rails-javascript-dirs))
   (setq-local
    projectile-rails-stylesheet-dirs
-   (--filter (file-exists-p (projectile-rails-expand-root it)) projectile-rails-stylesheet-dirs)))
+   (--filter (projectile-rails--file-exists-p it) projectile-rails-stylesheet-dirs)))
 
 
 (defun projectile-rails-set-fixture-dirs ()
