@@ -635,7 +635,7 @@ The bound variable is \"filename\"."
 
 (defun projectile-rails-root-relative-to-project-root ()
   "Return the location of the rails root relative to `projectile-project-root'."
-  (let ((rails-root (projectile-rails-root))
+  (let ((rails-root (file-truename (projectile-rails-root)))
         (project-root (projectile-project-root)))
     (if (string-equal rails-root project-root)
         ""
@@ -968,7 +968,8 @@ The bound variable is \"filename\"."
 If file does not exist and ASK in not nil it will ask user to proceed."
   (if (or (and path (file-exists-p path))
           (and ask (yes-or-no-p (s-lex-format "File does not exists. Create a new buffer ${path} ?"))))
-      (find-file path)))
+      (find-file path))
+  (user-error "Could not find file %s" path))
 
 (defun projectile-rails-name-at-point ()
   (projectile-rails-sanitize-name (symbol-name (symbol-at-point))))
