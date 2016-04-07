@@ -968,8 +968,7 @@ The bound variable is \"filename\"."
 If file does not exist and ASK in not nil it will ask user to proceed."
   (if (or (and path (file-exists-p path))
           (and ask (yes-or-no-p (s-lex-format "File does not exists. Create a new buffer ${path} ?"))))
-      (find-file path))
-  (user-error "Could not find file %s" path))
+      (find-file path)))
 
 (defun projectile-rails-name-at-point ()
   (projectile-rails-sanitize-name (symbol-name (symbol-at-point))))
