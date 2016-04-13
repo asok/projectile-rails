@@ -1214,6 +1214,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-on ()
   "Enable `projectile-rails-mode' minor mode if this is a rails project."
   (when (and
+         (projectile-project-p)
          (not (projectile-rails--ignore-buffer-p))
          (projectile-rails-root))
     (projectile-rails-mode +1)))
