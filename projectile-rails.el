@@ -713,14 +713,16 @@ The bound variable is \"filename\"."
           (sqli-login      (sql-get-product-feature product :sqli-login))
           (sqli-options    (sql-get-product-feature product :sqli-options))
           (sqli-program    (sql-get-product-feature product :sqli-program))
-          (sql-comint-func (sql-get-product-feature product :sqli-comint-func)))
+          (sql-comint-func (sql-get-product-feature product :sqli-comint-func))
+          (commands (s-split " " (projectile-rails-with-preloader
+                                  :spring (concat projectile-rails-spring-command " dbconsole")
+                                  :zeus (concat projectile-rails-zeus-command " dbconsole")
+                                  :vanilla (concat projectile-rails-vanilla-command " dbconsole")))))
      (sql-set-product-feature product :sqli-login '())
      (sql-set-product-feature product :sqli-options '())
-     (sql-set-product-feature product :sqli-program "bundle")
+     (sql-set-product-feature product :sqli-program (car commands))
      (sql-set-product-feature product :sqli-comint-func (lambda (_ __)
-                                                          (sql-comint product '("exec"
-                                                                                "rails"
-                                                                                "dbconsole"))))
+                                                          (sql-comint product (cdr commands))))
 
      (sql-product-interactive product)
 
