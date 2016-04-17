@@ -1144,6 +1144,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (define-key map (kbd "r") 'projectile-rails-rake)
     (define-key map (kbd "g") 'projectile-rails-generate)
     (define-key map (kbd "d") 'projectile-rails-destroy)
+    (define-key map (kbd "b") 'projectile-rails-dbconsole)
     map)
   "A run map for `projectile-rails-mode'.")
 (fset 'projectile-rails-mode-run-map projectile-rails-mode-run-map)
@@ -1262,6 +1263,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     ["Extract to partial"       projectile-rails-extract-region]
     "--"
     ["Run console"              projectile-rails-console]
+    ["Run dbconsole"            projectile-rails-dbconsole]
     ["Run server"               projectile-rails-server]
     ["Run rake"                 projectile-rails-rake]
     ["Run rails generate"       projectile-rails-generate]
@@ -1403,6 +1405,7 @@ Killing the buffer will terminate to server's process."
                     ("Run external command"
                      ("r" "rake"           projectile-rails-rake)
                      ("c" "console"        projectile-rails-console)
+                     ("b" "dbconsole"      projectile-rails-dbconsole)
                      ("s" "server"         projectile-rails-server)
                      ("g" "generate"       projectile-rails-generate)
                      ("d" "destroy"        projectile-rails-destroy))
@@ -1457,11 +1460,12 @@ Killing the buffer will terminate to server's process."
 
   (defhydra hydra-projectile-rails-run (:color blue :columns 8)
     "Run external command & interact"
-    ("r" projectile-rails-rake     "rake")
-    ("c" projectile-rails-console  "console")
-    ("s" projectile-rails-server   "server")
-    ("g" projectile-rails-generate "generate")
-    ("d" projectile-rails-destroy  "destroy")
+    ("r" projectile-rails-rake       "rake")
+    ("c" projectile-rails-console    "console")
+    ("b" projectile-rails-dbconsole  "dbconsole")
+    ("s" projectile-rails-server     "server")
+    ("g" projectile-rails-generate   "generate")
+    ("d" projectile-rails-destroy    "destroy")
     ("x" projectile-rails-extract-region "extract region"))
 
   (defhydra hydra-projectile-rails (:color blue :columns 8)

@@ -38,6 +38,7 @@ Feature: Keybindings
     And  key "C-c r R" should be mapped to "projectile-rails-server"
     And  key "C-c r ! r" should be mapped to "projectile-rails-rake"
     And  key "C-c r ! g" should be mapped to "projectile-rails-generate"
+    And  key "C-c r ! b" should be mapped to "projectile-rails-dbconsole"
     And  key "C-c r x" should be mapped to "projectile-rails-extract-region"
 
   Scenario: Having the goto keybindings setup after enabling the mode

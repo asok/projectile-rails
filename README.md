@@ -13,6 +13,7 @@ With Projectile Rails you are able to:
 * jump to ruby classes and template files
 * run `rake`
 * run `rails console`
+* run `rails dbconsole`
 * run `rails generate`
 * run `rails server`
 * open log files with `auto-revert-mode` on
@@ -102,6 +103,7 @@ projectile-rails-find-validator          | <kbd>C-c r !</kbd>                   
 projectile-rails-find-layout             | <kbd>C-c r y</kbd>                         | Find a layout file using `projectile-completion-system`.
 projectile-rails-find-rake-task          | <kbd>C-c r k</kbd>                         | Find a rake task file using `rake-completion-system`.
 projectile-rails-find-job                | <kbd>C-c r b</kbd>                         | Find a job file using `projectile-completion-system`.
+projectile-rails-dbconsole               | <kbd>C-c r ! b</kbd>                       | Run `rails dbconsole` command in `sql-interactive-mode`.
 projectile-rails-console                 | <kbd>C-c r ! c</kbd>, <kbd>C-c r r</kbd>   | Run `rails console` command in `inf-ruby` buffer.
 projectile-rails-server                  | <kbd>C-c r ! s</kbd>, <kbd>C-c r R</kbd>   | Run `rails server`.
 projectile-rails-rake                    | <kbd>C-c r ! r</kbd>                       | Select a rake task to run using `rake-completion-system`.
