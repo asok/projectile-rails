@@ -661,6 +661,74 @@ The bound variable is \"filename\"."
                              rails-console-command))
        (projectile-rails-mode +1)))))
 
+;; Shamelessly stolen from rinari.el
+(defun projectile-rails--db-config ()
+  (json-read-from-string
+   (shell-command-to-string
+    (format
+     "ruby -ryaml -rjson -e 'JSON.dump(YAML.load(ARGF.read), STDOUT)' \"%s\""
+     (projectile-rails-expand-root "config/database.yml")))))
+
+(defvar projectile-rails--sql-adapters->products
+  '(("mysql2"         "mysql")
+    ("mysql"          "mysql")
+    ("jdbcmysql"      "mysql")
+
+    ("postgres"       "postgres")
+    ("postgresql"     "postgres")
+    ("jdbcpostgresql" "postgres")
+
+    ("sqlite"         "sqlite")
+    ("sqlite3"        "sqlite")
+    ("jdbcsqlite3"    "sqlite")
+
+    ("informix"       "informix")
+    ("ingres"         "ingres")
+    ("interbase"      "interbase")
+    ("linter"         "linter")
+    ("ms"             "ms")
+    ("oracle"         "oracle")
+    ("solid"          "solid")
+    ("sybase"         "sybase")
+    ("vertica"        "vertica")))
+
+(defun projectile-rails--determine-sql-product (env)
+  (intern
+   (car
+    (cdr
+     (assoc-string (cdr (assoc-string "adapter" (cdr (assoc-string env (projectile-rails--db-config)))))
+                   projectile-rails--sql-adapters->products)))))
+
+(defun projectile-rails--choose-env ()
+  (projectile-completing-read
+   "Choose env: "
+   (--map (substring it 0 -3)
+    (projectile-rails-list-entries 'f-files "config/environments/"))))
+
+(defun projectile-rails-dbconsole (env)
+  (interactive (list (projectile-rails--choose-env)))
+  (require 'sql)
+  (projectile-rails-with-root
+   (let* ((product (projectile-rails--determine-sql-product env))
+          (sqli-login      (sql-get-product-feature product :sqli-login))
+          (sqli-options    (sql-get-product-feature product :sqli-options))
+          (sqli-program    (sql-get-product-feature product :sqli-program))
+          (sql-comint-func (sql-get-product-feature product :sqli-comint-func)))
+     (sql-set-product-feature product :sqli-login '())
+     (sql-set-product-feature product :sqli-options '())
+     (sql-set-product-feature product :sqli-program "bundle")
+     (sql-set-product-feature product :sqli-comint-func (lambda (_ __)
+                                                          (sql-comint product '("exec"
+                                                                                "rails"
+                                                                                "dbconsole"))))
+
+     (sql-product-interactive product)
+
+     (sql-set-product-feature product :sqli-comint-func sql-comint-func)
+     (sql-set-product-feature product :sqli-program sqli-program)
+     (sql-set-product-feature product :sqli-options sqli-options)
+     (sql-set-product-feature product :sqli-login sqli-login))))
+
 (defun projectile-rails-expand-snippet-maybe ()
   (when (and (fboundp 'yas-expand-snippet)
              (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
