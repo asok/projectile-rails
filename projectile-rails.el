@@ -705,11 +705,13 @@ The bound variable is \"filename\"."
    (--map (substring it 0 -3)
     (projectile-rails-list-entries 'f-files "config/environments/"))))
 
-(defun projectile-rails-dbconsole (env)
-  (interactive (list (projectile-rails--choose-env)))
+(defun projectile-rails-dbconsole ()
+  (interactive)
   (require 'sql)
+
   (projectile-rails-with-root
-   (let* ((product (projectile-rails--determine-sql-product env))
+   (let* ((env (projectile-rails--choose-env))
+          (product (projectile-rails--determine-sql-product env))
           (sqli-login      (sql-get-product-feature product :sqli-login))
           (sqli-options    (sql-get-product-feature product :sqli-options))
           (sqli-program    (sql-get-product-feature product :sqli-program))
