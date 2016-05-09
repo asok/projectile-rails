@@ -646,7 +646,7 @@ The bound variable is \"filename\"."
   (projectile-expand-root (concat (projectile-rails-root) dir)))
 
 (defun projectile-rails--file-exists-p (filepath)
-  (file-exists-p (projectile-expand-root filepath)))
+  (file-exists-p (projectile-rails-expand-root filepath)))
 
 (defun projectile-rails-console (arg)
   (interactive "P")
