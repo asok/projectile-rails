@@ -932,8 +932,39 @@ The bound variable is \"filename\"."
            (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
 
           ((string-match-p "^[A-Z]" name)
-           (loop for dir in (projectile-rails--code-directories)
-                 until (projectile-rails-sanitize-and-goto-file dir name ".rb"))))))
+           (projectile-rails-goto-constant-at-point)))))
+
+(defun projectile-rails-goto-constant-at-point ()
+  (let ((bounds (projectile-rails--complete-bounds)))
+    (projectile-rails-find-constant (buffer-substring (car bounds) (cdr bounds)))))
+
+;; Stolen from robe
+(defun projectile-rails--complete-bounds ()
+  (cons
+   (save-excursion
+     (while (or (not (zerop (skip-syntax-backward "w_")))
+                (not (zerop (skip-chars-backward ":")))))
+     (point))
+   (save-excursion
+     (while (or (not (zerop (skip-syntax-forward "w_")))
+                (not (zerop (skip-chars-forward ":")))))
+     (point))))
+
+(defun projectile-rails-find-constant (name)
+  (let ((choices
+         (--filter (string-match-p (format ".*/%s\\.rb$" (projectile-rails-declassify name)) it)
+                   (-uniq
+                    (--mapcat (f-entries it #'f-file? t)
+                              (-filter #'f-exists?
+                                       (-map #'projectile-rails-expand-root
+                                             (projectile-rails--code-directories))))))))
+    (when (= (length choices) 0)
+      (error "Could not find anything"))
+
+    (cond ((= (length choices) 1)
+           (find-file (car choices)))
+          ((> (length choices) 1)
+           (find-file (projectile-completing-read "Which exactly?: " choices))))))
 
 (defun projectile-rails--code-directories ()
   (let ((app-dirs (projectile-rails-list-entries 'f-directories "app/")))
