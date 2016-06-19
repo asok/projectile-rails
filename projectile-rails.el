@@ -928,8 +928,8 @@ The bound variable is \"filename\"."
           ((string-match-p "\\_<gem\\_>" line)
            (projectile-rails-goto-gem (thing-at-point 'filename)))
 
-          ((not (string-match-p "^[A-Z]" name))
-           (projectile-rails-sanitize-and-goto-file "app/models/" (singularize-string name) ".rb"))
+          ((string-match-p "^[a-z]" name)
+           (projectile-rails-find-constant (singularize-string name)))
 
           ((string-match-p "^[A-Z]" name)
            (projectile-rails-goto-constant-at-point)))))
@@ -959,7 +959,7 @@ The bound variable is \"filename\"."
                                        (-map #'projectile-rails-expand-root
                                              (projectile-rails--code-directories))))))))
     (when (= (length choices) 0)
-      (error "Could not find anything"))
+      (user-error "Could not find anything"))
 
     (cond ((= (length choices) 1)
            (find-file (car choices)))

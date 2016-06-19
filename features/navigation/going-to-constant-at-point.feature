@@ -95,17 +95,6 @@ Feature: Going to constant at point
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/jobs/admin/foo_bar_job.rb"
 
-  Scenario: Not going to non-existant model
-    And I clear the buffer and insert:
-    """
-    def bar
-      Bar.count
-    end
-    """
-    And I place the cursor between "Ba" and "r"
-    When I run "projectile-rails-goto-file-at-point"
-    Then I am in file "app/controllers/foos_controller.rb"
-
   Scenario: Going to a Concern
     And file "app/controllers/concerns/bar.rb" exists
     And I clear the buffer and insert:
