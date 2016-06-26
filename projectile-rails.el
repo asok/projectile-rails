@@ -190,10 +190,14 @@
   :type '(repeat string))
 
 (defcustom projectile-rails-expand-snippet t
-  "If not nil newly created buffers will be pre-filled with class skeleton.")
+  "If not nil newly created buffers will be pre-filled with class skeleton."
+  :group 'projectile-rails
+  :type 'boolean)
 
 (defcustom projectile-rails-add-keywords t
-  "If not nil the rails keywords will be font locked in the mode's bufffers.")
+  "If not nil the rails keywords will be font locked in the mode's bufffers."
+  :group 'projectile-rails
+  :type 'boolean)
 
 (defcustom projectile-rails-keymap-prefix (kbd "C-c r")
   "`projectile-rails-mode' keymap prefix."
@@ -206,20 +210,22 @@
   :type 'boolean)
 
 (defcustom projectile-rails-discover-bind "s-r"
-  "The :bind option that will be passed `discover-add-context-menu' if available")
+  "The :bind option that will be passed `discover-add-context-menu' if available."
+  :group 'projectile-rails
+  :type 'string)
 
 (defcustom projectile-rails-vanilla-command "bundle exec rails"
-  "The command for rails"
+  "The command for rails."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-spring-command "bundle exec spring"
-  "The command for spring"
+  "The command for spring."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-zeus-command "zeus"
-  "The command for zeus"
+  "The command for zeus."
   :group 'projectile-rails
   :type 'string)
 
@@ -227,7 +233,7 @@
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
     ("slim" . "= render '%s'"))
-  "A template used to insert text after extracting a region")
+  "A template used to insert text after extracting a region.")
 
 (defvar projectile-rails-server-buffer-name "*projectile-rails-server*")
 
