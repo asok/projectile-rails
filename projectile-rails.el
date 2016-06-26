@@ -746,7 +746,7 @@ The bound variable is \"filename\"."
              (s-blank? (buffer-string))
              (projectile-rails-expand-corresponding-snippet))))
 
-(defun projectile-rails--snippet-for-module (last-part)
+(defun projectile-rails--snippet-for-module (last-part name)
   (let ((parts (projectile-rails-classify (match-string 1 name))))
     (format
      (concat
@@ -783,10 +783,10 @@ The bound variable is \"filename\"."
              (s-join "::" (projectile-rails-classify (match-string 1 name))))))
           ((string-match "lib/\\(.+\\)\\.rb$" name)
            (projectile-rails--expand-snippet
-            (projectile-rails--snippet-for-module "${1:module} %s\n$2\nend")))
+            (projectile-rails--snippet-for-module "${1:module} %s\n$2\nend" name)))
           ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
            (projectile-rails--expand-snippet
-            (projectile-rails--snippet-for-module "${1:class} %s\n$2\nend"))))))
+            (projectile-rails--snippet-for-module "${1:class} %s\n$2\nend" name))))))
 
 (defun projectile-rails-classify (name)
   "Accepts a filepath, splits it by '/' character and classifieses each of the element"
