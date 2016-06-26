@@ -139,8 +139,9 @@
   :group 'projectile-rails
   :type '(repeat string))
 
-(defcustom projectile-rails-font-lock-face-name 'font-lock-keyword-face
-  "Face to be used for higlighting the rails keywords")
+(defface projectile-rails-keyword-face '((t :inherit 'font-lock-keyword-face))
+  "Face to be used for higlighting the rails keywords."
+  :group 'projectile-rails)
 
 (defcustom projectile-rails-views-re
   (concat "\\."
@@ -315,7 +316,7 @@ The bound variables are \"singular\" and \"plural\"."
           (concat "\\(^\\|[^_:.@$]\\|\\.\\.\\)\\b"
                   (regexp-opt keywords t)
                   "\\_>")
-          (list 2 projectile-rails-font-lock-face-name)))))
+          (list 2 'projectile-rails-keyword-face)))))
 
 (defun projectile-rails-add-keywords-for-file-type ()
   "Apply extra font lock keywords specific to models, controllers etc."
