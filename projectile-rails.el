@@ -139,8 +139,9 @@
   :group 'projectile-rails
   :type '(repeat string))
 
-(defcustom projectile-rails-font-lock-face-name 'font-lock-keyword-face
-  "Face to be used for higlighting the rails keywords")
+(defface projectile-rails-keyword-face '((t :inherit 'font-lock-keyword-face))
+  "Face to be used for higlighting the rails keywords."
+  :group 'projectile-rails)
 
 (defcustom projectile-rails-views-re
   (concat "\\."
@@ -189,10 +190,14 @@
   :type '(repeat string))
 
 (defcustom projectile-rails-expand-snippet t
-  "If not nil newly created buffers will be pre-filled with class skeleton.")
+  "If not nil newly created buffers will be pre-filled with class skeleton."
+  :group 'projectile-rails
+  :type 'boolean)
 
 (defcustom projectile-rails-add-keywords t
-  "If not nil the rails keywords will be font locked in the mode's bufffers.")
+  "If not nil the rails keywords will be font locked in the mode's bufffers."
+  :group 'projectile-rails
+  :type 'boolean)
 
 (defcustom projectile-rails-keymap-prefix (kbd "C-c r")
   "`projectile-rails-mode' keymap prefix."
@@ -205,20 +210,22 @@
   :type 'boolean)
 
 (defcustom projectile-rails-discover-bind "s-r"
-  "The :bind option that will be passed `discover-add-context-menu' if available")
+  "The :bind option that will be passed `discover-add-context-menu' if available."
+  :group 'projectile-rails
+  :type 'string)
 
 (defcustom projectile-rails-vanilla-command "bundle exec rails"
-  "The command for rails"
+  "The command for rails."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-spring-command "bundle exec spring"
-  "The command for spring"
+  "The command for spring."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-zeus-command "zeus"
-  "The command for zeus"
+  "The command for zeus."
   :group 'projectile-rails
   :type 'string)
 
@@ -226,7 +233,7 @@
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
     ("slim" . "= render '%s'"))
-  "A template used to insert text after extracting a region")
+  "A template used to insert text after extracting a region.")
 
 (defvar projectile-rails-server-buffer-name "*projectile-rails-server*")
 
@@ -315,7 +322,7 @@ The bound variables are \"singular\" and \"plural\"."
           (concat "\\(^\\|[^_:.@$]\\|\\.\\.\\)\\b"
                   (regexp-opt keywords t)
                   "\\_>")
-          (list 2 projectile-rails-font-lock-face-name)))))
+          (list 2 'projectile-rails-keyword-face)))))
 
 (defun projectile-rails-add-keywords-for-file-type ()
   "Apply extra font lock keywords specific to models, controllers etc."
@@ -739,7 +746,7 @@ The bound variable is \"filename\"."
              (s-blank? (buffer-string))
              (projectile-rails-expand-corresponding-snippet))))
 
-(defun projectile-rails--snippet-for-module (last-part)
+(defun projectile-rails--snippet-for-module (last-part name)
   (let ((parts (projectile-rails-classify (match-string 1 name))))
     (format
      (concat
@@ -776,10 +783,10 @@ The bound variable is \"filename\"."
              (s-join "::" (projectile-rails-classify (match-string 1 name))))))
           ((string-match "lib/\\(.+\\)\\.rb$" name)
            (projectile-rails--expand-snippet
-            (projectile-rails--snippet-for-module "${1:module} %s\n$2\nend")))
+            (projectile-rails--snippet-for-module "${1:module} %s\n$2\nend" name)))
           ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
            (projectile-rails--expand-snippet
-            (projectile-rails--snippet-for-module "${1:class} %s\n$2\nend"))))))
+            (projectile-rails--snippet-for-module "${1:class} %s\n$2\nend" name))))))
 
 (defun projectile-rails-classify (name)
   "Accepts a filepath, splits it by '/' character and classifieses each of the element"
@@ -1448,66 +1455,67 @@ Killing the buffer will terminate to server's process."
                      ("x" "extract region" projectile-rails-extract-region))))
    :bind "")) ;;accessible only from the main context menu
 
-(ignore-errors
-  (defhydra hydra-projectile-rails-find (:color blue :columns 8)
-    "Find a resources"
-    ("m" projectile-rails-find-model       "model")
-    ("v" projectile-rails-find-view        "view")
-    ("c" projectile-rails-find-controller  "controller")
-    ("h" projectile-rails-find-helper      "helper")
-    ("l" projectile-rails-find-lib         "lib")
-    ("j" projectile-rails-find-javascript  "javascript")
-    ("s" projectile-rails-find-stylesheet  "stylesheet")
-    ("p" projectile-rails-find-spec        "spec")
-    ("u" projectile-rails-find-fixture     "fixture")
-    ("t" projectile-rails-find-test        "test")
-    ("f" projectile-rails-find-feature     "feature")
-    ("i" projectile-rails-find-initializer "initializer")
-    ("o" projectile-rails-find-log         "log")
-    ("@" projectile-rails-find-mailer      "mailer")
-    ("!" projectile-rails-find-validator   "validator")
-    ("y" projectile-rails-find-layout      "layout")
-    ("n" projectile-rails-find-migration   "migration")
-    ("k" projectile-rails-find-rake-task   "rake task")
-    ("b" projectile-rails-find-job         "job")
-    ("z" projectile-rails-find-serializer  "serializer")
+(with-no-warnings
+  (ignore-errors
+    (defhydra hydra-projectile-rails-find (:color blue :columns 8)
+      "Find a resources"
+      ("m" projectile-rails-find-model       "model")
+      ("v" projectile-rails-find-view        "view")
+      ("c" projectile-rails-find-controller  "controller")
+      ("h" projectile-rails-find-helper      "helper")
+      ("l" projectile-rails-find-lib         "lib")
+      ("j" projectile-rails-find-javascript  "javascript")
+      ("s" projectile-rails-find-stylesheet  "stylesheet")
+      ("p" projectile-rails-find-spec        "spec")
+      ("u" projectile-rails-find-fixture     "fixture")
+      ("t" projectile-rails-find-test        "test")
+      ("f" projectile-rails-find-feature     "feature")
+      ("i" projectile-rails-find-initializer "initializer")
+      ("o" projectile-rails-find-log         "log")
+      ("@" projectile-rails-find-mailer      "mailer")
+      ("!" projectile-rails-find-validator   "validator")
+      ("y" projectile-rails-find-layout      "layout")
+      ("n" projectile-rails-find-migration   "migration")
+      ("k" projectile-rails-find-rake-task   "rake task")
+      ("b" projectile-rails-find-job         "job")
+      ("z" projectile-rails-find-serializer  "serializer")
 
-    ("M" projectile-rails-find-current-model      "current model")
-    ("V" projectile-rails-find-current-view       "current view")
-    ("C" projectile-rails-find-current-controller "current controller")
-    ("H" projectile-rails-find-current-helper     "current helper")
-    ("J" projectile-rails-find-current-javascript "current javascript")
-    ("S" projectile-rails-find-current-stylesheet "current stylesheet")
-    ("P" projectile-rails-find-current-spec       "current spec")
-    ("U" projectile-rails-find-current-fixture    "current fixture")
-    ("T" projectile-rails-find-current-test       "current test")
-    ("N" projectile-rails-find-current-migration  "current migration")
-    ("Z" projectile-rails-find-current-serializer "current serializer"))
+      ("M" projectile-rails-find-current-model      "current model")
+      ("V" projectile-rails-find-current-view       "current view")
+      ("C" projectile-rails-find-current-controller "current controller")
+      ("H" projectile-rails-find-current-helper     "current helper")
+      ("J" projectile-rails-find-current-javascript "current javascript")
+      ("S" projectile-rails-find-current-stylesheet "current stylesheet")
+      ("P" projectile-rails-find-current-spec       "current spec")
+      ("U" projectile-rails-find-current-fixture    "current fixture")
+      ("T" projectile-rails-find-current-test       "current test")
+      ("N" projectile-rails-find-current-migration  "current migration")
+      ("Z" projectile-rails-find-current-serializer "current serializer"))
 
-  (defhydra hydra-projectile-rails-goto (:color blue :columns 8)
-    "Go to"
-    ("f" projectile-rails-goto-file-at-point "file at point")
-    ("g" projectile-rails-goto-gemfile       "Gemfile")
-    ("r" projectile-rails-goto-routes        "routes")
-    ("d" projectile-rails-goto-schema        "schema")
-    ("s" projectile-rails-goto-seeds         "seeds")
-    ("h" projectile-rails-goto-spec-helper   "spec helper"))
+    (defhydra hydra-projectile-rails-goto (:color blue :columns 8)
+      "Go to"
+      ("f" projectile-rails-goto-file-at-point "file at point")
+      ("g" projectile-rails-goto-gemfile       "Gemfile")
+      ("r" projectile-rails-goto-routes        "routes")
+      ("d" projectile-rails-goto-schema        "schema")
+      ("s" projectile-rails-goto-seeds         "seeds")
+      ("h" projectile-rails-goto-spec-helper   "spec helper"))
 
-  (defhydra hydra-projectile-rails-run (:color blue :columns 8)
-    "Run external command & interact"
-    ("r" projectile-rails-rake       "rake")
-    ("c" projectile-rails-console    "console")
-    ("b" projectile-rails-dbconsole  "dbconsole")
-    ("s" projectile-rails-server     "server")
-    ("g" projectile-rails-generate   "generate")
-    ("d" projectile-rails-destroy    "destroy")
-    ("x" projectile-rails-extract-region "extract region"))
+    (defhydra hydra-projectile-rails-run (:color blue :columns 8)
+      "Run external command & interact"
+      ("r" projectile-rails-rake       "rake")
+      ("c" projectile-rails-console    "console")
+      ("b" projectile-rails-dbconsole  "dbconsole")
+      ("s" projectile-rails-server     "server")
+      ("g" projectile-rails-generate   "generate")
+      ("d" projectile-rails-destroy    "destroy")
+      ("x" projectile-rails-extract-region "extract region"))
 
-  (defhydra hydra-projectile-rails (:color blue :columns 8)
-    "Projectile Rails"
-    ("f" hydra-projectile-rails-find/body "Find a resource")
-    ("g" hydra-projectile-rails-goto/body "Goto")
-    ("r" hydra-projectile-rails-run/body "Run & interact")))
+    (defhydra hydra-projectile-rails (:color blue :columns 8)
+      "Projectile Rails"
+      ("f" hydra-projectile-rails-find/body "Find a resource")
+      ("g" hydra-projectile-rails-goto/body "Goto")
+      ("r" hydra-projectile-rails-run/body "Run & interact"))))
 
 (provide 'projectile-rails)
 
