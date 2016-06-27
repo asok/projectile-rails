@@ -118,12 +118,12 @@
 (Then "^I should see \"\\(.+\\)\" font locked"
       (lambda (keyword)
         (When (s-lex-format "I go to word \"${keyword}\""))
-        (should (equal (get-text-property (+ (point) 1) 'face) 'font-lock-keyword-face))))
+        (should (equal (get-text-property (+ (point) 1) 'face) 'projectile-rails-keyword-face))))
 
 (Then "^I should not see \"\\(.+\\)\" font locked"
       (lambda (keyword)
         (When (s-lex-format "I go to word \"${keyword}\""))
-        (should (not (equal (get-text-property (+ (point) 1) 'face) 'font-lock-keyword-face)))))
+        (should (not (equal (get-text-property (+ (point) 1) 'face) 'projectile-rails-keyword-face)))))
 
 (Then "^the buffer is auto reverting"
       (lambda ()
