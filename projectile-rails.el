@@ -139,6 +139,7 @@
   :group 'projectile-rails
   :type '(repeat string))
 
+;;;###autoload
 (defface projectile-rails-keyword-face '((t :inherit 'font-lock-keyword-face))
   "Face to be used for higlighting the rails keywords."
   :group 'projectile-rails)
