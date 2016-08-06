@@ -302,13 +302,20 @@ The bound variables are \"singular\" and \"plural\"."
       (concat (f-dirname (gethash (-first-item files) choices)) choice))))
 
 (defun projectile-rails-spring-p ()
-  (let ((path (concat temporary-file-directory "spring/%s"))
-        (ruby-version (shell-command-to-string "ruby -e 'print RUBY_VERSION'")))
+  (let ((root (directory-file-name (projectile-rails-root))))
     (or
-     (file-exists-p (f-canonical
-                     (format path (concat (md5 (projectile-rails-root) 0 -1) ".pid"))))
-     (file-exists-p (f-canonical
-                     (format path (md5 (concat ruby-version (projectile-rails-root)) 0 -1)))))))
+     ;; Older versions
+     (file-exists-p (format "%s/tmp/spring/spring.pid" root))
+     ;; 0.9.2+
+     (file-exists-p (format "%s/spring/%s.pid" temporary-file-directory (md5 root)))
+     ;; 1.2.0+
+     (let* ((path (or (getenv "XDG_RUNTIME_DIR") temporary-file-directory))
+            (ruby-version (shell-command-to-string "ruby -e 'print RUBY_VERSION'"))
+            (application-id (md5 (concat ruby-version root))))
+       (or
+        (file-exists-p (format "%s/spring/%s.pid" path application-id))
+        ;; 1.5.0+
+        (file-exists-p (format "%s/spring-%s/%s.pid" path (user-real-uid) application-id)))))))
 
 (defun projectile-rails-zeus-p ()
   (unless projectile-rails-zeus-sock
