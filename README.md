@@ -182,6 +182,7 @@ OS X users might want to look at [exec-path-from-shell](https://github.com/purce
 
 * [bundler.el](https://github.com/tobiassvn/bundler.el) to interact with Bundler.
 * [rspec-mode](https://github.com/pezra/rspec-mode) to run and edit spec files.
+* [ruby-test-mode](https://github.com/r0man/ruby-test-mode) to run and edit test files.
 * [feature-mode](https://github.com/michaelklishin/cucumber.el) to edit feature files.
 * [robe](https://github.com/dgutov/robe) to view gems documentation and jump to methods and classes definitions.
 * [magit](https://github.com/magit/magit) to interact with git.
