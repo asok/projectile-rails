@@ -59,4 +59,14 @@
        (expect "user"
                (with-mock
                 (stub buffer-file-name => "/spec/controllers/foo/bar/users_controller_spec.rb")
+                (projectile-rails-current-resource-name))))
+ (desc "non-namespaced controller test"
+       (expect "user"
+               (with-mock
+                (stub buffer-file-name => "/test/controllers/users_controller_test.rb")
+                (projectile-rails-current-resource-name))))
+ (desc "namespaced controller test"
+       (expect "user"
+               (with-mock
+                (stub buffer-file-name => "/test/controllers/foo/bar/users_controller_test.rb")
                 (projectile-rails-current-resource-name)))))
