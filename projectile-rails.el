@@ -735,7 +735,7 @@ The bound variable is \"filename\"."
           (sqli-program    (sql-get-product-feature product :sqli-program))
           (sql-comint-func (sql-get-product-feature product :sqli-comint-func))
           (commands (s-split " " (projectile-rails-with-preloader
-                                  :spring (concat projectile-rails-spring-command " dbconsole")
+                                  :spring (concat projectile-rails-spring-command " rails dbconsole")
                                   :zeus (concat projectile-rails-zeus-command " dbconsole")
                                   :vanilla (concat projectile-rails-vanilla-command " dbconsole")))))
      (sql-set-product-feature product :sqli-login '())
