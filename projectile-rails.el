@@ -598,6 +598,7 @@ The bound variable is \"filename\"."
     ,(concat "/app/assets/stylesheets/\\(?:.+/\\)?\\(.+\\)" projectile-rails-stylesheet-re)
     "/db/migrate/.*create_\\(.+\\)\\.rb\\'"
     "/spec/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_spec\\.rb\\'"
+    "/test/.*/\\([a-z_]+?\\)\\(?:_controller\\)?_test\\.rb\\'"
     "/\\(?:test\\|spec\\)/\\(?:fixtures\\|factories\\|fabricators\\)/\\(.+?\\)\\(?:_fabricator\\)?\\.\\(?:yml\\|rb\\)\\'")
   "List of regexps for extracting a resource name from a buffer file name."
   :group 'projectile-rails
