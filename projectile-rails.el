@@ -970,9 +970,19 @@ The bound variable is \"filename\"."
 
 (defun projectile-rails-find-constant (name)
   (let ((choices
-        (let ((file-name (format "/%s\\.rb$" (projectile-rails-declassify name)))
-              (code-dirs (-filter #'f-exists? (-map #'projectile-rails-expand-root (projectile-rails--code-directories)))))
-             (-uniq (--mapcat (f--entries it (string-match-p file-name it) t) code-dirs)))))
+         (let ((found-files '())
+               (code-dirs (-filter #'f-exists? (-map #'projectile-rails-expand-root (projectile-rails--code-directories))))
+               (file-name (format "%s.rb" (projectile-rails-declassify name))))
+           (let ((add-file-if-matches (lambda (dir-name)
+                                        (let ((full-filename (f-join dir-name file-name)))
+                                          (when (f-exists? full-filename)
+                                            (push (f-canonical full-filename) found-files))))))
+             (-each code-dirs add-file-if-matches)
+             (f-traverse-upwards (lambda (parent-dir)
+                                   (funcall add-file-if-matches parent-dir)
+                                   (equal (f-canonical (f-slash (projectile-rails-root))) (f-canonical (f-slash parent-dir))))
+                                 (f-dirname buffer-file-name))
+             (-uniq found-files)))))
 
     (when (= (length choices) 0)
       (user-error "Could not find anything"))
