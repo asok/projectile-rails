@@ -982,6 +982,7 @@ The bound variable is \"filename\"."
                                    (funcall add-file-if-matches parent-dir)
                                    (equal (f-canonical (f-slash (projectile-rails-root))) (f-canonical (f-slash parent-dir))))
                                  (f-dirname buffer-file-name))
+             (funcall add-file-if-matches (f-no-ext buffer-file-name))
              (-uniq found-files)))))
 
     (when (= (length choices) 0)
