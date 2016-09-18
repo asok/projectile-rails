@@ -977,15 +977,15 @@ The bound variable is \"filename\"."
                                         (let ((full-filename (f-join dir-name file-name)))
                                           (when (f-exists? full-filename)
                                             (push (f-canonical full-filename) found-files))))))
-             ;; Look for file in code directories
-             (-each code-dirs add-file-if-matches)
+             ;; Look for file in current file namespace
+             (funcall add-file-if-matches (f-no-ext buffer-file-name))
              ;; Look for file in local namespace hierarchy
              (f-traverse-upwards (lambda (parent-dir)
                                    (funcall add-file-if-matches parent-dir)
                                    (equal (f-canonical (f-slash (projectile-rails-root))) (f-canonical (f-slash parent-dir))))
                                  (f-dirname buffer-file-name))
-             ;; Look for file in current file namespace
-             (funcall add-file-if-matches (f-no-ext buffer-file-name))
+             ;; Look for file in code directories
+             (-each code-dirs add-file-if-matches)
              (-uniq found-files)))))
 
     (when (= (length choices) 0)
