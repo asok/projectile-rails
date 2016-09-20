@@ -969,24 +969,28 @@ The bound variable is \"filename\"."
      (point))))
 
 (defun projectile-rails-find-constant (name)
-  (let ((choices
-         (let ((found-files '())
-               (code-dirs (-filter #'f-exists? (-map #'projectile-rails-expand-root (projectile-rails--code-directories))))
-               (file-name (format "%s.rb" (projectile-rails-declassify name))))
-           (let ((add-file-if-matches (lambda (dir-name)
-                                        (let ((full-filename (f-join dir-name file-name)))
-                                          (when (f-exists? full-filename)
-                                            (push (f-canonical full-filename) found-files))))))
-             ;; Look for file in current file namespace
-             (funcall add-file-if-matches (f-no-ext buffer-file-name))
-             ;; Look for file in local namespace hierarchy
-             (f-traverse-upwards (lambda (parent-dir)
-                                   (funcall add-file-if-matches parent-dir)
-                                   (equal (f-canonical (f-slash (projectile-rails-root))) (f-canonical (f-slash parent-dir))))
-                                 (f-dirname buffer-file-name))
-             ;; Look for file in code directories
-             (-each code-dirs add-file-if-matches)
-             (-uniq found-files)))))
+  (let* ((code-dirs (-filter #'f-exists? (-map #'projectile-rails-expand-root (projectile-rails--code-directories))))
+         (file-name (format "%s.rb" (projectile-rails-declassify name)))
+         (list-parent-dirs (lambda (some-file)
+                             (let ((parent-dirs '()))
+                               (f-traverse-upwards (lambda (parent-dir)
+                                                     (push (f-canonical parent-dir) parent-dirs)
+                                                     (equal (f-slash (f-canonical (projectile-rails-root))) (f-slash (f-canonical parent-dir))))
+                                                   (f-dirname some-file))
+                               parent-dirs)))
+         (lookup-dirs (-flatten (list
+                                 ;; Look in current file namespace
+                                 (f-no-ext buffer-file-name)
+                                 ;; Look in local namespace hierarchy
+                                 (funcall list-parent-dirs buffer-file-name)
+                                 ;; Look in code directories
+                                 code-dirs)))
+         (lookup-paths (--map (f-join it file-name)
+                              lookup-dirs))
+         (choices
+          (-uniq
+           (-filter #'f-exists? lookup-paths))))
+
 
     (when (= (length choices) 0)
       (user-error "Could not find anything"))
