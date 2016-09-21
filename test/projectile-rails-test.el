@@ -9,7 +9,9 @@
        (expect "name"
                (projectile-rails-sanitize-name "'name'"))
        (expect "name"
-               (projectile-rails-sanitize-name "\"name\"")))
+               (projectile-rails-sanitize-name "\"name\""))
+       (expect "::Name"
+               (projectile-rails-sanitize-name "::Name")))
  (desc "projectile-rails-declassify"
        (expect "user"
                (projectile-rails-declassify "user"))
@@ -19,6 +21,8 @@
                (projectile-rails-declassify "UsersController"))
        (expect "admin/users_controller"
                (projectile-rails-declassify "Admin::UsersController"))
+       (expect "/admin/user"
+               (projectile-rails-declassify "::Admin::User"))
        (expect "users/index.html.erb"
                (projectile-rails-declassify "users/index.html.erb")))
  (desc "projectile-rails-hash-keys"
