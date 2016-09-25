@@ -120,6 +120,13 @@
         (When (s-lex-format "I go to word \"${keyword}\""))
         (should (equal (get-text-property (+ (point) 1) 'face) 'projectile-rails-keyword-face))))
 
+(Then "^disregarding whitespaces I should see:"
+      (lambda (expected)
+        (let ((actual (replace-regexp-in-string "[\s\n]" "" (buffer-string)))
+              (expected (replace-regexp-in-string "[\s\n]" "" (buffer-string)))
+              (message "Expected\n%s\nto be part of:\n%s"))
+          (cl-assert (s-contains? expected actual) nil message expected actual))))
+
 (Then "^I should not see \"\\(.+\\)\" font locked"
       (lambda (keyword)
         (When (s-lex-format "I go to word \"${keyword}\""))
