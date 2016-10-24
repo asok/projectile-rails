@@ -38,10 +38,10 @@ The package name for [el-get](https://github.com/dimitri/el-get) is `projectile-
 
 ### Hooking up with Projectile
 
-To make it start alongside `projectile-mode`:
+To make it start in Ruby projects:
 
 ```el
-(add-hook 'projectile-mode-hook 'projectile-rails-on)
+(add-hook 'ruby-mode-hook 'projectile-rails-on)
 ```
 That will start it only if the current project is a Rails project (either application or an engine).
 
