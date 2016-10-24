@@ -29,9 +29,9 @@
 
 ;;; Commentary:
 ;;
-;; To make it start alongside projectile-mode:
+;; To make it start in Ruby projects:
 ;;
-;;    (add-hook 'projectile-mode-hook 'projectile-rails-on)
+;;    (add-hook 'ruby-mode-hook 'projectile-rails-on)
 ;;
 ;;; Code:
 
