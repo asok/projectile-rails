@@ -5,7 +5,7 @@ Feature: Using rake
 
 Background:
   Given I open the app file "app/models/user.rb"
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
 
 Scenario: Running about task
   When I run command "projectile-rails-rake" selecting "about"

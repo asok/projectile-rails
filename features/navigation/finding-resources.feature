@@ -5,7 +5,7 @@ Feature: Finding resources
 
   Background:
     Given I open the app file "app/models/user.rb"
-    And I turn on projectile-mode
+    And I turn on projectile-rails-mode
 
   Scenario: Finding model
     And file "app/models/group.rb" exists

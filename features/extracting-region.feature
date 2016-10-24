@@ -9,7 +9,7 @@ Scenario: Extracting a region to a partial
     <span>To extract</span>
   </div>
   """
-  When I turn on projectile-mode
+  When I turn on projectile-rails-mode
   And I select "<span>To extract</span>"
   And I run command "projectile-rails-extract-region" inputting "_user.html.erb"
   Then I am in file "app/views/admin/users/_user.html.erb"

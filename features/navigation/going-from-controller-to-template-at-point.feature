@@ -6,7 +6,7 @@ Feature: Going from a controller to a template at point
   Scenario: Going from: format.html { render 'users/index' }
     Given file "app/views/admin/users/new.html.haml" exists
     And I open the app file "app/controllers/admin/users_controller.rb"
-    And I turn on projectile-mode
+    And I turn on projectile-rails-mode
     And I clear the buffer and insert:
     """
     render :new
@@ -18,7 +18,7 @@ Feature: Going from a controller to a template at point
   Scenario: Going from: render :new, formats: [:js]
     Given file "app/views/admin/users/new.js.slim" exists
     And I open the app file "app/controllers/admin/users_controller.rb"
-    And I turn on projectile-mode
+    And I turn on projectile-rails-mode
     And I clear the buffer and insert:
     """
     render :new, formats: [:js]

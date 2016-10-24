@@ -5,7 +5,7 @@ Feature: Running rails console
 
 Scenario: Running rails console
   Given I open the app file "app/models/user.rb"
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
   When I run "projectile-rails-console"
   Then I should be in buffer "*ruby*"
   And projectile-rails should be turned on

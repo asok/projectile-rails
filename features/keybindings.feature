@@ -2,7 +2,7 @@ Feature: Keybindings
 
   Scenario: Having the find keybindings setup after enabling the mode
     Given I open the app file "app/models/foo.rb"
-    When I turn on projectile-mode
+    When I turn on projectile-rails-mode
     Then key "C-c r m" should be mapped to "projectile-rails-find-model"
     And  key "C-c r M" should be mapped to "projectile-rails-find-current-model"
     And  key "C-c r c" should be mapped to "projectile-rails-find-controller"
@@ -28,10 +28,10 @@ Feature: Keybindings
     And  key "C-c r e" should be mapped to "projectile-rails-find-environment"
     And  key "C-c r @" should be mapped to "projectile-rails-find-mailer"
     And  key "C-c r y" should be mapped to "projectile-rails-find-layout"
-    
+
   Scenario: Having the commands keybindings setup after enabling the mode
     Given I open the app file "app/models/foo.rb"
-    When I turn on projectile-mode
+    When I turn on projectile-rails-mode
     Then key "C-c r ! c" should be mapped to "projectile-rails-console"
     And  key "C-c r r" should be mapped to "projectile-rails-console"
     And  key "C-c r ! s" should be mapped to "projectile-rails-server"
@@ -43,7 +43,7 @@ Feature: Keybindings
 
   Scenario: Having the goto keybindings setup after enabling the mode
     Given I open the app file "app/models/foo.rb"
-    When I turn on projectile-mode
+    When I turn on projectile-rails-mode
     Then key "C-c r RET" should be mapped to "projectile-rails-goto-file-at-point"
     And  key "C-c r g f" should be mapped to "projectile-rails-goto-file-at-point"
     And  key "C-c r g g" should be mapped to "projectile-rails-goto-gemfile"

@@ -6,7 +6,7 @@ Feature: Going to the files that each Rails project has
 Background:
   Given file "app/models/user.rb" exists
   And I open the app file "app/models/user.rb"
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
 
 Scenario: Going to Gemfile
   And file "Gemfile" exists

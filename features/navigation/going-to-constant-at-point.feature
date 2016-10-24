@@ -5,7 +5,7 @@ Feature: Going to constant at point
 
   Background:
     Given I open the app file "app/controllers/foos_controller.rb"
-    And I turn on projectile-mode
+    And I turn on projectile-rails-mode
 
   Scenario: Going to a model from a ruby symbol in singular form
     And file "app/models/user.rb" exists

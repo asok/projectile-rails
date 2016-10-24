@@ -6,7 +6,7 @@ Feature: Going from a ruby file from require line
 Scenario: Going at: require_relative './admin/logging'
   Given file "lib/admin/logging.rb" exists
   And I open the app file "lib/logging.rb"
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
   And I clear the buffer and insert:
   """
   require_relative './admin/logging'
@@ -18,7 +18,7 @@ Scenario: Going at: require_relative './admin/logging'
 Scenario: Going at: require_relative 'admin/logging'
   Given file "lib/admin/logging.rb" exists
   And I open the app file "lib/logging.rb"
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
   And I clear the buffer and insert:
   """
   require_relative 'admin/logging'
@@ -41,6 +41,6 @@ Scenario: Going to gem at line: require 'foo'
   require 'foo'
   """
   When I place the cursor between "'fo" and "o'"
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
   And I run "projectile-rails-goto-file-at-point"
   Then I am in a dired buffer "vendor/foo/"

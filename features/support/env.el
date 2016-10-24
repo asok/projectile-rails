@@ -115,8 +115,6 @@ end")
  (require 'rspec-mode)
  (require 'projectile-rails)
 
- (add-hook 'projectile-mode-hook 'projectile-rails-on)
-
  (setq kill-buffer-query-functions nil
        projectile-completion-system 'default
        projectile-indexing-method 'native
@@ -125,10 +123,13 @@ end")
 
  (cd projectile-rails-test-app-path))
 
+
 (Before
  (loop for file in (list projectile-rails-test-spring-pid-file
-                         projectile-rails-test-zeus-pid-file)
+                         projectile-rails-test-zeus-pid-file
+                         (concat projectile-rails-test-zeus-pid-file "s"))
        do (when (f-exists? file) (f-delete file)))
+ (setq projectile-rails-zeus-sock nil)
  (setenv "ZEUSSOCK" nil))
 
 (After

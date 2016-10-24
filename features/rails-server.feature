@@ -4,7 +4,7 @@ Scenario: Running rails server
   Given file "app/controllers/users_controller.rb" exists
   And file "app/views/users/_user.html.erb" exists
   When I open the app file "app/models/user.rb"
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
   And I simulate running server with output:
   """
   Processing by UsersController#show as HTML

@@ -36,14 +36,15 @@ The package name for [el-get](https://github.com/dimitri/el-get) is `projectile-
 
 ## Usage
 
-### Hooking up with Projectile
+### The global mode
 
-To make it start alongside `projectile-mode`:
+Use the package as a global mode:
 
 ```el
-(add-hook 'projectile-mode-hook 'projectile-rails-on)
+(projectile-rails-global-mode)
 ```
-That will start it only if the current project is a Rails project (either application or an engine).
+
+That will turn on the local `projectile-rails-mode` for the buffers which belong to a Rails project (either application or an engine).
 
 Probably you should read Projectile's [README](https://github.com/bbatsov/projectile) on setting up the completion system, caching and indexing files. Although the default settings are quite sensible and you should be ready to go without much tweaking.
 

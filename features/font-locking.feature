@@ -11,7 +11,7 @@ Scenario: Font locking models keywords
   validates_presence_of
   alias_attribute
   """
-  When I turn on projectile-mode
+  When I turn on projectile-rails-mode
   And I force font lock refresh
   Then I should see "validates_presence_of" font locked
   And I should see "alias_attribute" font locked
@@ -24,7 +24,7 @@ Scenario: Font locking controllers keywords
   before_filter
   alias_attribute
   """
-  When I turn on projectile-mode
+  When I turn on projectile-rails-mode
   And I force font lock refresh
   Then I should see "before_filter" font locked
   And I should see "alias_attribute" font locked
@@ -37,7 +37,7 @@ Scenario: Font locking migrations keywords
   create_table
   alias_attribute
   """
-  When I turn on projectile-mode
+  When I turn on projectile-rails-mode
   And I force font lock refresh
   Then I should see "create_table" font locked
   And I should see "alias_attribute" font locked
@@ -50,6 +50,6 @@ Scenario: Disabling the feature
   alias_attribute
   """
   When I turn off adding keywords
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
   And I force font lock refresh
   And I should not see "alias_attribute" font locked

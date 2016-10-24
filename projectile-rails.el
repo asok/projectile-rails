@@ -1366,6 +1366,11 @@ If file does not exist and ASK in not nil it will ask user to proceed."
          (projectile-rails-root))
     (projectile-rails-mode +1)))
 
+;;;###autoload
+(define-globalized-minor-mode projectile-rails-global-mode
+  projectile-rails-mode
+  projectile-rails-on)
+
 (defun projectile-rails-off ()
   "Disable `projectile-rails-mode' minor mode."
   (projectile-rails-mode -1))

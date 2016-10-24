@@ -6,7 +6,7 @@ Background:
   And file "config/environments/production.rb" exists
   And file "config/environment.rb" exists
   And file "config/application.rb" exists
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
 
 Scenario: Finding environment file inside 'config/environments/' directory
   When I run command "projectile-rails-find-environment" selecting "production"

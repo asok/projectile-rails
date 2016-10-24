@@ -7,7 +7,7 @@ Feature: Going from a template to a template at point
 Scenario: Going from: render 'index'
   And file "app/views/users/index.html.erb" exists
   And I open the app file "app/views/users/new.html.erb"
-  Given I turn on projectile-mode
+  Given I turn on projectile-rails-mode
   And I clear the buffer and insert:
   """
   render 'index'
@@ -19,7 +19,7 @@ Scenario: Going from: render 'index'
 Scenario: Going from: render 'users/index'
   And file "app/views/users/index.html.erb" exists
   And I open the app file "app/views/users/new.html.erb"
-  Given I turn on projectile-mode
+  Given I turn on projectile-rails-mode
   And I clear the buffer and insert:
   """
   render 'users/index'
@@ -31,7 +31,7 @@ Scenario: Going from: render 'users/index'
 Scenario: Going from: render 'admin/users/index'
   And file "app/views/admin/users/index.html.haml" exists
   And I open the app file "app/views/users/new.html.erb"
-  Given I turn on projectile-mode
+  Given I turn on projectile-rails-mode
   And I clear the buffer and insert:
   """
   render 'admin/users/index'
@@ -43,7 +43,7 @@ Scenario: Going from: render 'admin/users/index'
 Scenario: Going from: render 'users/user'
   And file "app/views/users/_user.html.erb" exists
   And I open the app file "app/views/users/new.html.erb"
-  Given I turn on projectile-mode
+  Given I turn on projectile-rails-mode
   And I clear the buffer and insert:
   """
   render 'users/user'
@@ -55,7 +55,7 @@ Scenario: Going from: render 'users/user'
 Scenario: Going from: render 'user'
   And file "app/views/users/_user.html.erb" exists
   And I open the app file "app/views/users/new.html.erb"
-  Given I turn on projectile-mode
+  Given I turn on projectile-rails-mode
   And I clear the buffer and insert:
   """
   render 'user'
@@ -67,7 +67,7 @@ Scenario: Going from: render 'user'
 Scenario: Going to a template in application/ dir from: render 'user'
   Given file "app/views/application/_foo.html.erb" exists
   And I open the app file "app/views/users/new.html.erb"
-  And I turn on projectile-mode
+  And I turn on projectile-rails-mode
   And I clear the buffer and insert:
   """
   render 'foo'

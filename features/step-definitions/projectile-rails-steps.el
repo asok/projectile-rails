@@ -5,9 +5,9 @@
 (When "^I open the file \"\\(.+\\)\""
       (lambda (filename) (find-file (concat projectile-rails-root-path "/" filename))))
 
-(When "^I turn on projectile-mode"
+(When "^I turn on projectile-rails-mode"
       (lambda ()
-        (projectile-mode)))
+        (projectile-rails-on)))
 
 (When "^I turn off projectile-rails-mode"
       (lambda ()
