@@ -35,6 +35,7 @@
 ;;
 ;;; Code:
 
+(require 'cl)
 (require 'projectile)
 (require 'inf-ruby)
 (require 'inflections)
