@@ -821,7 +821,8 @@ The buffer for interacting with SQL client is created via `sql-product-interacti
   "Expand snippet corresponding to the current file.
 
 This only works when yas package is installed."
-  (when (and (fboundp 'yas-expand-snippet)
+  (when (and projectile-rails-expand-snippet
+             (fboundp 'yas-expand-snippet)
              (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
              (s-blank? (buffer-string))
              (projectile-rails-expand-corresponding-snippet))))
