@@ -70,7 +70,9 @@
   '("create_table" "change_table" "drop_table" "rename_table" "add_column"
     "rename_column" "change_column" "change_column_default" "change_column_null"
     "remove_column" "add_index" "remove_index" "rename_index" "execute"
-    "reversible" "revert" "announce")
+    "add_timestamps" "remove_timestamps" "add_foreign_key" "remove_foreign_key"
+    "add_reference" "remove_reference" "add_belongs_to" "remove_belongs_to"
+    "transaction" "reversible" "revert" "announce")
   "List of keywords to highlight for migrations."
   :group 'projectile-rails
   :type '(repeat string))
