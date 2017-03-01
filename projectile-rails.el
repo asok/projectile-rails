@@ -867,6 +867,11 @@ This only works when yas package is installed."
             (format
              "class %s < ${1:ActiveRecord::Base}\n$2\nend"
              (s-join "::" (projectile-rails-classify (match-string 1 name))))))
+          ((string-match "app/helpers/\\(.+\\)_helper\\.rb$" name)
+           (projectile-rails--expand-snippet
+            (format
+             "module %sHelper\n$1\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
           ((string-match "lib/\\(.+\\)\\.rb$" name)
            (projectile-rails--expand-snippet
             (projectile-rails--snippet-for-module "${1:module} %s\n$2\nend" name)))

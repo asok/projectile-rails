@@ -95,6 +95,16 @@ Scenario: Opening a new concern
   end
   """
 
+Scenario: Opening a new helper
+  When I open the app file "app/helpers/foo_helper.rb"
+  And I turn on projectile-rails-mode
+  Then disregarding whitespaces I should see:
+  """
+  module FooHelper
+
+  end
+  """
+
 Scenario: Opening a new spec and the buffer is not empty
   When I open the app file "spec/models/bar_spec.rb"
   And I insert:
