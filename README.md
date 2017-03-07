@@ -154,8 +154,6 @@ The name of the hydra `hydra-projectile-rails`. In order to bind it you can some
 (define-key projectile-rails-mode-map (kbd "s-r") 'hydra-projectile-rails/body)
 ```
 
-![Screenshot](https://github.com/asok/projectile-rails/raw/master/screenshots/hydra.png)
-
 ## Beyond
 
 Consider installing other Emacs packages that can help you working specifically with Rails projects.
