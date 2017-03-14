@@ -1,7 +1,7 @@
 Feature: Running rails console
   In order to use a rails console
   As a user
-  I want to be able to run it insinde Emacs
+  I want to be able to run it inside Emacs
 
 Scenario: Running rails console
   Given I open the app file "app/models/user.rb"
