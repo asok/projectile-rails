@@ -723,18 +723,19 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
   (file-exists-p (projectile-rails-expand-root filepath)))
 
 (defun projectile-rails-console (arg)
-  "Call `run-ruby'."
+  "Start a rails console, asking for which if ARG is not nil."
   (interactive "P")
   (projectile-rails-with-root
    (let ((rails-console-command (projectile-rails-with-preloader
                                  :spring (concat projectile-rails-spring-command " rails console")
                                  :zeus "zeus console"
                                  :vanilla (concat projectile-rails-vanilla-command " console"))))
-     (with-current-buffer (run-ruby
-                           (if (>= (or (car arg) 0) 4)
-                               (read-string "rails console: " rails-console-command)
-                             rails-console-command))
-       (projectile-rails-mode +1)))))
+     (inf-ruby-console-run
+      (if (>= (or (car arg) 0) 4)
+          (read-string "rails console: " rails-console-command)
+        rails-console-command)
+      "rails")
+     (projectile-rails-mode +1))))
 
 ;; Shamelessly stolen from rinari.el
 (defun projectile-rails--db-config ()
