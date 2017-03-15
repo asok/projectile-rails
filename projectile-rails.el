@@ -730,11 +730,12 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
                                  :spring (concat projectile-rails-spring-command " rails console")
                                  :zeus "zeus console"
                                  :vanilla (concat projectile-rails-vanilla-command " console"))))
-     (inf-ruby-console-run
-      (if (>= (or (car arg) 0) 4)
-          (read-string "rails console: " rails-console-command)
-        rails-console-command)
-      "rails")
+     (with-demoted-errors
+         (inf-ruby-console-run
+          (if (>= (or (car arg) 0) 4)
+              (read-string "rails console: " rails-console-command)
+            rails-console-command)
+          "rails"))
      (projectile-rails-mode +1))))
 
 ;; Shamelessly stolen from rinari.el
