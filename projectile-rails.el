@@ -142,7 +142,7 @@
   :group 'projectile-rails
   :type '(repeat string))
 
-(defvar projectile-rails-keyword-face	'projectile-rails-keyword-face
+(defvar projectile-rails-keyword-face 'projectile-rails-keyword-face
   "Face name to use for keywords.")
 
 (defface projectile-rails-keyword-face '((t :inherit 'font-lock-keyword-face))
