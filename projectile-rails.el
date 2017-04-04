@@ -236,13 +236,12 @@
   :type 'string)
 
 (defcustom projectile-rails-root-file "Gemfile"
-  "The file that is used to identify rails root if `projectile-project-root'
- is not rails root"
+  "The file that is used to identify rails root."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-config-file "config/routes.rb"
-  "The file that is used to verify rails root directory"
+  "The file that is used to verify rails root directory."
   :group 'projectile-rails
   :type 'string)
 
@@ -712,14 +711,10 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
-  ;; faster check
-  (let ((projectile-root (projectile-project-root)))
-    (if (file-exists-p (expand-file-name projectile-rails-config-file projectile-root))
-        projectile-root
-      (ignore-errors
-        (let ((root (projectile-locate-dominating-file default-directory projectile-rails-root-file)))
-          (when (file-exists-p (expand-file-name projectile-rails-config-file root))
-            root))))))
+  (ignore-errors
+    (let ((root (projectile-locate-dominating-file default-directory projectile-rails-root-file)))
+      (when (file-exists-p (expand-file-name projectile-rails-config-file root))
+        root))))
 
 (defun projectile-rails-root-relative-to-project-root ()
   "Return the location of the rails root relative to `projectile-project-root'."
