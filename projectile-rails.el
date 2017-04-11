@@ -235,6 +235,16 @@
   :group 'projectile-rails
   :type 'string)
 
+(defcustom projectile-rails-root-file "Gemfile"
+  "The file that is used to identify rails root."
+  :group 'projectile-rails
+  :type 'string)
+
+(defcustom projectile-rails-verify-root-file "config/routes.rb"
+  "The file that is used to verify rails root directory."
+  :group 'projectile-rails
+  :type 'string)
+
 (defvar projectile-rails-extracted-region-snippet
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
@@ -702,8 +712,8 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
   (ignore-errors
-    (let ((root (projectile-locate-dominating-file default-directory "Gemfile")))
-      (when (file-exists-p (expand-file-name "config/routes.rb" root))
+    (let ((root (projectile-locate-dominating-file default-directory projectile-rails-root-file)))
+      (when (file-exists-p (expand-file-name projectile-rails-verify-root-file root))
         root))))
 
 (defun projectile-rails-root-relative-to-project-root ()
