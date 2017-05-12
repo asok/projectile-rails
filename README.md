@@ -67,9 +67,11 @@ By default the buffer of the `projectile-rails-server-mode` is applying the ansi
 
 You can customize the way the `rails`, `spring` and `zeus` commands are invoked. For example if you want to use binstubs:
 
+```el
 (setq projectile-rails-vanilla-command "bin/rails"
       projectile-rails-spring-command "bin/spring"
       projectile-rails-zeus-command "bin/zeus")
+```
 
 ### Interactive commands
 
