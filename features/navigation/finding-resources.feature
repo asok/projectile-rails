@@ -64,6 +64,16 @@ Feature: Finding resources
     When I run command "projectile-rails-find-javascript" selecting "assets/javascripts/foo"
     Then I am in file "app/assets/javascripts/foo.js"
 
+  Scenario: Finding component
+    And file "app/javascript/packs/hello_react.jsx" exists
+    When I run command "projectile-rails-find-component" selecting "hello_react.jsx"
+    Then I am in file "app/javascript/packs/hello_react.jsx"
+
+  Scenario: Finding webpack configurations
+    And file "config/webpack/configuration.js" exists
+    When I run command "projectile-rails-find-webpack" selecting "configuration.js"
+    Then I am in file "config/webpack/configuration.js"
+
   Scenario: Finding stylesheet
     And file "app/assets/stylesheets/foo.css" exists
     When I run command "projectile-rails-find-stylesheet" selecting "assets/stylesheets/foo"

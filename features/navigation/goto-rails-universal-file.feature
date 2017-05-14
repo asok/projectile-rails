@@ -27,3 +27,8 @@ Scenario: Going to spec_helper
   And file "spec/spec_helper.rb" exists
   When I run "projectile-rails-goto-spec-helper"
   Then I am in file "spec/spec_helper.rb"
+
+Scenario: Going to package
+  And file "package.json" exists
+  When I run "projectile-rails-goto-package"
+  Then I am in file "package.json"
