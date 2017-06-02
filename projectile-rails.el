@@ -871,6 +871,13 @@ This only works when yas package is installed."
       (s-join "" (make-list (1- (length parts)) "\nend")))
      (-last-item parts))))
 
+(defun projectile-rails--snippet-for-model (name)
+  (format
+   (if (projectile-rails--file-exists-p "app/models/application_record.rb")
+       "class %s < ${1:ApplicationRecord}\n$2\nend"
+     "class %s < ${1:ActiveRecord::Base}\n$2\nend")
+   (s-join "::" (projectile-rails-classify name))))
+
 (defun projectile-rails--expand-snippet (snippet)
   "Turn on `yas-minor-mode' and expand SNIPPET."
   (yas-minor-mode +1)
@@ -896,9 +903,7 @@ This only works when yas package is installed."
              (s-join "::" (projectile-rails-classify (match-string 1 name))))))
           ((string-match "app/models/\\(.+\\)\\.rb$" name)
            (projectile-rails--expand-snippet
-            (format
-             "class %s < ${1:ActiveRecord::Base}\n$2\nend"
-             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
+            (projectile-rails--snippet-for-model (match-string 1 name))))
           ((string-match "app/helpers/\\(.+\\)_helper\\.rb$" name)
            (projectile-rails--expand-snippet
             (format

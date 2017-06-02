@@ -16,6 +16,17 @@ Scenario: Opening new model
   end
   """
 
+Scenario: Opening new model when ApplicationRecord exists
+  Given file "app/models/application_record.rb" exists
+  When I open the app file "app/models/foo.rb"
+  And I turn on projectile-rails-mode
+  Then disregarding whitespaces I should see:
+  """
+  class Foo < ApplicationRecord
+
+  end
+  """
+
 Scenario: Opening new controller
   When I open the app file "app/controllers/foos_controller.rb"
   And I turn on projectile-rails-mode
