@@ -92,7 +92,7 @@
     "validates_format_of" "validates_inclusion_of" "validates_length_of"
     "validates_numericality_of" "validates_presence_of" "validates_size_of"
     "validates_existence_of" "validates_uniqueness_of" "validates_with"
-    "enum")
+    "enum" "after_create_commit" "after_update_commit" "after_destroy_commit")
   "List of keywords to highlight for models."
   :group 'projectile-rails
   :type '(repeat string))
