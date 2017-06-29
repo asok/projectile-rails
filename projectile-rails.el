@@ -736,13 +736,28 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
       (when (file-exists-p (expand-file-name projectile-rails-verify-root-file root))
         root))))
 
+(defvar projectile-rails-cache-data
+  (make-hash-table :test 'equal)
+  "A hash table that is used for caching information about the current project.")
+
+(defun projectile-rails-cache-key (key)
+  "Generates a cache key based on the current projectile project and the given KEY."
+  (concat (projectile-project-root) "-" key))
+
 (defun projectile-rails-root-relative-to-project-root ()
   "Return the location of the rails root relative to `projectile-project-root'."
-  (let ((rails-root (file-truename (projectile-rails-root)))
-        (project-root (projectile-project-root)))
-    (if (string-equal rails-root project-root)
-        ""
-      (substring rails-root (length (f-common-parent (list rails-root project-root)))))))
+  (let* ((cache-key (projectile-rails-cache-key "rails-root-relative-to-project-root"))
+         (cache-value (gethash cache-key projectile-rails-cache-data)))
+    (or cache-value
+        (let ((rails-root (file-truename (projectile-rails-root)))
+              (project-root (projectile-project-root)))
+          (puthash
+           cache-key
+           (if (string-equal rails-root project-root)
+               ""
+             (substring rails-root (length (f-common-parent (list rails-root project-root)))))
+           projectile-rails-cache-data)
+          (projectile-rails-root-relative-to-project-root)))))
 
 (defun projectile-rails-expand-root (dir)
   "Like `projectile-expand-root' but consider `projectile-rails-root'."
