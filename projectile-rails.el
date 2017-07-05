@@ -53,7 +53,7 @@
     "serialize" "exempt_from_layout" "filter_parameter_logging" "hide_action"
     "cache_sweeper" "protect_from_forgery" "caches_page" "cache_page"
     "caches_action" "expire_page" "expire_action" "rescue_from" "params"
-    "request" "response" "session" "flash" "head" "redirect_to"
+    "request" "response" "session" "flash" "head" "redirect_to" "redirect_back"
     "render_to_string" "respond_with" "before_filter" "append_before_filter"
     "before_action" "append_before_action"
     "prepend_before_filter" "after_filter" "append_after_filter"
