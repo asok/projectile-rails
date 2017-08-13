@@ -41,6 +41,7 @@
 (require 'inflections)
 (require 'f)
 (require 'rake)
+(require 'json)
 
 (defgroup projectile-rails nil
   "Rails mode based on projectile"
