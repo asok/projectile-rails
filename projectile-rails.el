@@ -730,12 +730,25 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
   (interactive "P")
   (rake arg 'projectile-rails-compilation-mode))
 
+(defvar projectile-rails-cache-data
+  (make-hash-table :test 'equal)
+  "A hash table that is used for caching information about the current project.")
+
+(defun projectile-rails-cache-key (key)
+  "Generate a cache key based on the current directory and the given KEY."
+  (format "%s-%s" default-directory key))
+
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
-  (ignore-errors
-    (let ((root (projectile-locate-dominating-file default-directory projectile-rails-root-file)))
-      (when (file-exists-p (expand-file-name projectile-rails-verify-root-file root))
-        root))))
+  (let* ((dir default-directory)
+         (cache-key (projectile-rails-cache-key "root"))
+         (cache-value (gethash cache-key projectile-rails-cache-data)))
+    (or cache-value
+        (ignore-errors
+          (let ((root (projectile-locate-dominating-file default-directory projectile-rails-root-file)))
+            (when (file-exists-p (expand-file-name projectile-rails-verify-root-file root))
+              (puthash cache-key root projectile-rails-cache-data)
+              root))))))
 
 (defun projectile-rails-root-relative-to-project-root ()
   "Return the location of the rails root relative to `projectile-project-root'."
