@@ -740,8 +740,7 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
 
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
-  (let* ((dir default-directory)
-         (cache-key (projectile-rails-cache-key "root"))
+  (let* ((cache-key (projectile-rails-cache-key "root"))
          (cache-value (gethash cache-key projectile-rails-cache-data)))
     (or cache-value
         (ignore-errors
