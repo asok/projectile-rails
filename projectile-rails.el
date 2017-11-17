@@ -929,6 +929,99 @@ This only works when yas package is installed."
            (projectile-rails--expand-snippet
             (projectile-rails--snippet-for-module "${1:class} %s\n$2\nend" name))))))
 
+(defun projectile-rails--goto-file-at-point (f)
+  "Let name and line variables and call F"
+  (let ((name (projectile-rails-name-at-point))
+        (line (projectile-rails-current-line))
+        (case-fold-search nil))
+     (funcall f name line)))
+
+(defun projectile-rails--views-goto-file-at-point (name line)
+  (cond
+   ((string-match-p "\\_<render\\_>" line)
+    (projectile-rails-goto-template-at-point) t)
+
+   ((string-match-p "\\_<javascript_include_tag\\_>" line)
+    (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs) t)
+
+   ((string-match-p "\\_<stylesheet_link_tag\\_>" line)
+    (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs) t)))
+
+(defun projectile-rails--stylesheet-goto-file-at-point (name line)
+  (cond
+   ((string-match-p "^\\s-*\\*= require .+\\s-*$" line)
+    (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs) t)
+
+   ((string-match-p "^\\s-*\\@import .+\\s-*$" line)
+    (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs) t)))
+
+(defun projectile-rails--javascript-goto-file-at-point (name line)
+  (cond
+   ((string-match-p "^\\s-*//= require .+\\s-*$" line)
+    (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs) t)
+
+   ((string-match-p "^\\s-*\\#= require .+\\s-*$" line)
+    (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs) t)))
+
+(defun projectile-rails--ruby-goto-file-at-point (name line)
+  (cond
+   ((string-match-p "\\_<require_relative\\_>" line)
+    (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))) t)
+
+   ((string-match-p "\\_<require\\_>" line)
+    (projectile-rails-goto-gem (thing-at-point 'filename)) t)
+
+   ((string-match-p "\\_<gem\\_>" line)
+    (projectile-rails-goto-gem (thing-at-point 'filename)) t)
+
+   ((string-match-p "^[a-z]" name)
+    (projectile-rails-find-constant (singularize-string name)) t)
+
+   ((string-match-p "^\\(::\\)?[A-Z]" name)
+    (projectile-rails-goto-constant-at-point) t)))
+
+;;;###autoload
+(defun projetile-rails-views-goto-file-at-point ()
+  "Try to find a view file at point.
+Will try to look for a template or partial file, and assets file."
+  (interactive)
+  (projectile-rails--goto-file-at-point
+   'projectile-rails--views-goto-file-at-point))
+
+;;;###autoload
+(defun projectile-rails-stylesheet-goto-file-at-point ()
+  "Try to find stylesheet file at point"
+  (interactive)
+  (projectile-rails--goto-file-at-point
+   'projectile-rails--stylesheet-goto-file-at-point))
+
+;;;###autoload
+(defun projectile-rails-javascript-goto-file-at-point ()
+  "Try to find javascript file at point"
+  (interactive)
+  (projectile-rails--goto-file-at-point
+   'projectile-rails--javascript-goto-file-at-point))
+
+;;;###autoload
+(defun projectile-rails-goto-ruby-file-at-point ()
+  "Try to find ruby file at point"
+  (interactive)
+  (projectile-rails--goto-file-at-point
+   'projectile-rails--ruby-goto-file-at-point))
+
+;;;###autoload
+(defun projectile-rails-goto-file-at-point ()
+  "Try to find file at point"
+  (interactive)
+  (projectile-rails--goto-file-at-point
+   (lambda (name line)
+     (loop for f in '(projectile-rails--stylesheet-goto-file-at-point
+                      projectile-rails--javascript-goto-file-at-point
+                      projectile-rails--views-goto-file-at-point
+                      projectile-rails--ruby-goto-file-at-point
+                      projectile-rails--goto-ruby-file-at-point)
+           thereis (funcall f name line)))))
+
 (defun projectile-rails-classify (name)
   "Accepts a filepath, splits it by '/' character and classifieses each of the element"
   (--map (replace-regexp-in-string "_" "" (upcase-initials it)) (split-string name "/")))
@@ -1042,48 +1135,6 @@ DIRS are directories where to look for assets."
            for file = (--first (string-match-p re it) files)
            until file
            finally return (and file (projectile-rails-expand-root file))))))
-
-(defun projectile-rails-goto-file-at-point ()
-  "Try to find file at point."
-  (interactive)
-  (let ((name (projectile-rails-name-at-point))
-        (line (projectile-rails-current-line))
-        (case-fold-search nil))
-    (cond ((string-match-p "\\_<render\\_>" line)
-           (projectile-rails-goto-template-at-point))
-
-          ((string-match-p "^\\s-*//= require .+\\s-*$" line)
-           (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs))
-
-          ((string-match-p "^\\s-*\\#= require .+\\s-*$" line)
-           (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs))
-
-          ((string-match-p "\\_<javascript_include_tag\\_>" line)
-           (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs))
-
-          ((string-match-p "^\\s-*\\*= require .+\\s-*$" line)
-           (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs))
-
-          ((string-match-p "^\\s-*\\@import .+\\s-*$" line)
-           (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs))
-
-          ((string-match-p "\\_<stylesheet_link_tag\\_>" line)
-           (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs))
-
-          ((string-match-p "\\_<require_relative\\_>" line)
-           (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))))
-
-          ((string-match-p "\\_<require\\_>" line)
-           (projectile-rails-goto-gem (thing-at-point 'filename)))
-
-          ((string-match-p "\\_<gem\\_>" line)
-           (projectile-rails-goto-gem (thing-at-point 'filename)))
-
-          ((string-match-p "^[a-z]" name)
-           (projectile-rails-find-constant (singularize-string name)))
-
-          ((string-match-p "^\\(::\\)?[A-Z]" name)
-           (projectile-rails-goto-constant-at-point)))))
 
 (defun projectile-rails-goto-constant-at-point ()
   "Try to find and go to a Ruby constant at point."
