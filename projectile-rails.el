@@ -1003,7 +1003,7 @@ Will try to look for a template or partial file, and assets file."
    'projectile-rails--javascript-goto-file-at-point))
 
 ;;;###autoload
-(defun projectile-rails-goto-ruby-file-at-point ()
+(defun projectile-rails-ruby-goto-file-at-point ()
   "Try to find ruby file at point"
   (interactive)
   (projectile-rails--goto-file-at-point
@@ -1018,8 +1018,7 @@ Will try to look for a template or partial file, and assets file."
      (loop for f in '(projectile-rails--stylesheet-goto-file-at-point
                       projectile-rails--javascript-goto-file-at-point
                       projectile-rails--views-goto-file-at-point
-                      projectile-rails--ruby-goto-file-at-point
-                      projectile-rails--goto-ruby-file-at-point)
+                      projectile-rails--ruby-goto-file-at-point)
            thereis (funcall f name line)))))
 
 (defun projectile-rails-classify (name)
