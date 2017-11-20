@@ -12,6 +12,18 @@ Scenario: Going to file from: //= require user
     When I run "projectile-rails-goto-file-at-point"
     Then I am in file "app/assets/javascripts/user.js"
 
+Scenario: Going to file from: //= require user.js
+    Given file "app/assets/javascripts/user.js" exists
+    And I open the app file "app/assets/javascripts/application.js"
+    And I turn on projectile-rails-mode
+    And I clear the buffer and insert:
+    """
+     //= require user.js
+    """
+    And I place the cursor between "use" and "r"
+    When I run "projectile-rails-goto-file-at-point"
+    Then I am in file "app/assets/javascripts/user.js"
+
 Scenario: Going to file from: //= require ./user
     Given file "app/assets/javascripts/user.js" exists
     And I open the app file "app/assets/javascripts/application.js"

@@ -1129,7 +1129,7 @@ DIRS are directories where to look for assets."
          (projectile-rails-sanitize-name (thing-at-point 'filename))))
     (projectile-rails-ff
      (loop for dir in dirs
-           for re = (s-lex-format "${dir}${name}\\..+$")
+           for re = (s-lex-format "${dir}${name}\\(\\..+\\)*$")
            for files = (projectile-dir-files (projectile-rails-expand-root dir))
            for file = (--first (string-match-p re it) files)
            until file
