@@ -981,7 +981,7 @@ This only works when yas package is installed."
     (projectile-rails-goto-constant-at-point) t)))
 
 ;;;###autoload
-(defun projetile-rails-views-goto-file-at-point ()
+(defun projectile-rails-views-goto-file-at-point ()
   "Try to find a view file at point.
 Will try to look for a template or partial file, and assets file."
   (interactive)
