@@ -377,6 +377,18 @@ Argument DIR is the directory to which the search should be narrowed."
    (substring it (length (projectile-rails-root-relative-to-project-root)))
    (projectile-dir-files directory)))
 
+(defun projectile-rails--all-string-matches (regexp string)
+  "Get all matches from string-match of REGEXP on STRING as a string."
+  (when (string-match regexp string)
+    (save-match-data
+      (let ((match-number 1)
+            (matched-string "")
+            (matches '()))
+        (while (setq matched-string (match-string match-number string))
+          (push matched-string matches)
+          (setq match-number (+ match-number 1)))
+        (mapconcat 'identity (reverse matches) "")))))
+
 (defun projectile-rails-choices (dirs)
   "Uses `projectile-rails-dir-files' function to find files in directories.
 
@@ -384,12 +396,12 @@ The DIRS is list of lists consisting of a directory path and regexp to filter fi
 Optional third element can be present in the DIRS list. The third element will be a prefix to be placed before
 the filename in the resulting choice.
 Returns a hash table with keys being short names (choices) and values being relative paths to the files."
-  (let ((hash (make-hash-table :test 'equal)))
+  (let ((hash (make-hash-table :test 'equal)) (matched-string ""))
     (loop for (dir re prefix) in dirs do
           (loop for file in (projectile-rails-dir-files (projectile-rails-expand-root dir)) do
-                (when (string-match re file)
+                (when (setq matched-string (projectile-rails--all-string-matches re file))
                   (puthash
-                   (concat (or prefix "") (match-string 1 file))
+                   (concat (or prefix "") matched-string)
                    (concat dir file)
                    hash))))
     hash))
