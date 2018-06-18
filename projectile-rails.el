@@ -872,7 +872,9 @@ This only works when yas package is installed."
              (fboundp 'yas-expand-snippet)
              (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
              (s-blank? (buffer-string))
-             (projectile-rails-expand-corresponding-snippet))))
+             (projectile-rails-expand-corresponding-snippet)
+             (let ((inhibit-message t))
+               (indent-region (point-min) (point-max))))))
 
 (defun projectile-rails--snippet-for-module (last-part name)
   "Return snippet as string for a file that holds a module."
@@ -1557,10 +1559,12 @@ If file does not exist and ASK in not nil it will ask user to proceed."
   :init-value nil
   :lighter " Rails"
   (when projectile-rails-mode
-    (and projectile-rails-expand-snippet (projectile-rails-expand-snippet-maybe))
     (and projectile-rails-add-keywords (projectile-rails-add-keywords-for-file-type))
     (projectile-rails-set-assets-dirs)
     (projectile-rails-set-fixture-dirs)))
+
+(dolist (mode '(ruby-mode-hook enh-ruby-mode-hook))
+  (add-hook mode #'projectile-rails-expand-snippet-maybe))
 
 ;;;###autoload
 (defun projectile-rails-on ()
