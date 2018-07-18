@@ -53,6 +53,17 @@ Scenario: Opening a new namespaced controller
   """
 
   @pending
+Scenario: Opening a new job
+  When I open the app file "app/jobs/foo_job.rb"
+  And I turn on projectile-rails-mode
+  Then disregarding whitespaces I should see:
+  """
+  class FooJob < ApplicationJob
+
+  end
+  """
+
+  @pending
 Scenario: Opening a new lib
   When I open the app file "lib/fooing.rb"
   And I turn on projectile-rails-mode

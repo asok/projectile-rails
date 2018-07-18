@@ -911,6 +911,11 @@ This only works when yas package is installed."
             (format
              "class %s < ${1:ApplicationController}\n$2\nend"
              (s-join "::" (projectile-rails-classify (match-string 1 name))))))
+          ((string-match "app/jobs/\\(.+\\)\\.rb$" name)
+           (projectile-rails--expand-snippet
+            (format
+             "class %s < ${1:ApplicationJob}\n$2\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
           ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
            (projectile-rails--expand-snippet
             (format
