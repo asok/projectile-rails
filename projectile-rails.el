@@ -375,7 +375,7 @@ Argument DIR is the directory to which the search should be narrowed."
   "Like `projectile-dir-files' but take `projectile-rails-root'."
   (--map
    (substring it (length (projectile-rails-root-relative-to-project-root)))
-   (projectile-dir-files directory)))
+   (projectile-dir-files (projectile-rails-root) directory)))
 
 (defun projectile-rails-choices (dirs)
   "Uses `projectile-rails-dir-files' function to find files in directories.
@@ -1137,7 +1137,7 @@ DIRS are directories where to look for assets."
     (projectile-rails-ff
      (loop for dir in dirs
            for re = (s-lex-format "${dir}${name}\\(\\..+\\)*$")
-           for files = (projectile-dir-files (projectile-rails-expand-root dir))
+           for files = (projectile-dir-files (projectile-rails-root) (projectile-rails-expand-root dir))
            for file = (--first (string-match-p re it) files)
            until file
            finally return (and file (projectile-rails-expand-root file))))))
