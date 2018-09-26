@@ -6,10 +6,7 @@ before_install:
   - evm install $EVM_EMACS --use --skip
   - cask
 env:
-  # https://github.com/cask/cask/issues/176
-  # - EVM_EMACS=emacs-24.1-bin
-  # - EVM_EMACS=emacs-24.2-bin
-  - EVM_EMACS=emacs-24.5-bin
+  - EVM_EMACS=emacs-25.1-travis
 script:
   - emacs --version
   - make test
