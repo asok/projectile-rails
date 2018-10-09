@@ -514,7 +514,7 @@ The bound variable is \"filename\"."
 (defun projectile-rails-find-migration ()
   "Find a migration."
   (interactive)
-  (projectile-rails-find-resource "migration: " '(("db/migrate/" "db/migrate/\\(.+\\)\\.rb$"))))
+  (projectile-rails-find-resource "migration: " '(("db/migrate/" "\\(.+\\)\\.rb$"))))
 
 (defun projectile-rails-find-javascript ()
   "Find a javascript file."
