@@ -413,6 +413,7 @@ The bound variable is \"filename\"."
                      (projectile-completing-read ,prompt (projectile-rails-hash-keys choices))
                      (user-error "The completion system you're using does not allow inputting arbitrary value.")))
           (filepath (gethash filename choices)))
+
      (if filepath
          (projectile-rails-goto-file filepath)
        (when ,newfile-template
@@ -528,8 +529,7 @@ The bound variable is \"filename\"."
   (interactive)
   (projectile-rails-find-resource
    "component: "
-   `((,projectile-rails-component-dir
-      ,(concat projectile-rails-component-dir "\\(.+\\.[^.]+\\)$")))))
+   `((,projectile-rails-component-dir "\\(.+\\.[^.]+\\)$"))))
 
 (defun projectile-rails-find-stylesheet ()
   "Find a stylesheet file."
@@ -660,7 +660,7 @@ The bound variable is \"filename\"."
   (interactive)
   (projectile-rails-find-current-resource
    (first projectile-rails-fixture-dirs)
-   "\\(?:test\\|spec\\)/\\(?:fixtures\\|factories\\|fabricators\\)/\\(?:${singular}\\(?:_fabricator\\)?\\|${plural}\\)\\.\\(?:yml\\|rb\\)"
+   "\\(?:${singular}\\(?:_fabricator\\)?\\|${plural}\\)\\.\\(?:yml\\|rb\\)"
    'projectile-rails-find-fixture))
 
 (defun projectile-rails-find-current-migration ()

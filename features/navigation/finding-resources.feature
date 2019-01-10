@@ -61,7 +61,7 @@ Feature: Finding resources
 
   Scenario: Finding javascript
     And file "app/assets/javascripts/foo.js" exists
-    When I run command "projectile-rails-find-javascript" selecting "assets/javascripts/foo"
+    When I run command "projectile-rails-find-javascript" selecting "foo"
     Then I am in file "app/assets/javascripts/foo.js"
 
   Scenario: Finding component
@@ -76,5 +76,5 @@ Feature: Finding resources
 
   Scenario: Finding stylesheet
     And file "app/assets/stylesheets/foo.css" exists
-    When I run command "projectile-rails-find-stylesheet" selecting "assets/stylesheets/foo"
+    When I run command "projectile-rails-find-stylesheet" selecting "foo"
     Then I am in file "app/assets/stylesheets/foo.css"

@@ -9,7 +9,7 @@ Background:
   And I turn on projectile-rails-mode
 
 Scenario: Finding environment file inside 'config/environments/' directory
-  When I run command "projectile-rails-find-environment" selecting "production"
+  When I run command "projectile-rails-find-environment" selecting "environments/production"
   Then I am in file "config/environments/production.rb"
 
 Scenario: Finding environment "config/application.rb" file
