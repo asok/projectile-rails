@@ -1,6 +1,6 @@
 (source melpa)
 
-(package "projectile-rails" "0.5.0" "Minor mode for Rails projects based on projectile-mode")
+(package "projectile-rails" "0.17.0" "Minor mode for Rails projects based on projectile-mode")
 
 (depends-on "projectile")
 (depends-on "inf-ruby")
