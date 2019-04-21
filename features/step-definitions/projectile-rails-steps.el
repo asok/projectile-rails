@@ -203,3 +203,15 @@
 (And "I debug"
      (lambda ()
        (print (buffer-string))))
+
+(And "^I set \\(.+\\) to \"\\(.+\\)\"$"
+     "Set some variable."
+     (lambda (var val)
+       (set (intern var) val)))
+
+(And "^I nilify \\(.+\\)$"
+     "Set some variable to nil."
+     (lambda (var)
+       (set (intern var) nil)
+       (print "nilify")
+       (print projectile-rails-custom-generate-command)))
