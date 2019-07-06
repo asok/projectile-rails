@@ -65,7 +65,8 @@
 
 (Given "^I turn on snippet expansion"
        (lambda ()
-         (setq projectile-rails-expand-snippet t)))
+         (setq projectile-rails-expand-snippet t)
+         (setq projectile-rails-expand-snippet-with-magic-comment t)))
 
 (Given "^I turn off snippet expansion"
        (lambda ()

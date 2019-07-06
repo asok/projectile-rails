@@ -12,6 +12,8 @@ Scenario: Opening new model
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   class Foo < ActiveRecord::Base
 
   end
@@ -24,6 +26,8 @@ Scenario: Opening new model when ApplicationRecord exists
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   class Foo < ApplicationRecord
 
   end
@@ -35,6 +39,8 @@ Scenario: Opening new controller
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   class FoosController < ApplicationController
 
   end
@@ -47,6 +53,8 @@ Scenario: Opening a new namespaced controller
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   class Admin::FoosController < ApplicationController
 
   end
@@ -58,6 +66,8 @@ Scenario: Opening a new job
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   class FooJob < ApplicationJob
 
   end
@@ -69,6 +79,8 @@ Scenario: Opening a new lib
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   module Fooing
 
   end
@@ -80,6 +92,8 @@ Scenario: Opening a new file under the app directory
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   module Admin
     class FooJob
 
@@ -94,6 +108,8 @@ Scenario: Opening a new namespaced lib
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   module Admin
     module Fooing
 
@@ -107,6 +123,8 @@ Scenario: Opening a new spec
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   require "rails_helper"
 
   RSpec.describe Bar do
@@ -120,6 +138,8 @@ Scenario: Opening a new concern
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   module Foo
     extend ActiveSupport::Concern
 
@@ -132,6 +152,8 @@ Scenario: Opening a new helper
   And I turn on projectile-rails-mode
   Then disregarding whitespaces I should see:
   """
+  # frozen_string_literal: true
+
   module FooHelper
 
   end
@@ -147,6 +169,8 @@ Scenario: Opening a new spec and the buffer is not empty
   And I turn on projectile-rails-mode
   Then I should not see:
   """
+  # frozen_string_literal: true
+
   require "spec_helper"
   """
 
@@ -157,5 +181,7 @@ Scenario: Disabling the feature
   And I turn on projectile-rails-mode
   Then I should not see:
   """
+  # frozen_string_literal: true
+
   require "spec_helper"
   """
