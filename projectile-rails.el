@@ -439,16 +439,17 @@ If users chooses a non existant file and NEWFILE-TEMPLATE is not nil
 it will use that variable to interpolate the name for the new file.
 NEWFILE-TEMPLATE will be the argument for `s-lex-format'.
 The bound variable is \"filename\"."
-  `(let* ((choices (projectile-rails-choices ,dirs))
-          (filename (or
-                     (projectile-completing-read ,prompt (projectile-rails-hash-keys choices))
-                     (user-error "The completion system you're using does not allow inputting arbitrary value.")))
-          (filepath (gethash filename choices)))
-
-     (if filepath
-         (projectile-rails-goto-file filepath)
-       (when ,newfile-template
-         (projectile-rails-goto-file (s-lex-format ,newfile-template) t)))))
+  `(lexical-let ((choices (projectile-rails-choices ,dirs)))
+     (projectile-completing-read
+      ,prompt
+      (projectile-rails-hash-keys choices)
+      :action (lambda (c)
+                (let* ((filepath (gethash c choices))
+                       (filename c)) ;; so `s-lex-format' can interpolate FILENAME
+                  (if filepath
+                      (projectile-rails-goto-file filepath)
+                    (when ,newfile-template
+                      (projectile-rails-goto-file (s-lex-format ,newfile-template) t))))))))
 
 (defun projectile-rails-find-model ()
   "Find a model."
