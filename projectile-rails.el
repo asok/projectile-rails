@@ -403,10 +403,11 @@ Argument DIR is the directory to which the search should be narrowed."
               (append keywords projectile-rails-active-support-keywords)))))
 
 (defun projectile-rails-dir-files (directory)
-  "Like `projectile-dir-files' but take `projectile-rails-root'."
-  (--map
-   (substring it (length (projectile-rails-root-relative-to-project-root)))
-   (projectile-dir-files directory)))
+  "Wrapper around `projectile-dir-files', list the files in DIRECTORY and in its sub-directories.
+
+Files are returned as relative paths to DIRECTORY. This function was created to handle the case when rails is inside a
+subdirectory, but nowadays it does nothing as `projectile-dir-files' does the right thing."
+  (projectile-dir-files directory))
 
 (defun projectile-rails-choices (dirs)
   "Uses `projectile-rails-dir-files' function to find files in directories.
