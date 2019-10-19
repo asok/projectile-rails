@@ -246,10 +246,13 @@
   :group 'projectile-rails
   :type 'string)
 
-(defcustom projectile-rails-verify-root-file "config/routes.rb"
-  "The file that is used to verify rails root directory."
+(defcustom projectile-rails-verify-root-files '("config/routes.rb" "config/environment.rb")
+  "The list of files that is used to verify rails root directory.
+When any of the files are found it means that this is a rails app."
   :group 'projectile-rails
   :type 'string)
+
+(define-obsolete-variable-alias 'projectile-rails-verify-root-file 'projectile-rails-verify-root-files)
 
 (defcustom projectile-rails-custom-console-command nil
   "When set it will be use instead of a preloader as the command for running console."
@@ -777,6 +780,13 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
   "Generate a cache key based on the current directory and the given KEY."
   (format "%s-%s" default-directory key))
 
+(defun projectile-rails--rails-app-p (root)
+  "Returns t if any of the relative files in `projectile-rails-verify-root-files' is found.
+ROOT is used to expand the relative files."
+  (--any-p
+   (file-exists-p (expand-file-name it root))
+   (-list projectile-rails-verify-root-files)))
+
 (defun projectile-rails-root ()
   "Returns rails root directory if this file is a part of a Rails application else nil"
   (let* ((cache-key (projectile-rails-cache-key "root"))
@@ -784,7 +794,7 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
     (or cache-value
         (ignore-errors
           (let ((root (projectile-locate-dominating-file default-directory projectile-rails-root-file)))
-            (when (file-exists-p (expand-file-name projectile-rails-verify-root-file root))
+            (when (projectile-rails--rails-app-p root)
               (puthash cache-key root projectile-rails-cache-data)
               root))))))
 
