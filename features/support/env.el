@@ -83,6 +83,7 @@ end")
                      "app/mailers/"
                      "config/"
                      "config/environments/"
+                     "config/environment.rb"
                      "config/initializers/"
                      "config/locales/"
                      "config/webpack/"
