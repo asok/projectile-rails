@@ -344,7 +344,7 @@ If a preloader is running the value for the given prop is returned."
 The bound variables are \"singular\" and \"plural\".
 Argument DIR is the directory to which the search should be narrowed."
   `(let* ((singular (projectile-rails-current-resource-name))
-          (plural (pluralize-string singular))
+          (plural (inflection-pluralize-string singular))
           (abs-current-file (buffer-file-name (current-buffer)))
           (current-file (if abs-current-file
                             (file-relative-name abs-current-file
@@ -734,7 +734,7 @@ The bound variable is \"filename\"."
                           do (if (string-match re file-name)
                                  (return (match-string 1 file-name)))))))
     (and name
-         (singularize-string name))))
+         (inflection-singularize-string name))))
 
 (defun projectile-rails-list-entries (fun dir)
   "Call FUN on DIR being a relative directory within a rails project.
@@ -1042,7 +1042,7 @@ This only works when yas package is installed."
     (projectile-rails-goto-gem (thing-at-point 'filename)) t)
 
    ((string-match-p "^[a-z]" name)
-    (projectile-rails-find-constant (singularize-string name)) t)
+    (projectile-rails-find-constant (inflection-singularize-string name)) t)
 
    ((string-match-p "^\\(::\\)?[A-Z]" name)
     (projectile-rails-goto-constant-at-point) t)))
