@@ -259,6 +259,11 @@ When any of the files are found it means that this is a rails app."
   :group 'projectile-rails
   :type 'string)
 
+(defcustom projectile-rails-custom-dbconsole-command nil
+  "When set it will be use instead of a preloader as the command for running dbconsole."
+  :group 'projectile-rails
+  :type 'string)
+
 (defcustom projectile-rails-custom-server-command nil
   "When set it will be use instead of a preloader as the command for running server."
   :group 'projectile-rails
