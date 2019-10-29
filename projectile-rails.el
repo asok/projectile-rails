@@ -1633,8 +1633,7 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (projectile-rails-set-assets-dirs)
     (projectile-rails-set-fixture-dirs)))
 
-(dolist (mode '(ruby-mode-hook enh-ruby-mode-hook))
-  (add-hook mode #'projectile-rails-expand-snippet-maybe))
+(add-hook 'projectile-rails-mode-hook #'projectile-rails-expand-snippet-maybe)
 
 ;;;###autoload
 (defun projectile-rails-on ()
