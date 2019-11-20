@@ -211,10 +211,12 @@
   :group 'projectile-rails
   :type 'boolean)
 
-(defcustom projectile-rails-keymap-prefix (kbd "C-c r")
+(defcustom projectile-rails-keymap-prefix nil
   "Keymap prefix for `projectile-rails-mode'."
   :group 'projectile-rails
   :type 'string)
+
+(make-obsolete-variable 'projectile-keymap-prefix "Use (define-key projectile-rails-mode-map (kbd ...) 'projectile-rails-command-map) instead." "0.20.0")
 
 (defcustom projectile-rails-server-mode-ansi-colors t
   "If not nil `projectile-rails-server-mode' will apply the ansi colors in its buffer."
@@ -1562,7 +1564,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 
 (defvar projectile-rails-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map projectile-rails-keymap-prefix 'projectile-rails-command-map)
+    (when projectile-rails-keymap-prefix
+      (define-key map projectile-rails-keymap-prefix 'projectile-rails-command-map))
     map)
   "Keymap for `projectile-rails-mode'.")
 
