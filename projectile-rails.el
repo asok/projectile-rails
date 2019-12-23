@@ -911,8 +911,8 @@ The buffer for interacting with SQL client is created via `sql-product-interacti
      (sql-set-product-feature product :sqli-login '())
      (sql-set-product-feature product :sqli-options '())
      (sql-set-product-feature product :sqli-program (car commands))
-     (sql-set-product-feature product :sqli-comint-func (lambda (_ __)
-                                                          (sql-comint product (cdr commands))))
+     (sql-set-product-feature product :sqli-comint-func (lambda (_ __ &optional buf-name)
+                                                          (sql-comint product (cdr commands) buf-name)))
 
      (sql-product-interactive product)
 
