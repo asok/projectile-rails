@@ -53,11 +53,18 @@ end")
     (when file-in-directory
       (f-delete file-in-directory t))))
 
-(require 'projectile-rails)
 (require 'espuds)
 (require 'ert)
 
 (Setup
+ ;; This needs to be set before the package is required.
+ (setq projectile-rails-keymap-prefix (kbd "C-c r"))
+
+ (require 'yasnippet)
+ (require 'bundler)
+ (require 'rspec-mode)
+ (require 'projectile-rails)
+
  (make-temp-file projectile-rails-test-app-path t)
  (loop for path in `("app/"
                      "app/assets/"
@@ -116,11 +123,6 @@ end")
                      ,(concat temporary-file-directory "spring/"))
        do (projectile-rails-test-touch-file path))
 
- (require 'yasnippet)
- (require 'bundler)
- (require 'rspec-mode)
- (require 'projectile-rails)
-
  (setq kill-buffer-query-functions nil
        projectile-completion-system 'default
        projectile-indexing-method 'native
@@ -128,7 +130,6 @@ end")
  (yas-global-mode)
 
  (cd projectile-rails-test-app-path))
-
 
 (Before
  (loop for file in (list projectile-rails-test-spring-pid-file

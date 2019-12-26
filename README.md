@@ -50,20 +50,36 @@ Probably you should read Projectile's [README](https://github.com/bbatsov/projec
 
 ### Customizing
 
+#### Keymap prefix
+Prior to version 0.20.0 the keymap prefix used to be setup. Following the [convention](https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html) we have stopped doing this automatically.
+Now you need to attach the mode's map to the desired key yourself.
+For example to get the old key you can do:
+```el
+(define-key projectile-rails-mode-map (kbd "C-c r") 'projectile-rails-command-map)
+```
+
+#### Keywords
+
 The mode's buffers will have the Rails keywords highlighted. To turn it off:
 ```el
 (setq projectile-rails-add-keywords nil)
 ```
+
+#### Snippets
 
 If you have [yas-minor-mode or yas-global-mode](https://github.com/capitaomorte/yasnippet) enabled and you open a new file it will be filled with a skeleton class. To turn it off:
 ```el
 (setq projectile-rails-expand-snippet nil)
 ```
 
+#### ANSI Colors
+
 By default the buffer of the `projectile-rails-server-mode` is applying the ansi colors. If you find it slow you can disable it with:
 ```el
 (setq projectile-rails-server-mode-ansi-colors nil)
 ```
+
+#### External commands
 
 You can customize the way the `rails`, `spring` and `zeus` commands are invoked. For example if you want to use binstubs:
 
@@ -74,6 +90,9 @@ You can customize the way the `rails`, `spring` and `zeus` commands are invoked.
 ```
 
 ### Interactive commands
+
+The keymap is unbound by default. The following keybinding assume that you've bound it to `C-c r`. See [Keymap prefix](#keymap-prefix) section for details.
+-
 
 Command                                  | Keybinding                                 | Description
 -----------------------------------------|--------------------------------------------|-------------------------------------------------------
@@ -128,18 +147,6 @@ You might want to create your own keybinding for your favorite commands. For exa
 (define-key projectile-rails-mode-map (kbd "s-RET") 'projectile-rails-goto-file-at-point)
 (define-key projectile-rails-mode-map (kbd "C-c g")  projectile-rails-mode-goto-map)
 ```
-
-### Defining the keymap prefix
-
-Similar to Projectile Rails there is a variable exposed for defining the prefix for the mode's keymap.
-The name of the variable is `projectile-rails-keymap-prefix`.
-To attach the `projectile-rails` keymap to the `projectiles` keymap one can do:
-
-```el
-(setq projectile-rails-keymap-prefix (kbd "C-c p C-r"))
-```
-
-Please note though that in order for this code to work it has to be called before the mode is required/loaded.
 
 ### Discover
 
