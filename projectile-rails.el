@@ -931,9 +931,7 @@ This only works when yas package is installed."
              (fboundp 'yas-expand-snippet)
              (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
              (s-blank? (buffer-string))
-             (projectile-rails-expand-corresponding-snippet)
-             (let ((inhibit-message t))
-               (indent-region (point-min) (point-max))))))
+             (projectile-rails-expand-corresponding-snippet))))
 
 (defun projectile-rails--snippet-for-module (last-part name)
   "Return snippet as string for a file that holds a module."
@@ -959,7 +957,7 @@ This only works when yas package is installed."
   (when projectile-rails-expand-snippet-with-magic-comment
     (setq snippet (format "# frozen_string_literal: true\n\n%s" snippet)))
 
-  (yas-expand-snippet snippet))
+  (yas-expand-snippet snippet (point-min) (point-max) '((yas-indent-line 'nothing))))
 
 (defun projectile-rails-expand-corresponding-snippet ()
   "Call `projectile-rails--expand-snippet' with a snippet corresponding to the current file."
