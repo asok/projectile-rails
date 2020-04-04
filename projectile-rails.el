@@ -202,7 +202,7 @@
   :type '(repeat string))
 
 (defcustom projectile-rails-expand-snippet t
-  "If not nil newly created buffers will be pre-filled with class skeleton."
+  "If not nil `auto-insert' will be setup to expand snippets in the newly created buffers."
   :group 'projectile-rails
   :type 'boolean)
 
@@ -923,15 +923,41 @@ The buffer for interacting with SQL client is created via `sql-product-interacti
      (sql-set-product-feature product :sqli-options sqli-options)
      (sql-set-product-feature product :sqli-login sqli-login))))
 
-(defun projectile-rails-expand-snippet-maybe ()
-  "Expand snippet corresponding to the current file.
+(defun projectile-rails--auto-insert-setup-p (current-project-cond)
+  "Return t if passed CURRENT-PROJECT-COND has been setup for `auto-insert'."
+  (seq-some
+   (pcase-lambda (`(,cond . ,action))
+     (equal current-project-cond cond))
+   auto-insert-alist))
 
-This only works when yas package is installed."
+(defun projectile-rails--setup-auto-insert ()
+  "Call `define-auto-insert' with condition for ruby files under the current project.
+
+If `auto-insert-alist' holds already the condition for the current project it does nothing.
+So it safe to call it many times like in a minor mode hook."
+  (let* ((file-re (format "^%s.*\\.rb$" (projectile-rails-root)))
+         (current-project-cond `(,file-re . "projectile-rails")))
+    (unless (projectile-rails--auto-insert-setup-p current-project-cond)
+      (define-auto-insert
+        current-project-cond
+       [
+        (lambda () (insert (projectile-rails-corresponding-snippet)))
+        projectile-rails-expand-yas-buffer
+        ]
+       ))))
+
+(defun projectile-rails-setup-auto-insert-maybe ()
+  "Setup `auto-insert' for the current project.
+
+In order to expand snippet in newly created buffers variable
+`projectile-rails-expand-snippet' needs to be non-nil and `auto-insert' enabled."
   (when (and projectile-rails-expand-snippet
              (fboundp 'yas-expand-snippet)
-             (and (buffer-file-name) (not (file-exists-p (buffer-file-name))))
-             (s-blank? (buffer-string))
-             (projectile-rails-expand-corresponding-snippet))))
+             (projectile-rails--setup-auto-insert))))
+
+(defun projectile-rails-expand-yas-buffer ()
+  "Called right after buffer is populate with snippet by `auto-insert' mode."
+  (yas-expand-snippet (buffer-string) (point-min) (point-max) '((yas-indent-line 'nothing))))
 
 (defun projectile-rails--snippet-for-module (last-part name)
   "Return snippet as string for a file that holds a module."
@@ -950,59 +976,46 @@ This only works when yas package is installed."
      "class %s < ${1:ActiveRecord::Base}\n$2\nend")
    (s-join "::" (projectile-rails-classify name))))
 
-(defun projectile-rails--expand-snippet (snippet)
-  "Turn on `yas-minor-mode' and expand SNIPPET."
-  (yas-minor-mode +1)
-
-  (when projectile-rails-expand-snippet-with-magic-comment
-    (setq snippet (format "# frozen_string_literal: true\n\n%s" snippet)))
-
-  (yas-expand-snippet snippet (point-min) (point-max) '((yas-indent-line 'nothing))))
-
-(defun projectile-rails-expand-corresponding-snippet ()
+(defun projectile-rails-corresponding-snippet ()
   "Call `projectile-rails--expand-snippet' with a snippet corresponding to the current file."
-  (let ((name (buffer-file-name)))
-    (cond ((string-match "app/[^/]+/concerns/\\(.+\\)\\.rb$" name)
-           (projectile-rails--expand-snippet
-            (format
-             "module %s\n  extend ActiveSupport::Concern\n  $0\nend"
-             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
-          ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
-           (projectile-rails--expand-snippet
-            (format
-             "class %s < ${1:ApplicationController}\n$2\nend"
-             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
-          ((string-match "app/jobs/\\(.+\\)\\.rb$" name)
-           (projectile-rails--expand-snippet
-            (format
-             "class %s < ${1:ApplicationJob}\n$2\nend"
-             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
-          ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
-           (projectile-rails--expand-snippet
-            (format
-             "require \"${1:rails_helper}\"\n\nRSpec.describe %s do\n  $0\nend"
-             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
-          ((string-match "app/models/\\(.+\\)\\.rb$" name)
-           (projectile-rails--expand-snippet
-            (projectile-rails--snippet-for-model (match-string 1 name))))
-          ((string-match "app/helpers/\\(.+\\)_helper\\.rb$" name)
-           (projectile-rails--expand-snippet
-            (format
-             "module %sHelper\n$1\nend"
-             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
-          ((string-match "lib/\\(.+\\)\\.rb$" name)
-           (projectile-rails--expand-snippet
-            (projectile-rails--snippet-for-module "${1:module} %s\n$2\nend" name)))
-          ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
-           (projectile-rails--expand-snippet
-            (projectile-rails--snippet-for-module "${1:class} %s\n$2\nend" name))))))
+  (let* ((name (buffer-file-name))
+         (snippet
+         (cond ((string-match "app/[^/]+/concerns/\\(.+\\)\\.rb$" name)
+                (format
+                 "module %s\n  extend ActiveSupport::Concern\n  $0\nend"
+                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+               ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
+                (format
+                 "class %s < ${1:ApplicationController}\n$2\nend"
+                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+               ((string-match "app/jobs/\\(.+\\)\\.rb$" name)
+                (format
+                 "class %s < ${1:ApplicationJob}\n$2\nend"
+                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+               ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
+                (format
+                 "require \"${1:rails_helper}\"\n\nRSpec.describe %s do\n  $0\nend"
+                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+               ((string-match "app/models/\\(.+\\)\\.rb$" name)
+                (projectile-rails--snippet-for-model (match-string 1 name)))
+               ((string-match "app/helpers/\\(.+\\)_helper\\.rb$" name)
+                (format
+                 "module %sHelper\n$1\nend"
+                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+               ((string-match "lib/\\(.+\\)\\.rb$" name)
+                (projectile-rails--snippet-for-module "${1:module} %s\n$2\nend" name))
+               ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
+                (projectile-rails--snippet-for-module "${1:class} %s\n$2\nend" name)))))
+    (if (and snippet projectile-rails-expand-snippet-with-magic-comment)
+        (format "# frozen_string_literal: true\n\n%s" snippet)
+      snippet)))
 
 (defun projectile-rails--goto-file-at-point (f)
   "Let name and line variables and call F."
   (let ((name (projectile-rails-name-at-point))
         (line (projectile-rails-current-line))
         (case-fold-search nil))
-     (funcall f name line)))
+    (funcall f name line)))
 
 (defun projectile-rails--views-goto-file-at-point (name line)
   (cond
@@ -1634,8 +1647,6 @@ If file does not exist and ASK in not nil it will ask user to proceed."
     (projectile-rails-set-assets-dirs)
     (projectile-rails-set-fixture-dirs)))
 
-(add-hook 'projectile-rails-mode-hook #'projectile-rails-expand-snippet-maybe)
-
 ;;;###autoload
 (defun projectile-rails-on ()
   "Enable `projectile-rails-mode' minor mode if this is a rails project."
@@ -1649,6 +1660,8 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (define-globalized-minor-mode projectile-rails-global-mode
   projectile-rails-mode
   projectile-rails-on)
+
+(add-hook 'projectile-rails-mode-hook #'projectile-rails-setup-auto-insert-maybe)
 
 (defun projectile-rails-off ()
   "Disable `projectile-rails-mode' minor mode."
