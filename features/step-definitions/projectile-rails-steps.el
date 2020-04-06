@@ -13,6 +13,11 @@
       (lambda ()
         (projectile-rails-off)))
 
+(When "^I turn on auto-insert-mode$"
+      (lambda ()
+        (auto-insert-mode)
+        (setq auto-insert-query nil)))
+
 (When "^I run command \"\\(.+\\)\" \\(?:selecting\\|inputting\\) \"\\(.+\\)\"$"
       (lambda (command argument)
         (When "I start an action chain")

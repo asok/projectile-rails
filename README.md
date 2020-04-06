@@ -67,10 +67,12 @@ The mode's buffers will have the Rails keywords highlighted. To turn it off:
 
 #### Snippets
 
-If you have [yas-minor-mode or yas-global-mode](https://github.com/capitaomorte/yasnippet) enabled and you open a new file it will be filled with a skeleton class. To turn it off:
+If you have [yas-minor-mode or yas-global-mode](https://github.com/capitaomorte/yasnippet) and `auto-insert-mode` enabled and you open a new file it will be filled with a skeleton class. To turn it off:
 ```el
 (setq projectile-rails-expand-snippet nil)
 ```
+
+Note: this variable controls whether `auto-insert-mode` is configured, that is if you set this variable to nil after you opened any rails file the snippets will still be inserted. In order to disable this feature in such scenarios just disable `auto-insert-mode` instead.
 
 #### ANSI Colors
 

@@ -141,6 +141,7 @@ end")
 
 (After
  (yas-exit-all-snippets)
+ (auto-insert-mode -1)
  (--each (buffer-list)
    (with-current-buffer it
      (when projectile-rails-mode

@@ -30,8 +30,8 @@ Scenario: Font locking controllers keywords
   And I should see "alias_attribute" font locked
 
 Scenario: Font locking migrations keywords
-  Given file "db/migrate/20131118160600_create_users.rb" exists
-  And I open the app file "db/migrate/20131118160600_create_users.rb"
+  Given file "db/migrate/20131118160601_create_users.rb" exists
+  And I open the app file "db/migrate/20131118160601_create_users.rb"
   And I insert:
   """
   create_table
@@ -43,8 +43,8 @@ Scenario: Font locking migrations keywords
   And I should see "alias_attribute" font locked
 
 Scenario: Disabling the feature
-  Given file "db/migrate/20131118160600_create_users.rb" exists
-  And I open the app file "db/migrate/20131118160600_create_users.rb"
+  Given file "db/migrate/20131118160600_create_another_users.rb" exists
+  And I open the app file "db/migrate/20131118160600_create_another_users.rb"
   And I insert:
   """
   alias_attribute
