@@ -37,6 +37,7 @@
 
 (require 'cl)
 (require 'projectile)
+(require 'autoinsert)
 (require 'inf-ruby)
 (require 'inflections)
 (require 'f)
