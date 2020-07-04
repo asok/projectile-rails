@@ -49,7 +49,7 @@ end")
   (let* ((files '("spec/fixtures/" "spec/factories/" "spec/fabricators/"
                   "test/fixtures/" "test/factories/" "test/fabricators/"))
          (fullpath (--map (f-expand it projectile-rails-test-app-path) files))
-         (file-in-directory (first (--filter (f-exists? it) fullpath))))
+         (file-in-directory (cl-first (--filter (f-exists? it) fullpath))))
     (when file-in-directory
       (f-delete file-in-directory t))))
 
@@ -66,7 +66,7 @@ end")
  (require 'projectile-rails)
 
  (make-temp-file projectile-rails-test-app-path t)
- (loop for path in `("app/"
+ (cl-loop for path in `("app/"
                      "app/assets/"
                      "app/assets/javascripts/"
                      "app/assets/stylesheets/"
@@ -132,7 +132,7 @@ end")
  (cd projectile-rails-test-app-path))
 
 (Before
- (loop for file in (list projectile-rails-test-spring-pid-file
+ (cl-loop for file in (list projectile-rails-test-spring-pid-file
                          projectile-rails-test-zeus-pid-file
                          (concat projectile-rails-test-zeus-pid-file "s"))
        do (when (f-exists? file) (f-delete file)))
