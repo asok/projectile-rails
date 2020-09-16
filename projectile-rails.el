@@ -35,7 +35,7 @@
 ;;
 ;;; Code:
 
-(require 'cl)
+(eval-when-compile (require 'cl-lib))
 (require 'projectile)
 (require 'autoinsert)
 (require 'inf-ruby)
@@ -406,7 +406,7 @@ Argument DIR is the directory to which the search should be narrowed."
 
 (defun projectile-rails-add-keywords-for-file-type ()
   "Apply extra font lock keywords specific to models, controllers etc."
-  (loop for (re keywords) in `(("_controller\\.rb$"   ,projectile-rails-controller-keywords)
+  (cl-loop for (re keywords) in `(("_controller\\.rb$"   ,projectile-rails-controller-keywords)
                                ("app/models/.+\\.rb$" ,projectile-rails-model-keywords)
                                ("db/migrate/.+\\.rb$" ,projectile-rails-migration-keywords))
         do (when (and (buffer-file-name) (string-match-p re (buffer-file-name)))
@@ -428,8 +428,8 @@ Optional third element can be present in the DIRS list. The third element will b
 the filename in the resulting choice.
 Returns a hash table with keys being short names (choices) and values being relative paths to the files."
   (let ((hash (make-hash-table :test 'equal)))
-    (loop for (dir re prefix) in dirs do
-          (loop for file in (projectile-rails-dir-files (projectile-rails-expand-root dir)) do
+    (cl-loop for (dir re prefix) in dirs do
+          (cl-loop for file in (projectile-rails-dir-files (projectile-rails-expand-root dir)) do
                 (when (string-match re file)
                   (puthash
                    (concat (or prefix "") (match-string 1 file))
@@ -452,7 +452,7 @@ If users chooses a non existant file and NEWFILE-TEMPLATE is not nil
 it will use that variable to interpolate the name for the new file.
 NEWFILE-TEMPLATE will be the argument for `s-lex-format'.
 The bound variable is \"filename\"."
-  `(lexical-let ((choices (projectile-rails-choices ,dirs)))
+  `(let ((choices (projectile-rails-choices ,dirs)))
      (projectile-completing-read
       ,prompt
       (projectile-rails-hash-keys choices)
@@ -704,7 +704,7 @@ The bound variable is \"filename\"."
   "Find a fixture for the current resource."
   (interactive)
   (projectile-rails-find-current-resource
-   (first projectile-rails-fixture-dirs)
+   (cl-first projectile-rails-fixture-dirs)
    "\\(?:${singular}\\(?:_fabricator\\)?\\|${plural}\\)\\.\\(?:yml\\|rb\\)"
    'projectile-rails-find-fixture))
 
@@ -734,9 +734,9 @@ The bound variable is \"filename\"."
   "Return a resource name extracted from the name of the currently visiting file."
   (let* ((file-name (buffer-file-name))
          (name (and file-name
-                    (loop for re in projectile-rails-resource-name-re-list
+                    (cl-loop for re in projectile-rails-resource-name-re-list
                           do (if (string-match re file-name)
-                                 (return (match-string 1 file-name)))))))
+                                 (cl-return (match-string 1 file-name)))))))
     (and name
          (inflection-singularize-string name))))
 
@@ -754,7 +754,7 @@ Each filepath will have the path to the project discarded."
 
 The opened buffer will have `auto-revert-tail-mode' turned on."
   (interactive)
-  (let ((logs-dir (loop for dir in '("log/" "spec/dummy/log/" "test/dummy/log/")
+  (let ((logs-dir (cl-loop for dir in '("log/" "spec/dummy/log/" "test/dummy/log/")
                        until (projectile-rails--file-exists-p dir)
                        finally return dir)))
 
@@ -1097,7 +1097,7 @@ Will try to look for a template or partial file, and assets file."
   (interactive)
   (projectile-rails--goto-file-at-point
    (lambda (name line)
-     (loop for f in '(projectile-rails--stylesheet-goto-file-at-point
+     (cl-loop for f in '(projectile-rails--stylesheet-goto-file-at-point
                       projectile-rails--javascript-goto-file-at-point
                       projectile-rails--views-goto-file-at-point
                       projectile-rails--ruby-goto-file-at-point)
@@ -1213,7 +1213,7 @@ DIRS are directories where to look for assets."
   (let ((name
          (projectile-rails-sanitize-name (thing-at-point 'filename))))
     (projectile-rails-ff
-     (loop for dir in dirs
+     (cl-loop for dir in dirs
            for re = (s-lex-format "${name}\\(\\..+\\)*$")
            for files = (projectile-dir-files (projectile-rails-expand-root dir))
            for file = (--first (string-match-p re it) files)
@@ -1300,7 +1300,7 @@ If called interactively will ask user for the PARTIAL-NAME."
         (snippet (cdr (assoc (f-ext partial-name) projectile-rails-extracted-region-snippet)))
         (path (replace-regexp-in-string "\/_" "/" (s-chop-prefix
                                                    (projectile-rails-expand-root "app/views/")
-                                                   (first (s-slice-at "\\." partial-name))))))
+                                                   (cl-first (s-slice-at "\\." partial-name))))))
     (kill-region (region-beginning) (region-end))
     (deactivate-mark)
     (when (projectile-rails--view-p (buffer-file-name))
@@ -1338,7 +1338,7 @@ If called interactively will ask user for the PARTIAL-NAME."
           default-directory))))
 
 (defun projectile-rails--goto-template-at-point (dir name format)
-  (loop for processor in '("erb" "haml" "slim")
+  (cl-loop for processor in '("erb" "haml" "slim")
         for template = (s-lex-format "${dir}${name}.${format}.${processor}")
         for partial = (s-lex-format "${dir}_${name}.${format}.${processor}")
         until (or
