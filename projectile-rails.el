@@ -832,6 +832,10 @@ ROOT is used to expand the relative files."
                                  :spring (concat projectile-rails-spring-command " rails console")
                                  :zeus "zeus console"
                                  :vanilla (concat projectile-rails-vanilla-command " console"))))
+
+     (when (inf-ruby--irb-needs-nomultiline-p)
+       (setq rails-console-command (concat rails-console-command " -- --nomultiline")))
+
      (with-demoted-errors
          (inf-ruby-console-run
           (if (>= (or (car arg) 0) 4)
