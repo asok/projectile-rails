@@ -946,7 +946,9 @@ So it safe to call it many times like in a minor mode hook."
       (define-auto-insert
         current-project-cond
        [
-        (lambda () (insert (projectile-rails-corresponding-snippet)))
+        (lambda ()
+          (let ((snippet (projectile-rails-corresponding-snippet)))
+            (if snippet (insert snippet))))
         projectile-rails-expand-yas-buffer
         ]
        ))))
