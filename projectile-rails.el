@@ -255,7 +255,7 @@ When any of the files are found it means that this is a rails app."
   :group 'projectile-rails
   :type 'string)
 
-(define-obsolete-variable-alias 'projectile-rails-verify-root-file 'projectile-rails-verify-root-files)
+(define-obsolete-variable-alias 'projectile-rails-verify-root-file 'projectile-rails-verify-root-files "0.20.0")
 
 (defcustom projectile-rails-custom-console-command nil
   "When set it will be used instead of a preloader as the command for running console."
