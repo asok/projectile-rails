@@ -948,7 +948,8 @@ So it safe to call it many times like in a minor mode hook."
        [
         (lambda ()
           (let ((snippet (projectile-rails-corresponding-snippet)))
-            (if snippet (insert snippet))))
+            (when snippet
+              (insert snippet))))
         projectile-rails-expand-yas-buffer
         ]
        ))))
