@@ -287,6 +287,11 @@ When any of the files are found it means that this is a rails app."
   :group 'projectile-rails
   :type 'boolean)
 
+(defcustom projectile-rails-compilation-buffer-maximum-size 500
+  "The maxium size of the compilation buffer for process started by `projectile-rails-server'"
+  :group 'projectile-rails
+  :type 'integer)
+
 (defvar projectile-rails-extracted-region-snippet
   '(("erb"  . "<%%= render '%s' %%>")
     ("haml" . "= render '%s'")
@@ -1685,7 +1690,12 @@ Killing the buffer will terminate to server's process."
   (add-hook 'compilation-filter-hook 'projectile-rails-server-compilation-filter)
   (add-hook 'kill-buffer-hook 'projectile-rails-server-terminate t t)
   (add-hook 'kill-emacs-hook 'projectile-rails-server-terminate t t)
-  (setq-local compilation-scroll-output t)
+
+  (require 'comint)
+  (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
+
+  (setq-local compilation-scroll-output  t
+              comint-buffer-maximum-size projectile-rails-compilation-buffer-maximum-size)
   (projectile-rails-mode +1)
   (read-only-mode -1))
 
