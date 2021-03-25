@@ -43,6 +43,7 @@
 (require 'f)
 (require 'rake)
 (require 'json)
+(require 'comint)
 
 (defgroup projectile-rails nil
   "Rails mode based on projectile"
@@ -1691,11 +1692,11 @@ Killing the buffer will terminate to server's process."
   (add-hook 'kill-buffer-hook 'projectile-rails-server-terminate t t)
   (add-hook 'kill-emacs-hook 'projectile-rails-server-terminate t t)
 
-  (require 'comint)
-  (add-hook 'compilation-filter-hook 'comint-truncate-buffer)
+  (add-hook 'compilation-filter-hook 'comint-truncate-buffer nil t)
 
   (setq-local compilation-scroll-output  t
               comint-buffer-maximum-size projectile-rails-compilation-buffer-maximum-size)
+
   (projectile-rails-mode +1)
   (read-only-mode -1))
 
