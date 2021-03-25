@@ -288,7 +288,7 @@ When any of the files are found it means that this is a rails app."
   :type 'boolean)
 
 (defcustom projectile-rails-compilation-buffer-maximum-size 500
-  "The maxium size of the compilation buffer for process started by `projectile-rails-server'"
+  "The maximum size (in lines) of the compilation buffer used by `projectile-rails-server'."
   :group 'projectile-rails
   :type 'integer)
 
