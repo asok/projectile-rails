@@ -43,6 +43,7 @@
 (require 'f)
 (require 'rake)
 (require 'json)
+(require 'comint)
 
 (defgroup projectile-rails nil
   "Rails mode based on projectile"
@@ -286,6 +287,11 @@ When any of the files are found it means that this is a rails app."
   "When t the new file snippets will be expanded with the magic comment 'frozen_string_literal: true'."
   :group 'projectile-rails
   :type 'boolean)
+
+(defcustom projectile-rails-compilation-buffer-maximum-size 500
+  "The maximum size (in lines) of the compilation buffer used by `projectile-rails-server'."
+  :group 'projectile-rails
+  :type 'integer)
 
 (defvar projectile-rails-extracted-region-snippet
   '(("erb"  . "<%%= render '%s' %%>")
@@ -1688,7 +1694,12 @@ Killing the buffer will terminate to server's process."
   (add-hook 'compilation-filter-hook 'projectile-rails-server-compilation-filter)
   (add-hook 'kill-buffer-hook 'projectile-rails-server-terminate t t)
   (add-hook 'kill-emacs-hook 'projectile-rails-server-terminate t t)
-  (setq-local compilation-scroll-output t)
+
+  (add-hook 'compilation-filter-hook 'comint-truncate-buffer nil t)
+
+  (setq-local compilation-scroll-output  t
+              comint-buffer-maximum-size projectile-rails-compilation-buffer-maximum-size)
+
   (projectile-rails-mode +1)
   (read-only-mode -1))
 
