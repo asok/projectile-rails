@@ -1,4 +1,8 @@
-# Projectile Rails [![Build Status](https://travis-ci.org/asok/projectile-rails.png?branch=master)](https://travis-ci.org/asok/projectile-rails)
+[![Melpa Status](http://melpa.org/packages/projectile-rails-badge.svg)](https://melpa.org/#/projectile-rails)
+[![Melpa Stable Status](http://stable.melpa.org/packages/projectile-rails-badge.svg)](http://stable.melpa.org/#/projectile-rails)
+[![Build Status](https://github.com/asok/projectile-rails/workflows/CI/badge.svg)](https://github.com/asok/projectile-rails/actions)
+
+# Projectile Rails
 
 ## Synopsis
 
@@ -26,7 +30,7 @@ It can be a replacement for [rinari](https://github.com/eschulte/rinari).
 
 ### Installation
 
-#### Melpa
+#### MELPA
 
 Once you have setup [Melpa](https://melpa.org/#/getting-started) you can use `package-install` command to install Projectile Rails. The package name is `projectile-rails`.
 
