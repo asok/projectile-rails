@@ -6,6 +6,7 @@
 (depends-on "inf-ruby")
 (depends-on "inflections")
 (depends-on "rake")
+(depends-on "dash")
 
 (development
  (depends-on "yasnippet")

@@ -6,7 +6,7 @@
 ;; URL:               https://github.com/asok/projectile-rails
 ;; Version:           0.21.0
 ;; Keywords:          rails, projectile
-;; Package-Requires:  ((emacs "24.3") (projectile "0.12.0") (inflections "1.1") (inf-ruby "2.2.6") (f "0.13.0") (rake "0.3.2"))
+;; Package-Requires:  ((emacs "24.3") (projectile "0.12.0") (inflections "1.1") (inf-ruby "2.2.6") (f "0.13.0") (rake "0.3.2") (dash "2.18.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -973,15 +973,36 @@ In order to expand snippet in newly created buffers variable
   "Called right after buffer is populate with snippet by `auto-insert' mode."
   (yas-expand-snippet (buffer-string) (point-min) (point-max) '((yas-indent-line 'nothing))))
 
-(defun projectile-rails--snippet-for-module (last-part name)
+(defun projectile-rails--ruby-mode-indent-tabs-p ()
+  (with-temp-buffer
+    (set-visited-file-name "file.rb")
+    (set-auto-mode)
+    indent-tabs-mode))
+
+(defun projectile-rails--snippet-for-module (main-definition name)
   "Return snippet as string for a file that holds a module."
-  (let ((parts (projectile-rails-classify (match-string 1 name))))
-    (format
-     (concat
-      (s-join "" (--map (s-lex-format "module ${it}\n") (butlast parts)))
-      last-part
-      (s-join "" (make-list (1- (length parts)) "\nend")))
-     (-last-item parts))))
+  (let* ((parts (projectile-rails-classify (match-string 1 name)))
+         (indent-char (if (projectile-rails--ruby-mode-indent-tabs-p) ?\t ? ))
+         (definitions (s-join
+                       ""
+                       (--map-indexed
+                        (let ((suffix (make-string (* tab-width (1+ it-index)) indent-char)))
+                          (s-lex-format "module ${it}\n${suffix}"))
+                        (butlast parts))))
+         (definition-clojure (s-join
+                              "\n"
+                              (nreverse
+                               (--map-indexed
+                                (let ((prefix (make-string (* tab-width it-index) indent-char)))
+                                  (s-lex-format "${prefix}end"))
+                                parts))))
+         (snippet-end (concat (make-string (* tab-width (length parts)) indent-char) "$2\n"))
+         (format-string (concat
+                         definitions
+                         main-definition
+                         snippet-end
+                         definition-clojure)))
+    (format format-string (-last-item parts))))
 
 (defun projectile-rails--snippet-for-model (name)
   (format
@@ -1017,9 +1038,9 @@ In order to expand snippet in newly created buffers variable
                  "module %sHelper\n$1\nend"
                  (s-join "::" (projectile-rails-classify (match-string 1 name)))))
                ((string-match "lib/\\(.+\\)\\.rb$" name)
-                (projectile-rails--snippet-for-module "${1:module} %s\n$2\nend" name))
+                (projectile-rails--snippet-for-module "${1:module} %s\n" name))
                ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
-                (projectile-rails--snippet-for-module "${1:class} %s\n$2\nend" name)))))
+                (projectile-rails--snippet-for-module "${1:class} %s\n" name)))))
     (if (and snippet projectile-rails-expand-snippet-with-magic-comment)
         (format "# frozen_string_literal: true\n\n%s" snippet)
       snippet)))
