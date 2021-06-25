@@ -5,7 +5,10 @@ unit-test:
 
 integration-test:
 	cask exec ecukes --quiet --tags ~@pending
+ci-integration-test:
+	cask exec ecukes --quiet --tags ~@pending,~@no_ci
 
 test: unit-test integration-test
+ci-test: unit-test ci-integration-test
 
-.PHONY: test
+.PHONY: test ci-test
