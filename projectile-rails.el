@@ -1029,7 +1029,7 @@ In order to expand snippet in newly created buffers variable
                  (s-join "::" (projectile-rails-classify (match-string 1 name)))))
                ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
                 (format
-                 "require \"${1:rails_helper}\"\n\nRSpec.describe %s do\n  $0\nend"
+                 "require '${1:rails_helper}'\n\nRSpec.describe %s do\n  $0\nend"
                  (s-join "::" (projectile-rails-classify (match-string 1 name)))))
                ((string-match "app/models/\\(.+\\)\\.rb$" name)
                 (projectile-rails--snippet-for-model (match-string 1 name)))
