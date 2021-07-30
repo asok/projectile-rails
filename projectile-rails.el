@@ -975,7 +975,6 @@ In order to expand snippet in newly created buffers variable
 
 (defun projectile-rails--ruby-mode-indent-tabs-p ()
   (with-temp-buffer
-    (set-visited-file-name "file.rb")
     (set-auto-mode)
     indent-tabs-mode))
 
