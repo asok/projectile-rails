@@ -973,16 +973,10 @@ In order to expand snippet in newly created buffers variable
   "Called right after buffer is populate with snippet by `auto-insert' mode."
   (yas-expand-snippet (buffer-string) (point-min) (point-max) '((yas-indent-line 'nothing))))
 
-(defun projectile-rails--ruby-mode-indent-tabs-p ()
-  (with-temp-buffer
-    (set-visited-file-name "file.rb")
-    (set-auto-mode)
-    indent-tabs-mode))
-
 (defun projectile-rails--snippet-for-module (main-definition name)
   "Return snippet as string for a file that holds a module."
-  (let* ((parts (projectile-rails-classify (match-string 1 name)))
-         (indent-char (if (projectile-rails--ruby-mode-indent-tabs-p) ?\t ? ))
+  (let* ((parts (projectile-rails-classify name))
+         (indent-char (if indent-tabs-mode ?\t ? ))
          (definitions (s-join
                        ""
                        (--map-indexed
@@ -1015,32 +1009,32 @@ In order to expand snippet in newly created buffers variable
   "Call `projectile-rails--expand-snippet' with a snippet corresponding to the current file."
   (let* ((name (buffer-file-name))
          (snippet
-         (cond ((string-match "app/[^/]+/concerns/\\(.+\\)\\.rb$" name)
-                (format
-                 "module %s\n  extend ActiveSupport::Concern\n  $0\nend"
-                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-               ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
-                (format
-                 "class %s < ${1:ApplicationController}\n$2\nend"
-                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-               ((string-match "app/jobs/\\(.+\\)\\.rb$" name)
-                (format
-                 "class %s < ${1:ApplicationJob}\n$2\nend"
-                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-               ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
-                (format
-                 "require '${1:rails_helper}'\n\nRSpec.describe %s do\n  $0\nend"
-                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-               ((string-match "app/models/\\(.+\\)\\.rb$" name)
-                (projectile-rails--snippet-for-model (match-string 1 name)))
-               ((string-match "app/helpers/\\(.+\\)_helper\\.rb$" name)
-                (format
-                 "module %sHelper\n$1\nend"
-                 (s-join "::" (projectile-rails-classify (match-string 1 name)))))
-               ((string-match "lib/\\(.+\\)\\.rb$" name)
-                (projectile-rails--snippet-for-module "${1:module} %s\n" name))
-               ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
-                (projectile-rails--snippet-for-module "${1:class} %s\n" name)))))
+          (cond ((string-match "app/[^/]+/concerns/\\(.+\\)\\.rb$" name)
+                 (format
+                  "module %s\n  extend ActiveSupport::Concern\n  $0\nend"
+                  (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+                ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
+                 (format
+                  "class %s < ${1:ApplicationController}\n$2\nend"
+                  (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+                ((string-match "app/jobs/\\(.+\\)\\.rb$" name)
+                 (format
+                  "class %s < ${1:ApplicationJob}\n$2\nend"
+                  (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+                ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
+                 (format
+                  "require '${1:rails_helper}'\n\nRSpec.describe %s do\n  $0\nend"
+                  (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+                ((string-match "app/models/\\(.+\\)\\.rb$" name)
+                 (projectile-rails--snippet-for-model (match-string 1 name)))
+                ((string-match "app/helpers/\\(.+\\)_helper\\.rb$" name)
+                 (format
+                  "module %sHelper\n$1\nend"
+                  (s-join "::" (projectile-rails-classify (match-string 1 name)))))
+                ((string-match "lib/\\(.+\\)\\.rb$" name)
+                 (projectile-rails--snippet-for-module "${1:module} %s\n" (match-string 1 name)))
+                ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
+                 (projectile-rails--snippet-for-module "${1:class} %s\n" (match-string 1 name))))))
     (if (and snippet projectile-rails-expand-snippet-with-magic-comment)
         (format "# frozen_string_literal: true\n\n%s" snippet)
       snippet)))
