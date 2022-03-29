@@ -204,7 +204,8 @@
   :type '(repeat string))
 
 (defcustom projectile-rails-expand-snippet t
-  "If not nil `auto-insert' will be setup to expand snippets in the newly created buffers."
+  "If not nil `auto-insert' will be setup to expand snippets
+in the newly created buffers."
   :group 'projectile-rails
   :type 'boolean)
 
@@ -221,7 +222,8 @@
 (make-obsolete-variable 'projectile-keymap-prefix "Use (define-key projectile-rails-mode-map (kbd ...) 'projectile-rails-command-map) instead." "0.20.0")
 
 (defcustom projectile-rails-server-mode-ansi-colors t
-  "If not nil `projectile-rails-server-mode' will apply the ansi colors in its buffer."
+  "If not nil `projectile-rails-server-mode' will apply the ansi colors
+in its buffer."
   :group 'projectile-rails
   :type 'boolean)
 
@@ -250,46 +252,53 @@
   :group 'projectile-rails
   :type 'string)
 
+(define-obsolete-variable-alias 'projectile-rails-verify-root-file 'projectile-rails-verify-root-files "0.20.0")
+
 (defcustom projectile-rails-verify-root-files '("config/routes.rb" "config/environment.rb")
   "The list of files that is used to verify rails root directory.
 When any of the files are found it means that this is a rails app."
   :group 'projectile-rails
   :type 'string)
 
-(define-obsolete-variable-alias 'projectile-rails-verify-root-file 'projectile-rails-verify-root-files "0.20.0")
-
 (defcustom projectile-rails-custom-console-command nil
-  "When set it will be used instead of a preloader as the command for running console."
+  "When set it will be used instead of a preloader as the command for
+running console."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-custom-dbconsole-command nil
-  "When set it will be used instead of a preloader as the command for running dbconsole."
+  "When set it will be used instead of a preloader as the command for
+running dbconsole."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-custom-server-command nil
-  "When set it will be used instead of a preloader as the command for running server."
+  "When set it will be used instead of a preloader as the command for
+running server."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-custom-generate-command nil
-  "When set it will be used instead of a preloader as the command for running generate."
+  "When set it will be used instead of a preloader as the command for
+running generate."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-custom-destroy-command nil
-  "When set it will be used instead of a preloader as the command for running destroy."
+  "When set it will be used instead of a preloader as the command for
+running destroy."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-expand-snippet-with-magic-comment nil
-  "When t the new file snippets will be expanded with the magic comment 'frozen_string_literal: true'."
+  "When t the new file snippets will be expanded with the magic comment
+'frozen_string_literal: true'."
   :group 'projectile-rails
   :type 'boolean)
 
 (defcustom projectile-rails-compilation-buffer-maximum-size 500
-  "The maximum size (in lines) of the compilation buffer used by `projectile-rails-server'."
+  "The maximum size (in lines) of the compilation buffer used by
+`projectile-rails-server'."
   :group 'projectile-rails
   :type 'integer)
 
@@ -420,19 +429,24 @@ Argument DIR is the directory to which the search should be narrowed."
               (append keywords projectile-rails-active-support-keywords)))))
 
 (defun projectile-rails-dir-files (directory)
-  "Wrapper around `projectile-dir-files', list the files in DIRECTORY and in its sub-directories.
+  "Wrapper around `projectile-dir-files', list the files in DIRECTORY
+and in its sub-directories.
 
-Files are returned as relative paths to DIRECTORY. This function was created to handle the case when rails is inside a
-subdirectory, but nowadays it does nothing as `projectile-dir-files' does the right thing."
+Files are returned as relative paths to DIRECTORY. This function
+was created to handle the case when rails is inside a
+subdirectory, but nowadays it does nothing as
+`projectile-dir-files' does the right thing."
   (projectile-dir-files directory))
 
 (defun projectile-rails-choices (dirs)
   "Uses `projectile-rails-dir-files' function to find files in directories.
 
-The DIRS is list of lists consisting of a directory path and regexp to filter files from that directory.
-Optional third element can be present in the DIRS list. The third element will be a prefix to be placed before
-the filename in the resulting choice.
-Returns a hash table with keys being short names (choices) and values being relative paths to the files."
+The DIRS is list of lists consisting of a directory path and
+regexp to filter files from that directory. Optional third
+element can be present in the DIRS list. The third element will
+be a prefix to be placed before the filename in the resulting
+choice. Returns a hash table with keys being short
+names (choices) and values being relative paths to the files."
   (let ((hash (make-hash-table :test 'equal)))
     (cl-loop for (dir re prefix) in dirs do
           (cl-loop for file in (projectile-rails-dir-files (projectile-rails-expand-root dir)) do
@@ -452,7 +466,8 @@ Returns a hash table with keys being short names (choices) and values being rela
       keys)))
 
 (defmacro projectile-rails-find-resource (prompt dirs &optional newfile-template)
-  "Presents files from DIRS with PROMPT to the user using `projectile-completing-read'.
+  "Presents files from DIRS with PROMPT to the user
+using `projectile-completing-read'.
 
 If users chooses a non existant file and NEWFILE-TEMPLATE is not nil
 it will use that variable to interpolate the name for the new file.
@@ -511,7 +526,8 @@ The bound variable is \"filename\"."
    "app/views/layouts/${filename}"))
 
 (defun projectile-rails-find-rake-task (arg)
-  "Find a file where a task is defined.  ARG is passed straight to function `rake-find-task'."
+  "Find a file where a task is defined.
+ARG is passed straight to function `rake-find-task'."
   (interactive "P")
   (rake-find-task arg))
 
@@ -796,14 +812,16 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
   (format "%s-%s" default-directory key))
 
 (defun projectile-rails--rails-app-p (root)
-  "Returns t if any of the relative files in `projectile-rails-verify-root-files' is found.
+  "Returns t if any of the relative files in
+`projectile-rails-verify-root-files' is found.
 ROOT is used to expand the relative files."
   (--any-p
    (file-exists-p (expand-file-name it root))
    (-list projectile-rails-verify-root-files)))
 
 (defun projectile-rails-root ()
-  "Return rails root directory if this file is a part of a Rails application else nil."
+  "Return rails root directory if this file is a part of a
+Rails application else nil."
   (let* ((cache-key (projectile-rails-cache-key "root"))
          (cache-value (gethash cache-key projectile-rails-cache-data)))
     (or cache-value
@@ -822,7 +840,8 @@ ROOT is used to expand the relative files."
       (substring rails-root (length (f-common-parent (list rails-root project-root)))))))
 
 (defun projectile-rails-expand-root (dir)
-  "Like `projectile-expand-root' (expands DIR) but consider `projectile-rails-root'."
+  "Like `projectile-expand-root' (expands DIR)
+but consider `projectile-rails-root'."
   (projectile-expand-root (concat (projectile-rails-root) dir)))
 
 (defun projectile-rails--file-exists-p (filepath)
@@ -905,7 +924,8 @@ The candidates are based on the files found in config/environments/"
 (defun projectile-rails-dbconsole ()
   "Run rails-dbconsole command.
 
-The buffer for interacting with SQL client is created via `sql-product-interactive'."
+The buffer for interacting with SQL client is created via
+`sql-product-interactive'."
   (interactive)
   (require 'sql)
 
@@ -942,10 +962,12 @@ The buffer for interacting with SQL client is created via `sql-product-interacti
    auto-insert-alist))
 
 (defun projectile-rails--setup-auto-insert ()
-  "Call `define-auto-insert' with condition for ruby files under the current project.
+  "Call `define-auto-insert' with condition for ruby files
+under the current project.
 
-If `auto-insert-alist' holds already the condition for the current project it does nothing.
-So it safe to call it many times like in a minor mode hook."
+If `auto-insert-alist' holds already the condition for the
+current project it does nothing. So it safe to call it many times
+like in a minor mode hook."
   (let* ((file-re (format "^%s.*\\.rb$" (projectile-rails-root)))
          (current-project-cond `(,file-re . "projectile-rails")))
     (unless (projectile-rails--auto-insert-setup-p current-project-cond)
@@ -1006,7 +1028,8 @@ In order to expand snippet in newly created buffers variable
    (s-join "::" (projectile-rails-classify name))))
 
 (defun projectile-rails-corresponding-snippet ()
-  "Call `projectile-rails--expand-snippet' with a snippet corresponding to the current file."
+  "Call `projectile-rails--expand-snippet' with a snippet
+corresponding to the current file."
   (let* ((name (buffer-file-name))
          (snippet
           (cond ((string-match "app/[^/]+/concerns/\\(.+\\)\\.rb$" name)
@@ -1224,9 +1247,11 @@ Will try to look for a template or partial file, and assets file."
     (projectile-rails-sanitize-dir-name dir) (projectile-rails-declassify name) ext)))
 
 (defun projectile-rails-goto-file (filepath &optional ask)
-  "Find FILEPATH after expanding root.  ASK is passed straight to `projectile-rails-ff'."
+  "Find FILEPATH after expanding root.
+ASK is passed straight to `projectile-rails-ff'."
   (projectile-rails-ff (projectile-rails-expand-root filepath) ask))
 
+(declare-function bundle-open nil)
 (defun projectile-rails-goto-gem (gem)
   "Use `bundle-open' to open GEM.  If the function is not defined notify user."
   (if (not (fboundp 'bundle-open))
@@ -1729,6 +1754,9 @@ Killing the buffer will terminate to server's process."
   (projectile-rails-mode +1))
 
 (when (functionp 'discover-add-context-menu)
+
+  ;; https://github.com/mickeynp/discover.el
+  (declare-function discover-get-context-menu-command-name nil)
 
   (defun projectile-rails--discover-find-submenu ()
     (interactive)
