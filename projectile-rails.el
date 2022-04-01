@@ -46,7 +46,7 @@
 (require 'comint)
 
 (defgroup projectile-rails nil
-  "Rails mode based on projectile"
+  "Rails mode based on projectile."
   :prefix "projectile-rails-"
   :group 'projectile)
 
@@ -204,7 +204,8 @@
   :type '(repeat string))
 
 (defcustom projectile-rails-expand-snippet t
-  "If not nil `auto-insert' will be setup to expand snippets
+  "Automatically expand snippets in new buffers.
+If not nil, function `auto-insert' will expand snippets
 in the newly created buffers."
   :group 'projectile-rails
   :type 'boolean)
@@ -222,8 +223,7 @@ in the newly created buffers."
 (make-obsolete-variable 'projectile-keymap-prefix "Use (define-key projectile-rails-mode-map (kbd ...) 'projectile-rails-command-map) instead." "0.20.0")
 
 (defcustom projectile-rails-server-mode-ansi-colors t
-  "If not nil `projectile-rails-server-mode' will apply the ansi colors
-in its buffer."
+  "If not nil `projectile-rails-server-mode' will apply ansi colors in its buffer."
   :group 'projectile-rails
   :type 'boolean)
 
@@ -261,43 +261,45 @@ When any of the files are found it means that this is a rails app."
   :type 'string)
 
 (defcustom projectile-rails-custom-console-command nil
-  "When set it will be used instead of a preloader as the command for
-running console."
+  "Override the shell command used to run the rails console.
+When set, this command will be used instead of a preloader."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-custom-dbconsole-command nil
-  "When set it will be used instead of a preloader as the command for
-running dbconsole."
+  "Override the shell command used to run rails dbconsole.
+When set, this command will be used instead of a preloader."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-custom-server-command nil
-  "When set it will be used instead of a preloader as the command for
-running server."
+  "Override the shell command used to run rails server.
+When set, this command will be used instead of a preloader."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-custom-generate-command nil
-  "When set it will be used instead of a preloader as the command for
-running generate."
+  "Override the shell command used to run rails generate.
+When set, this command will be used instead of a preloader."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-custom-destroy-command nil
-  "When set it will be used instead of a preloader as the command for
-running destroy."
+  "Override the shell command used to run rails destroy.
+When set, this command will be used instead of a preloader."
   :group 'projectile-rails
   :type 'string)
 
 (defcustom projectile-rails-expand-snippet-with-magic-comment nil
-  "When t the new file snippets will be expanded with the magic comment
+  "Declare frozen string literals in every new ruby file.
+When t, the new file snippets will be expanded with the magic comment
 'frozen_string_literal: true'."
   :group 'projectile-rails
   :type 'boolean)
 
 (defcustom projectile-rails-compilation-buffer-maximum-size 500
-  "The maximum size (in lines) of the compilation buffer used by
+  "Limit the size of the buffer used for rails server output.
+The maximum size (in lines) of the compilation buffer used by
 `projectile-rails-server'."
   :group 'projectile-rails
   :type 'integer)
@@ -315,7 +317,7 @@ running destroy."
     "spec/fixtures/" "spec/factories/" "spec/fabricators/"))
 
 (defvar-local projectile-rails-zeus-sock nil
-  "The path to the Zeus socket file")
+  "The path to the Zeus socket file.")
 
 (defvar projectile-rails-generators
   '(("assets" (("app/assets/"
@@ -378,6 +380,7 @@ Argument DIR is the directory to which the search should be narrowed."
           (projectile-rails--choose-file-or-new choices files))))))
 
 (defun projectile-rails--choose-file-or-new (choices files)
+  "Choose filename from FILES, or create new file from CHOICES."
   (let* ((choice (projectile-completing-read "Which exactly: " files))
          (candidate (gethash choice choices)))
     (if (f-exists? (projectile-rails-expand-root candidate))
@@ -429,7 +432,8 @@ Argument DIR is the directory to which the search should be narrowed."
               (append keywords projectile-rails-active-support-keywords)))))
 
 (defun projectile-rails-dir-files (directory)
-  "Wrapper around `projectile-dir-files', list the files in DIRECTORY
+  "Obsolete.
+Wrapper around `projectile-dir-files', list the files in DIRECTORY
 and in its sub-directories.
 
 Files are returned as relative paths to DIRECTORY. This function
@@ -439,7 +443,7 @@ subdirectory, but nowadays it does nothing as
   (projectile-dir-files directory))
 
 (defun projectile-rails-choices (dirs)
-  "Uses `projectile-rails-dir-files' function to find files in directories.
+  "Use `projectile-rails-dir-files' function to find files in directories.
 
 The DIRS is list of lists consisting of a directory path and
 regexp to filter files from that directory. Optional third
@@ -466,8 +470,8 @@ names (choices) and values being relative paths to the files."
       keys)))
 
 (defmacro projectile-rails-find-resource (prompt dirs &optional newfile-template)
-  "Presents files from DIRS with PROMPT to the user
-using `projectile-completing-read'.
+  "Presents files from DIRS with PROMPT to the user.
+Uses `projectile-completing-read'.
 
 If users chooses a non existant file and NEWFILE-TEMPLATE is not nil
 it will use that variable to interpolate the name for the new file.
@@ -812,7 +816,8 @@ The mode of the output buffer will be `projectile-rails-compilation-mode'."
   (format "%s-%s" default-directory key))
 
 (defun projectile-rails--rails-app-p (root)
-  "Returns t if any of the relative files in
+  "Determine if the project at ROOT is a Rails project.
+Returns t if any of the relative files in
 `projectile-rails-verify-root-files' is found.
 ROOT is used to expand the relative files."
   (--any-p
@@ -820,8 +825,9 @@ ROOT is used to expand the relative files."
    (-list projectile-rails-verify-root-files)))
 
 (defun projectile-rails-root ()
-  "Return rails root directory if this file is a part of a
-Rails application else nil."
+  "Locate the root directory of the current Rails project.
+Return the root directory if this file is a part of a
+Rails application, else nil."
   (let* ((cache-key (projectile-rails-cache-key "root"))
          (cache-value (gethash cache-key projectile-rails-cache-data)))
     (or cache-value
@@ -832,7 +838,7 @@ Rails application else nil."
               root))))))
 
 (defun projectile-rails-root-relative-to-project-root ()
-  "Return the location of the rails root relative to `projectile-project-root'."
+  "Return the Rails root directory relative to variable `projectile-project-root'."
   (let ((rails-root (file-truename (projectile-rails-root)))
         (project-root (projectile-project-root)))
     (if (string-equal rails-root project-root)
@@ -955,14 +961,17 @@ The buffer for interacting with SQL client is created via
      (sql-set-product-feature product :sqli-login sqli-login))))
 
 (defun projectile-rails--auto-insert-setup-p (current-project-cond)
-  "Return t if passed CURRENT-PROJECT-COND has been setup for `auto-insert'."
+  "Check if Auto-insert mode is active.
+Return t if passed CURRENT-PROJECT-COND has been activated
+with function `define-auto-insert'."
   (seq-some
    (pcase-lambda (`(,cond . ,action))
      (equal current-project-cond cond))
    auto-insert-alist))
 
 (defun projectile-rails--setup-auto-insert ()
-  "Call `define-auto-insert' with condition for ruby files
+  "Activate auto-insertion for all ruby files in the project.
+Call `define-auto-insert' with condition for ruby files
 under the current project.
 
 If `auto-insert-alist' holds already the condition for the
@@ -983,20 +992,21 @@ like in a minor mode hook."
        ))))
 
 (defun projectile-rails-setup-auto-insert-maybe ()
-  "Setup `auto-insert' for the current project.
-
+  "Setup Auto-insert mode for the current project.
 In order to expand snippet in newly created buffers variable
-`projectile-rails-expand-snippet' needs to be non-nil and `auto-insert' enabled."
+`projectile-rails-expand-snippet' needs to be non-nil
+and `auto-insert-mode' enabled."
   (when (and projectile-rails-expand-snippet
              (fboundp 'yas-expand-snippet)
              (projectile-rails--setup-auto-insert))))
 
 (defun projectile-rails-expand-yas-buffer ()
-  "Called right after buffer is populate with snippet by `auto-insert' mode."
+  "Called right after buffer is populate with snippet by Auto-insert mode."
   (yas-expand-snippet (buffer-string) (point-min) (point-max) '((yas-indent-line 'nothing))))
 
 (defun projectile-rails--snippet-for-module (main-definition name)
-  "Return snippet as string for a file that holds a module."
+  "Return snippet as string for a file containing a Rails module.
+Construct the snippet using MAIN-DEFINITION and components from NAME."
   (let* ((parts (projectile-rails-classify name))
          (indent-char (if indent-tabs-mode ?\t ? ))
          (definitions (s-join
@@ -1021,6 +1031,7 @@ In order to expand snippet in newly created buffers variable
     (format format-string (-last-item parts))))
 
 (defun projectile-rails--snippet-for-model (name)
+  "Return snippet as string for a file containing a Rails model with NAME."
   (format
    (if (projectile-rails--file-exists-p "app/models/application_record.rb")
        "class %s < ${1:ApplicationRecord}\n$2\nend"
@@ -1028,7 +1039,8 @@ In order to expand snippet in newly created buffers variable
    (s-join "::" (projectile-rails-classify name))))
 
 (defun projectile-rails-corresponding-snippet ()
-  "Call `projectile-rails--expand-snippet' with a snippet
+  "Expand snippet appropriate for the current Rails file.
+Call `projectile-rails--expand-snippet' with a snippet
 corresponding to the current file."
   (let* ((name (buffer-file-name))
          (snippet
@@ -1070,6 +1082,7 @@ corresponding to the current file."
     (funcall f name line)))
 
 (defun projectile-rails--views-goto-file-at-point (name line)
+  "Jump to Rails view NAME, at line LINE."
   (cond
    ((string-match-p "\\_<render\\_>" line)
     (projectile-rails-goto-template-at-point) t)
@@ -1081,6 +1094,7 @@ corresponding to the current file."
     (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs) t)))
 
 (defun projectile-rails--stylesheet-goto-file-at-point (name line)
+  "Jump to Rails stylesheet NAME, at line LINE."
   (cond
    ((string-match-p "^\\s-*\\*= require .+\\s-*$" line)
     (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs) t)
@@ -1089,6 +1103,7 @@ corresponding to the current file."
     (projectile-rails-goto-asset-at-point projectile-rails-stylesheet-dirs) t)))
 
 (defun projectile-rails--javascript-goto-file-at-point (name line)
+  "Jump to Rails javascript file NAME, at line LINE."
   (cond
    ((string-match-p "^\\s-*//= require .+\\s-*$" line)
     (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs) t)
@@ -1097,6 +1112,7 @@ corresponding to the current file."
     (projectile-rails-goto-asset-at-point projectile-rails-javascript-dirs) t)))
 
 (defun projectile-rails--ruby-goto-file-at-point (name line)
+  "Jump to ruby file NAME, at line LINE."
   (cond
    ((string-match-p "\\_<require_relative\\_>" line)
     (projectile-rails-ff (expand-file-name (concat (thing-at-point 'filename) ".rb"))) t)
@@ -1184,6 +1200,7 @@ Will try to look for a template or partial file, and assets file."
               'projectile-rails-server-mode))))
 
 (defun projectile-rails--completion-in-region ()
+  "Apply Rails generators for text completion in region."
   (interactive)
   (let ((generators (--map (concat (car it) " ") projectile-rails-generators)))
     (when (<= (minibuffer-prompt-end) (point))
@@ -1191,6 +1208,7 @@ Will try to look for a template or partial file, and assets file."
                             generators))))
 
 (defun projectile-rails--generate-with-completion (command)
+  "Execute Rails generator COMMAND with input completion."
   (let ((keymap (copy-keymap minibuffer-local-map)))
     (define-key keymap (kbd "<tab>") 'projectile-rails--completion-in-region)
     (concat command (read-from-minibuffer command nil keymap))))
@@ -1209,11 +1227,13 @@ Will try to look for a template or partial file, and assets file."
       'projectile-rails-generate-mode))))
 
 (defun projectile-rails--destroy-read (command)
+  "Collect user input for COMMAND."
   (let ((keymap (copy-keymap minibuffer-local-map)))
     (define-key keymap (kbd "<tab>") 'exit-minibuffer)
     (read-from-minibuffer command nil keymap)))
 
 (defun projectile-rails--destroy-with-completion (command)
+  "Execute Rails destroy COMMAND with input completion."
   (let* ((user-input (projectile-rails--destroy-read command))
          (completion (try-completion user-input
                                      projectile-rails-generators))
