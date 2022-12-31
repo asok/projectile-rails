@@ -1480,6 +1480,16 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 (defun projectile-rails-apply-ansi-color ()
   (ansi-color-apply-on-region compilation-filter-start (point)))
 
+(defun projectile-rails-find-file-line (button)
+  "Find file and goto line as described by BUTTON"
+  (find-file (button-get button 'file))
+  (goto-line (string-to-number (button-get button 'line))))
+
+(define-button-type 'projectile-rails-button
+  'help-echo "mouse-2, RET: Goto line in file"
+  'follow-link t
+  'action #'projectile-rails-find-file-line)
+
 (defun projectile-rails--log-buffer-find-template (button)
   (projectile-rails-sanitize-and-goto-file "app/views/" (button-label button)))
 
@@ -1508,7 +1518,12 @@ If file does not exist and ASK in not nil it will ask user to proceed."
       (cond ((re-search-forward "Rendered \\([^ ]+\\)" (line-end-position) t)
              (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-template 'follow-link t))
             ((re-search-forward "Processing by \\(.+\\)#\\(?:[^ ]+\\)" (line-end-position) t)
-             (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-controller 'follow-link t)))
+             (make-button (match-beginning 1) (match-end 1) 'action 'projectile-rails--log-buffer-find-controller 'follow-link t))
+            ((re-search-forward "\\(?:\033\\[0m\\)?\\([-_a-zA-Z0-9./]+\\):\\([0-9]+\\):" (line-end-position) t)
+             (make-button (match-beginning 1) (match-end 2)
+                          'type 'projectile-rails-button
+                          'file (match-string 1)
+                          'line (match-string 2))))
       (forward-line))))
 
 (defun projectile-rails-server-terminate ()
@@ -1713,7 +1728,9 @@ If file does not exist and ASK in not nil it will ask user to proceed."
 
 ;;;###autoload
 (define-minor-mode projectile-rails-mode
-  "Rails mode based on projectile"
+  "Rails mode based on projectile
+
+\\{projectile-rails-mode-map}"
   :init-value nil
   :lighter " Rails"
   (when projectile-rails-mode
