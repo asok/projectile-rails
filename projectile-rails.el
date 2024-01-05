@@ -865,7 +865,7 @@ but consider `projectile-rails-root'."
                                  :vanilla (concat projectile-rails-vanilla-command " console"))))
 
      (when (inf-ruby--irb-needs-nomultiline-p)
-       (setq rails-console-command (concat rails-console-command " -- --nomultiline")))
+       (setq rails-console-command (concat rails-console-command " -- --nomultiline --noreadline")))
 
      (with-demoted-errors
          (inf-ruby-console-run
