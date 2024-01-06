@@ -1,6 +1,6 @@
 [![Melpa Status](http://melpa.org/packages/projectile-rails-badge.svg)](https://melpa.org/#/projectile-rails)
 [![Melpa Stable Status](http://stable.melpa.org/packages/projectile-rails-badge.svg)](http://stable.melpa.org/#/projectile-rails)
-[![Build Status](https://github.com/asok/projectile-rails/workflows/CI/badge.svg)](https://github.com/asok/projectile-rails/actions)
+[![Build Status](https://github.com/asok/projectile-rails/actions/workflows/ci.yml/badge.svg)](https://github.com/asok/projectile-rails/actions/workflows/ci.yml)
 
 # Projectile Rails
 
