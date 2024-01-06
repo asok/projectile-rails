@@ -1,12 +1,6 @@
 (source melpa)
 
-(package "projectile-rails" "0.22.0" "Minor mode for Rails projects based on projectile-mode")
-
-(depends-on "projectile")
-(depends-on "inf-ruby")
-(depends-on "inflections")
-(depends-on "rake")
-(depends-on "dash")
+(package-file "projectile-rails.el")
 
 (development
  (depends-on "yasnippet")
