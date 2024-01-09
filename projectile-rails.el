@@ -1373,7 +1373,7 @@ If called interactively will ask user for the PARTIAL-NAME."
         (snippet (cdr (assoc (f-ext partial-name) projectile-rails-extracted-region-snippet)))
         (path (replace-regexp-in-string "\/_" "/" (s-chop-prefix
                                                    (projectile-rails-expand-root "app/views/")
-                                                   (cl-first (s-slice-at "\\." partial-name))))))
+                                                   (replace-regexp-in-string "\.[^.]+?\.\[^.]+?$" "" partial-name)))))
     (kill-region (region-beginning) (region-end))
     (deactivate-mark)
     (when (projectile-rails--view-p (buffer-file-name))
