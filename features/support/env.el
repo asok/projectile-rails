@@ -61,7 +61,6 @@ end")
  (setq projectile-rails-keymap-prefix (kbd "C-c r"))
 
  (require 'yasnippet)
- (require 'bundler)
  (require 'rspec-mode)
  (require 'projectile-rails)
 
