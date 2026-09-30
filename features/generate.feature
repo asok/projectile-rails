@@ -11,6 +11,7 @@ Scenario: Runnning generate rspec:install
   Then I should see "bundle exec rails generate rspec:install"
 
 Scenario: Running generate rspec:install when spring is running
+  Given I open the app file "app/models/user.rb"
   And spring is running
   And I turn on projectile-rails-mode
   When I run command "projectile-rails-generate" inputting "rspec:install"
@@ -18,6 +19,7 @@ Scenario: Running generate rspec:install when spring is running
   Then I should see "spring rails generate rspec:install"
 
 Scenario: Running generate rspec:install when zeus is running
+  Given I open the app file "app/models/user.rb"
   And zeus is running with the default location for the socket file
   And I turn on projectile-rails-mode
   When I run command "projectile-rails-generate" inputting "rspec:install"
@@ -25,6 +27,7 @@ Scenario: Running generate rspec:install when zeus is running
   Then I should see "zeus generate rspec:install"
 
 Scenario: Running generate rspec:install when zeus is running
+  Given I open the app file "app/models/user.rb"
   And zeus is running with the non-default location for the socket file
   And I turn on projectile-rails-mode
   When I run command "projectile-rails-generate" inputting "rspec:install"
