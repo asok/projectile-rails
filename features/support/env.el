@@ -51,6 +51,12 @@ end")
          (fullpath (--map (f-expand it projectile-rails-test-app-path) files))
          (file-in-directory (cl-first (--filter (f-exists? it) fullpath))))
     (when file-in-directory
+      ;; A buffer left visiting a deleted fixture makes a later `find-file'
+      ;; of the recreated file ask whether to reread it from disk.
+      (--each (buffer-list)
+        (let ((file (buffer-file-name it)))
+          (when (and file (file-in-directory-p file file-in-directory))
+            (kill-buffer it))))
       (f-delete file-in-directory t))))
 
 (require 'espuds)
