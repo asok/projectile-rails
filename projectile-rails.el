@@ -1271,13 +1271,26 @@ Will try to look for a template or partial file, and assets file."
 ASK is passed straight to `projectile-rails-ff'."
   (projectile-rails-ff (projectile-rails-expand-root filepath) ask))
 
-(declare-function bundle-open nil)
+(defun projectile-rails--gem-path (gem)
+  "Return the directory of GEM as reported by `bundle info --path'.
+Signal a `user-error' with the command output when it is not found."
+  (projectile-rails-with-root
+   (with-temp-buffer
+     (let* ((status (process-file "bundle" nil t nil "info" "--path" gem))
+            (output (s-trim (buffer-string)))
+            (remote (or (file-remote-p default-directory) ""))
+            ;; Bundler may print warnings around the path, so take the last
+            ;; line that names an existing directory.
+            (dir (and (eql status 0)
+                      (cl-find-if #'file-directory-p
+                                  (mapcar (lambda (line) (concat remote line))
+                                          (reverse (split-string output "\n" t "[ \t]+")))))))
+       (or dir
+           (user-error "Could not find gem %s with `bundle info --path': %s" gem output))))))
+
 (defun projectile-rails-goto-gem (gem)
-  "Use `bundle-open' to open GEM.  If the function is not defined notify user."
-  (if (not (fboundp 'bundle-open))
-      (user-error "Please install bundler.el from https://github.com/tobiassvn/bundler.el")
-    (message "Using bundle-open command to open the gem")
-    (bundle-open (car (s-split "/" gem)))))
+  "Open the directory of the gem providing GEM, a require path or gem name."
+  (dired (projectile-rails--gem-path (car (s-split "/" gem)))))
 
 (defun projectile-rails-goto-asset-at-point (dirs)
   "Try to find and go to an asset under the point.
