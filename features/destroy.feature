@@ -11,6 +11,7 @@ Scenario: Runnning destroy model airplane
   Then I should see "bundle exec rails destroy model airplane"
 
 Scenario: Running destroy model airplane when spring is running
+  Given I open the app file "app/models/user.rb"
   And spring is running
   And I turn on projectile-rails-mode
   When I run command "projectile-rails-destroy" inputting "model airplane"
@@ -18,6 +19,7 @@ Scenario: Running destroy model airplane when spring is running
   Then I should see "spring rails destroy model airplane"
 
 Scenario: Running destroy model airplane when zeus is running
+  Given I open the app file "app/models/user.rb"
   And zeus is running with the default location for the socket file
   And I turn on projectile-rails-mode
   When I run command "projectile-rails-destroy" inputting "model airplane"
@@ -25,6 +27,7 @@ Scenario: Running destroy model airplane when zeus is running
   Then I should see "zeus destroy model airplane"
 
 Scenario: Running destroy model airplane when zeus is running
+  Given I open the app file "app/models/user.rb"
   And zeus is running with the non-default location for the socket file
   And I turn on projectile-rails-mode
   When I run command "projectile-rails-destroy" inputting "model airplane"
