@@ -220,7 +220,7 @@ in the newly created buffers."
   :group 'projectile-rails
   :type 'string)
 
-(make-obsolete-variable 'projectile-keymap-prefix "Use (define-key projectile-rails-mode-map (kbd ...) 'projectile-rails-command-map) instead." "0.20.0")
+(make-obsolete-variable 'projectile-rails-keymap-prefix "Use (define-key projectile-rails-mode-map (kbd ...) 'projectile-rails-command-map) instead." "0.20.0")
 
 (defcustom projectile-rails-server-mode-ansi-colors t
   "If not nil `projectile-rails-server-mode' will apply ansi colors in its buffer."
