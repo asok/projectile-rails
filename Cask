@@ -9,4 +9,5 @@
  (depends-on "ert-expectations")
  (depends-on "el-mock")
  (depends-on "ecukes")
- (depends-on "espuds"))
+ (depends-on "espuds")
+ (depends-on "package-lint"))

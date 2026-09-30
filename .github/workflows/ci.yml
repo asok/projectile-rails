@@ -21,13 +21,13 @@ jobs:
     - uses: purcell/setup-emacs@master
       with:
         version: ${{ matrix.emacs_version }}
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
     - uses: cask/setup-cask@v1.1
     - name: Install packages from Cask file
       run: cask
     - uses: ruby/setup-ruby@v1
       with:
-          ruby-version: 2.6
+          ruby-version: '3.4'
     - name: Run tests
       run: make ci-test
     - name: Package lint
