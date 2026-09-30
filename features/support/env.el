@@ -150,7 +150,10 @@ end")
  (--each (buffer-list)
    (with-current-buffer it
      (when projectile-rails-mode
-       (kill-buffer)))))
+       ;; Internal buffers such as " *load*" are still in use by ecukes.
+       (if (string-prefix-p " " (buffer-name))
+           (projectile-rails-mode -1)
+         (kill-buffer))))))
 
 (Teardown
  ;;todo: come up with something that works
