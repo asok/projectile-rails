@@ -982,14 +982,11 @@ like in a minor mode hook."
     (unless (projectile-rails--auto-insert-setup-p current-project-cond)
       (define-auto-insert
         current-project-cond
-       [
-        (lambda ()
-          (let ((snippet (projectile-rails-corresponding-snippet)))
-            (when snippet
-              (insert snippet))))
-        projectile-rails-expand-yas-buffer
-        ]
-       ))))
+        [(lambda ()
+           (let ((snippet (projectile-rails-corresponding-snippet)))
+             (when snippet
+               (insert snippet))))
+         projectile-rails-expand-yas-buffer]))))
 
 (defun projectile-rails-setup-auto-insert-maybe ()
   "Setup Auto-insert mode for the current project.
