@@ -9,9 +9,11 @@ ci-integration-test:
 	cask exec ecukes --quiet --tags ~@pending,~@no_ci
 
 lint:
-	cask exec emacs -batch -f package-lint-batch-and-exit projectile-rails.el
+	cask exec emacs -batch \
+	  --eval "(progn (require 'package) (add-to-list 'package-archives '(\"melpa\" . \"https://melpa.org/packages/\") t) (package-initialize) (package-refresh-contents))" \
+	  -l package-lint -f package-lint-batch-and-exit projectile-rails.el
 
 test: unit-test integration-test
 ci-test: unit-test ci-integration-test
 
-.PHONY: test ci-test
+.PHONY: test ci-test lint
