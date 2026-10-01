@@ -158,7 +158,7 @@ You might want to create your own keybinding for your favorite commands. For exa
 
 There's also integration with [discover.el](https://github.com/mickeynp/discover.el). The key that trigger the menu is `s-r` (the "s" stands for Win/Command key).
 
-![Screenshot](https://github.com/asok/projectile-rails/raw/master/screenshots/discover.png)
+![Screenshot](https://github.com/Silex/projectile-rails/raw/main/screenshots/discover.png)
 
 ### Hydra
 
